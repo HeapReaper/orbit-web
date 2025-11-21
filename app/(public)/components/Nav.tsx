@@ -17,6 +17,7 @@ export default function Navbar() {
   const navItems: NavType[] = [
     { name: "Home", href: "/" },
     { name: "Subscriptions", href: "/subscriptions" },
+    { name: "Servers", href: "/servers" },
     { name: "Releases", href: "/releases" },
     { name: "Support", href: "/help/support" },
     { name: "Login", href: "/login" },

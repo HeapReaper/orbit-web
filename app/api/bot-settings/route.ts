@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor } = data;
+  const { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList } = data;
 
   if (!botSettingsSchema.safeParse(data)) return NextResponse.json({ error: "Invalid form data"});
 
@@ -41,8 +41,8 @@ export async function POST(req: NextRequest) {
 
   const updated = await prisma.botSettings.upsert({
     where: { guildId },
-    update: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor },
-    create: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor },
+    update: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList },
+    create: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList },
   });
 
   return NextResponse.json(updated);
