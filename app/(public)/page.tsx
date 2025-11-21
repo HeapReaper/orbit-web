@@ -8,6 +8,7 @@ import helpData from "@/app/(dashboard)/dashboard/data/helpData";
 import { useEffect, useState } from "react";
 import { moduleType } from "@/app/types/modules";
 import reviews from "@/app/(public)/data/reviews";
+import { ReviewsType } from "@/app/types/reviews";
 
 export default function Home() {
   const [totalServers, setTotalServers] = useState<number | null>(null);
@@ -121,43 +122,40 @@ export default function Home() {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {reviews.map((review, index) => (
-            <div className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg hover:border-blue-600 border border-gray-900 transition" key={index}>
+          {reviews.map((review: ReviewsType, index: number) => (
+            <div
+              className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg hover:border-blue-600 border border-gray-900 transition"
+              key={index}
+            >
               <div className="flex items-center gap-3 mb-4">
                 <Image
                   src={review.avatar}
                   alt="User avatar"
                   width={50}
                   height={50}
-                  className="rounded-full border border-gray-700"
+                  className="rounded-full border border-gray-700 h-13 w-13"
                 />
                 <div>
-                  <h4 className="font-semibold">
-                    {review.name}
-                  </h4>
-                  <p className="text-gray-400 text-sm">
-                    {review.title}
-                  </p>
+                  <h4 className="font-semibold">{review.name}</h4>
+                  <p className="text-gray-400 text-sm">{review.title}</p>
                 </div>
               </div>
 
-              <p className="text-gray-300">
+              {/* Scrollable review text */}
+              <p className="text-gray-300 max-h-24 overflow-y-auto">
                 "{review.review}"
               </p>
 
-              <div className="flex text-yellow-400 mt-4"><div className="flex text-yellow-400 mt-4">
+              <div className="flex text-yellow-400 mt-4">
                 {review.stars.map((star, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-1"
-                  >
+                  <div key={index} className="flex items-center gap-1">
                     {star}
                   </div>
                 ))}
               </div>
             </div>
-          </div>
           ))}
+
         </div>
       </section>
 
