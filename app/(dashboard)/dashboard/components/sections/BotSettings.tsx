@@ -10,6 +10,7 @@ import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import { botSettingsSchema } from "@/app/zod/botSettings";
+import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 
 export default function BotSettings() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,6 +22,7 @@ export default function BotSettings() {
   const [language, setLanguage] = useState<string>("");
   const [updatesChannel, setUpdatesChannel] = useState<string>("");
   const [timezone, setTimezone] = useState<string>("Europe/Amsterdam");
+  const [showInGuildList, setShowInGuildList] = useState<boolean>(true);
   const [primaryColor, setPrimaryColor] = useState<string>("");
   const [secondaryColor, setSecondaryColor] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -29,20 +31,25 @@ export default function BotSettings() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    document.title = "Bot settings";
+    document.title = "Settings";
     if (!selectedGuild) return;
 
     const fetchGuildData = async () => {
       setLoading(true);
+
       try {
         const res = await fetch(`/api/bot-settings?guildId=${selectedGuild}`);
         const data = await res.json();
+
+        console.log(`SHow in server list: ${data.showInGuildList}`)
+
         setNickname(data.nickname ?? "");
         setLanguage(data.language ?? "");
         setUpdatesChannel(data.updatesChannel ?? "");
         setTimezone(data.timezone ?? "Europe/Amsterdam");
         setPrimaryColor(data.primaryColor ?? "#5865F2");
         setSecondaryColor(data.secondaryColor ?? "#2F3136");
+        setShowInGuildList(data.showInGuildList);
       } catch (err) {
         console.error(err);
       } finally {
@@ -63,6 +70,7 @@ export default function BotSettings() {
   const handleSave = async (auto = false) => {
     if (!selectedGuild) return;
     setIsSaving(true);
+
     const formData = {
       guildId: selectedGuild,
       nickname,
@@ -71,6 +79,7 @@ export default function BotSettings() {
       timezone,
       primaryColor,
       secondaryColor,
+      showInGuildList,
     }
 
     // Validate data and show errors
@@ -164,6 +173,12 @@ export default function BotSettings() {
             value={timezone || ""}
             onChange={setTimezone}
             options={timezones}
+          />
+
+          <ToggleSwitch
+            label="Show in public server list"
+            enabled={showInGuildList}
+            onChange={setShowInGuildList}
           />
         </div>
 

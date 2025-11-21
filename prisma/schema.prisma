@@ -38,15 +38,16 @@ model Birthday {
 }
 
 model BotSettings {
-  id             Int      @id @default(autoincrement())
-  guildId        String   @unique(map: "guildId") @db.VarChar(22)
-  nickname       String?  @db.VarChar(50)
-  language       String?  @db.VarChar(3)
-  updatesChannel String?  @db.VarChar(22)
-  timezone       String?  @db.VarChar(22)
-  primaryColor   String?  @db.VarChar(22)
-  secondaryColor String?  @db.VarChar(22)
-  createdAt      DateTime @default(now()) @db.DateTime(0)
+  id              Int      @id @default(autoincrement())
+  guildId         String   @unique(map: "guildId") @db.VarChar(22)
+  nickname        String?  @db.VarChar(50)
+  language        String?  @db.VarChar(3)
+  updatesChannel  String?  @db.VarChar(22)
+  timezone        String?  @db.VarChar(22)
+  primaryColor    String?  @db.VarChar(22)
+  secondaryColor  String?  @db.VarChar(22)
+  createdAt       DateTime @default(now()) @db.DateTime(0)
+  showInGuildList Boolean  @default(true)
 }
 
 model BumpReminderSettings {
@@ -141,7 +142,7 @@ model KickWatcher {
   id        Int      @id @default(autoincrement())
   guildId   String   @unique(map: "guildIdKick") @db.VarChar(22)
   channel   String   @db.VarChar(22)
-  users     Json     @default("[]")
+  users     Json
   enabled   Boolean
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
@@ -150,7 +151,7 @@ model TwitchWatcher {
   id        Int      @id @default(autoincrement())
   guildId   String   @unique(map: "guildIdTwitch") @db.VarChar(22)
   channel   String   @db.VarChar(22)
-  users     Json     @default("[]")
+  users     Json
   enabled   Boolean
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
@@ -159,7 +160,7 @@ model YoutubeWatcher {
   id        Int      @id @default(autoincrement())
   guildId   String   @unique(map: "guildIdYoutube") @db.VarChar(22)
   channel   String   @db.VarChar(22)
-  users     Json     @default("[]")
+  users     Json
   enabled   Boolean
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
@@ -174,10 +175,10 @@ model AntiBotSettings {
   forbiddenWords      Json?
   notificationChannel String?  @db.VarChar(22)
   jailRole            String?  @db.VarChar(22)
-  excludeAdmins       Boolean  @default(false)
-  blockInvites        Boolean  @default(false)
   createdAt           DateTime @default(now()) @db.DateTime(0)
   updatedAt           DateTime @updatedAt @db.DateTime(0)
+  blockInvites        Boolean  @default(false)
+  excludeAdmins       Boolean  @default(false)
 }
 
 model ChannelOfFame {
@@ -240,12 +241,11 @@ model MinecraftSettings {
 }
 
 model GuildInviteSettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique
-  enabled   Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  invites InviteTrackerInvite[]
+  id        Int                   @id @default(autoincrement())
+  guildId   String                @unique
+  enabled   Boolean               @default(false)
+  createdAt DateTime              @default(now())
+  invites   InviteTrackerInvite[]
 }
 
 model InviteTrackerInvite {
@@ -270,24 +270,23 @@ model AutoRoleSettings {
 model PictureContestSettings {
   id        Int                  @id @default(autoincrement())
   guildId   String               @unique
-  contests  PictureContestItem[]
   createdAt DateTime             @default(now())
+  contests  PictureContestItem[]
 }
 
 model PictureContestItem {
-  id              Int      @id @default(autoincrement())
+  id              Int                    @id @default(autoincrement())
   guildId         String
-  name            String   @default("New Contest")
+  name            String                 @default("New Contest")
   contestChannel  String
   announceChannel String
-  voteEmoji       String   @default("👍")
-  voteType        String   @default("highest")
+  voteEmoji       String                 @default("?")
+  voteType        String                 @default("highest")
   requiredVotes   Int?
-  schedule        String   @default("end_month")
-  enabled         Boolean  @default(true)
-  createdAt       DateTime @default(now())
-
-  guild PictureContestSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+  schedule        String                 @default("end_month")
+  enabled         Boolean                @default(true)
+  createdAt       DateTime               @default(now())
+  guild           PictureContestSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
 
   @@index([guildId])
 }

@@ -8,4 +8,5 @@ export const botSettingsSchema = z.object({
   timezone: z.string().min(1, "Timezone is required"),
   primaryColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Invalid primary color"),
   secondaryColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Invalid secondary color"),
+  showInGuildList: z.boolean().optional().nullable(),
 });

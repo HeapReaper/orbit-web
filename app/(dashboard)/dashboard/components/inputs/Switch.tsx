@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ToggleSwitchProps {
   enabled?: boolean;
@@ -10,16 +10,22 @@ interface ToggleSwitchProps {
 }
 
 export default function ToggleSwitch({
-  enabled: initialEnabled = false,
+  enabled: controlledEnabled,
   onChange,
   className = "",
   label,
 }: ToggleSwitchProps) {
-  const [enabled, setEnabled] = useState(initialEnabled);
+  const [internalEnabled, setInternalEnabled] = useState(controlledEnabled ?? false);
+
+  useEffect(() => {
+    if (controlledEnabled !== undefined) {
+      setInternalEnabled(controlledEnabled);
+    }
+  }, [controlledEnabled]);
 
   const toggle = () => {
-    const newValue = !enabled;
-    setEnabled(newValue);
+    const newValue = !internalEnabled;
+    setInternalEnabled(newValue);
     onChange?.(newValue);
   };
 
@@ -29,14 +35,14 @@ export default function ToggleSwitch({
         type="button"
         onClick={toggle}
         className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 focus:outline-none ${
-          enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
+          internalEnabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
         }`}
-        aria-pressed={enabled}
+        aria-pressed={internalEnabled}
         aria-label={typeof label === 'string' ? label : 'Toggle switch'}
       >
         <span
           className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
-            enabled ? "translate-x-6" : "translate-x-1"
+            internalEnabled ? "translate-x-6" : "translate-x-1"
           }`}
         />
       </button>
