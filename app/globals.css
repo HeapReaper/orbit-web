@@ -97,3 +97,29 @@ textarea:focus {
 ._selectTrigger_1e2ox_308 {
   background-color: #0a0a0a !important;
 }
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 #1f1f29;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1f1f29;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a855f7;
+  border-radius: 8px;
+  border: 2px solid #1f1f29;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #9333ea;
+}

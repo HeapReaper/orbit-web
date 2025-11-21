@@ -2,7 +2,7 @@ import { ReviewsType } from "@/app/types/reviews";
 
 const reviews: ReviewsType[] = [
   {
-    name: "TheGhostOfChaos",
+    name: "@TheGhostOfChaos",
     title: "Server owner",
     review: "Im using this mod for a few servers.\n" +
       "\n" +
@@ -12,6 +12,13 @@ const reviews: ReviewsType[] = [
       "\n" +
       "Eventough its under development 6/5",
     avatar: "/reviews/theghostofchaos.jpg",
+    stars: ["⭐", "⭐", "⭐", "⭐", "⭐"]
+  },
+  {
+    name: "@All Day Sander",
+    title: "Server owner",
+    review: "This Discord Bot is surprisingly flexible. Its high level of customizability is particularly striking. I personally really appreciate the ability to link multiple messages to a single command. This not only makes the bot versatile, but also much more human-like and therefore less tedious. The premium tier is attractive! You can report any bugs in Klikbit's Discord server, which is sometimes still necessary because the bot is still in development.",
+    avatar: "/reviews/All-Day-Tech-Gaming.png",
     stars: ["⭐", "⭐", "⭐", "⭐", "⭐"]
   }
 ]
