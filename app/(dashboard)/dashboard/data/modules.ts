@@ -143,7 +143,7 @@ const modules: moduleType[] = [
     description: "Show starred messages in a special channel automatically.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: false
   },
   {
     name: "Giveaway",
