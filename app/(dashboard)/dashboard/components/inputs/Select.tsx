@@ -1,16 +1,25 @@
 "use client";
 
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
+
 interface SelectInputProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: { value: string; label: string }[];
+  tooltip?: string;
 }
 
-export default function SelectInput({ label, value, onChange, options }: SelectInputProps) {
+export default function SelectInput({ label, value, onChange, options, tooltip }: SelectInputProps) {
   return (
     <div className="mb-4 relative">
-      <label className="block text-gray-400 mb-1">{label}</label>
+      <div className="flex items-center gap-2 mb-1">
+        <label className="text-gray-400">{label}</label>
+
+        {tooltip && (
+          <InfoTooltip text={tooltip} size={16} />
+        )}
+      </div>
       <div className="relative">
         <select
           value={value}

@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
 interface ToggleSwitchProps {
   enabled?: boolean;
   onChange?: (enabled: boolean) => void;
   className?: string;
   label?: string | React.ReactNode;
+  tooltip?: string;
 }
 
 export default function ToggleSwitch({
@@ -14,6 +16,7 @@ export default function ToggleSwitch({
   onChange,
   className = "",
   label,
+  tooltip,
 }: ToggleSwitchProps) {
   const [internalEnabled, setInternalEnabled] = useState(controlledEnabled ?? false);
 
@@ -30,7 +33,7 @@ export default function ToggleSwitch({
   };
 
   return (
-    <label className={`inline-flex items-center cursor-pointer ${className}`}>
+    <div className={`inline-flex items-center cursor-pointer ${className}`}>
       <button
         type="button"
         onClick={toggle}
@@ -46,7 +49,13 @@ export default function ToggleSwitch({
           }`}
         />
       </button>
-      {label && <span className="ml-2 select-none">{label}</span>}
-    </label>
+      <div className="flex items-center gap-2 mb-1 ml-2 ">
+        <label className="text-gray-400">{label}</label>
+
+        {tooltip && (
+          <InfoTooltip text={tooltip} size={16} />
+        )}
+      </div>
+    </div>
   );
 }
