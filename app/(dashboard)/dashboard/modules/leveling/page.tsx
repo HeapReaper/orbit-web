@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import { useNotification } from "@/app/context/NotificationContext";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
@@ -251,6 +251,7 @@ export default function Page() {
           min={0.1}
           step={0.1}
           placeholder="Speed of XP gain"
+          tooltip="The total XP needed to reach the end level"
         />
       </div>
 
@@ -262,6 +263,7 @@ export default function Page() {
           min={1}
           step={1}
           placeholder=""
+          tooltip="How fast or slow users reach the end level. Higher means for each level, there will be more xp needed"
         />
 
         <SelectInput
@@ -302,8 +304,10 @@ export default function Page() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Level Roles (10 required)</label>
-
+        <div className="flex items-center gap-2 mb-1">
+          <label className="text-gray-400">Level roles (10 required)</label>
+            <InfoTooltip text="" size={16} />
+        </div>
         <input
           type="text"
           value={search}

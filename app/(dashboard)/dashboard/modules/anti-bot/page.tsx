@@ -251,7 +251,8 @@ export default function AntiBotPage() {
         <ToggleSwitch
           enabled={blockInvites}
           onChange={() => setBlockInvites(!blockInvites)}
-          label="Block Discord invites for non admins"
+          label="Block Discord invites"
+          tooltip="This does not block Discord invites from admin users"
         />
       </div>
 

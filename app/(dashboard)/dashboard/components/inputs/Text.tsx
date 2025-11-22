@@ -1,5 +1,7 @@
 "use client";
 
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
+
 interface TextInputProps {
   label: string;
   value: string;
@@ -7,12 +9,19 @@ interface TextInputProps {
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  tooltip?: string;
 }
 
-export default function TextInput({ label, value, onChange, placeholder, className, disabled=false }: TextInputProps) {
+export default function TextInput({ label, value, onChange, placeholder, className, disabled=false, tooltip }: TextInputProps) {
   return (
     <div className="mb-4">
-      <label className="block text-gray-400 mb-1">{label}</label>
+      <div className="flex items-center gap-2 mb-1">
+        <label className="text-gray-400">{label}</label>
+
+        {tooltip && (
+          <InfoTooltip text={tooltip} size={16} />
+        )}
+      </div>
       <input
         type="text"
         value={value}

@@ -2,14 +2,16 @@
 
 import { useGuild } from "@/app/context/GuildContext";
 import { useState, useRef, useEffect } from "react";
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
 interface Props {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  tooltip?: string;
 }
 
-export default function ChannelSelect({ label, value, onChange }: Props) {
+export default function ChannelSelect({ label, value, onChange, tooltip }: Props) {
   const { channels } = useGuild();
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +56,13 @@ export default function ChannelSelect({ label, value, onChange }: Props) {
 
   return (
     <div className="mb-4 relative" ref={wrapperRef}>
-      <label className="block text-gray-400 mb-1">{label}</label>
+      <div className="flex items-center gap-2 mb-1">
+        <label className="text-gray-400">{label}</label>
+
+        {tooltip && (
+          <InfoTooltip text={tooltip} size={16} />
+        )}
+      </div>
       <div className="relative">
         <input
           type="text"

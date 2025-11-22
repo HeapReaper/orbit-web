@@ -1,5 +1,8 @@
 "use client";
 
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
+
+
 interface NumberInputProps {
   label: string;
   value: number;
@@ -8,12 +11,19 @@ interface NumberInputProps {
   max?: number;
   step?: number;
   placeholder?: string;
+  tooltip?: string;
 }
 
-export default function NumberInput({ label, value, onChange, min, max, step, placeholder }: NumberInputProps) {
+export default function NumberInput({ label, value, onChange, min, max, step, placeholder, tooltip }: NumberInputProps) {
   return (
     <div className="mb-4">
-      <label className="block text-gray-400 mb-1">{label}</label>
+      <div className="flex items-center gap-2 mb-1">
+        <label className="text-gray-400">{label}</label>
+
+        {tooltip && (
+          <InfoTooltip text={tooltip} size={16} />
+        )}
+      </div>
       <input
         type="number"
         value={value}
