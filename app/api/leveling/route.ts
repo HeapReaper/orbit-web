@@ -20,7 +20,20 @@ export async function GET(req: NextRequest) {
 
   try {
     const data = await prisma.levelingSettings.findUnique({ where: { guildId } });
-    return NextResponse.json(data ?? { enabled: false, channel: null, level_roles: [], xp_rate: 1 });
+
+    return NextResponse.json(
+      data ?? {
+        enabled: false,
+        channel: null,
+        levelRoles: [],
+        xpRate: 1,
+        xpPerMessage: 10,
+        xpPerVoice: 5,
+        curveExponent: 2.65,
+        xpMessageGainSpeed: "oneTimeAMinute",
+        xpVoiceGainSpeed: "everyMinute",
+      }
+    );
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Failed to fetch leveling settings" }, { status: 500 });
@@ -40,13 +53,45 @@ export async function POST(req: NextRequest) {
   if (!(await isUserGuildAdmin(session.user.id, data.guildId)))
     return NextResponse.json({ error: "You must be a guild admin" }, { status: 403 });
 
-  const { guildId, channel, levelRoles, xpRate, enabled } = data;
+  const {
+    guildId,
+    channel,
+    levelRoles,
+    xpRate,
+    enabled,
+    xpPerMessage,
+    xpPerVoice,
+    curveExponent,
+    xpMessageGainSpeed,
+    xpVoiceGainSpeed,
+  } = data;
 
   try {
     const updated = await prisma.levelingSettings.upsert({
       where: { guildId },
-      update: { channel, levelRoles, xpRate, enabled },
-      create: { guildId, channel, levelRoles, xpRate, enabled },
+      update: {
+        channel,
+        levelRoles,
+        xpRate,
+        enabled,
+        xpPerMessage,
+        xpPerVoice,
+        curveExponent,
+        xpMessageGainSpeed,
+        xpVoiceGainSpeed,
+      },
+      create: {
+        guildId,
+        channel,
+        levelRoles,
+        xpRate,
+        enabled,
+        xpPerMessage,
+        xpPerVoice,
+        curveExponent,
+        xpMessageGainSpeed,
+        xpVoiceGainSpeed,
+      },
     });
 
     return NextResponse.json(updated);

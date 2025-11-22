@@ -192,13 +192,18 @@ model ChannelOfFame {
 }
 
 model LevelingSettings {
-  id         Int      @id @default(autoincrement())
-  guildId    String   @unique
-  channel    String?  @db.VarChar(22)
-  levelRoles Json?
-  xpRate     Float    @default(1)
-  enabled    Boolean  @default(false)
-  createdAt  DateTime @default(now())
+  id                 Int      @id @default(autoincrement())
+  guildId            String   @unique
+  channel            String?  @db.VarChar(22)
+  levelRoles         Json?
+  xpRate             Float    @default(1)
+  xpPerMessage       Int      @default(10)
+  xpPerVoice         Int      @default(5)
+  curveExponent      Float    @default(2.65)
+  xpMessageGainSpeed String   @default("oneTimeAMinute")
+  xpVoiceGainSpeed   String   @default("everyMinute")
+  enabled            Boolean  @default(false)
+  createdAt          DateTime @default(now())
 }
 
 model LoggingSettings {
