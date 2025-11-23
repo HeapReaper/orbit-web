@@ -1,11 +1,11 @@
 import { Undo } from "lucide-react";
 
-interface ResetButtonProps {
+interface Props {
   onClick?: () => void;
   loading?: boolean;
 }
 
-export default function ResetButon({ onClick, loading = false }: ResetButtonProps) {
+export default function ResetButon({ onClick, loading = false }: Props) {
   return (
     <button
       type="button"

@@ -16,11 +16,11 @@ interface ChartData {
   commands: number;
 }
 
-interface CommandUsageChartProps {
+interface Props {
   data: ChartData[];
 }
 
-export default function CommandUsageChart({ data }: CommandUsageChartProps) {
+export default function CommandUsageChart({ data }: Props) {
   return (
     <div className="w-full h-72">
       <ResponsiveContainer width="100%" height="100%">

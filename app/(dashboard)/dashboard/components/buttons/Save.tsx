@@ -1,11 +1,11 @@
 import {Save} from "lucide-react";
 
-interface SaveButtonProps {
+interface Props {
   onClick?: () => void;
   loading?: boolean;
 }
 
-export default function SaveButton({ onClick, loading = false }: SaveButtonProps) {
+export default function SaveButton({ onClick, loading = false }: Props) {
   return (
     <button
       type="button"

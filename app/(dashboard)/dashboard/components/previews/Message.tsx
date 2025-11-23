@@ -4,13 +4,13 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 
-interface MessagePreviewProps {
+interface Props {
   username: string;
   message: string;
   channels?: Record<string, string>;
 }
 
-export default function MessagePreview({ username, message, channels = {} }: MessagePreviewProps) {
+export default function MessagePreview({ username, message, channels = {} }: Props) {
   // Function to replace <#> with channel name
   const renderMessage = (text: unknown) => {
     if (typeof text !== "string") return text;

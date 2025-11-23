@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
-interface ToggleSwitchProps {
+interface Props {
   enabled?: boolean;
   onChange?: (enabled: boolean) => void;
   className?: string;
@@ -17,7 +17,7 @@ export default function ToggleSwitch({
   className = "",
   label,
   tooltip,
-}: ToggleSwitchProps) {
+}: Props) {
   const [internalEnabled, setInternalEnabled] = useState(controlledEnabled ?? false);
 
   useEffect(() => {

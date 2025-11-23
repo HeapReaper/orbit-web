@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Info } from "lucide-react";
 
-interface InfoTooltipProps {
+interface Props {
   text: string;
   size?: number;
 }
 
-export default function InfoTooltip({ text, size = 20 }: InfoTooltipProps) {
+export default function InfoTooltip({ text, size = 20 }: Props) {
   const [show, setShow] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
