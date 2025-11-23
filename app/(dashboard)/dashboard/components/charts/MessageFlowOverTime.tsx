@@ -15,11 +15,11 @@ interface HourlyData {
   messages: number;
 }
 
-interface MessageFlowChartProps {
+interface Props {
   data: HourlyData[];
 }
 
-export default function MessageFlowChart({ data }: MessageFlowChartProps) {
+export default function MessageFlowChart({ data }: Props) {
   return (
     <div className="w-full h-72">
       <ResponsiveContainer width="100%" height="100%">

@@ -2,12 +2,12 @@
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-interface XpRateType {
+interface Props {
   xpRate: number;
   curveExponent: number;
 }
 
-export default function XpRateChart({ xpRate, curveExponent }: XpRateType) {
+export default function XpRateChart({ xpRate, curveExponent }: Props) {
   const data = Array.from({ length: 10 }, (_, i) => {
     const level = i + 1;
 

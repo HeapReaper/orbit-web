@@ -3,7 +3,7 @@
 import { Icon as LucideIcon } from "lucide-react";
 import { ComponentType, SVGProps } from "react";
 
-interface IconButtonProps {
+interface Props {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   label: string;
   size?: number;
@@ -17,7 +17,7 @@ export default function IconButton({
   size = 24,
   onClick,
   className = "",
-}: IconButtonProps) {
+}: Props) {
   return (
     <button
       type="button"

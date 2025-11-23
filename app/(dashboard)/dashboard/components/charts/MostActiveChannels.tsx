@@ -15,11 +15,11 @@ interface ChannelData {
   messages: number;
 }
 
-interface TopChannelsChartProps {
+interface Props {
   data: ChannelData[];
 }
 
-export default function TopChannelsChart({ data }: TopChannelsChartProps) {
+export default function TopChannelsChart({ data }: Props) {
   return (
     <div className="w-full h-72">
       <ResponsiveContainer width="100%" height="100%">
