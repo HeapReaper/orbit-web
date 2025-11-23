@@ -5,10 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import NavType from "@/app/types/nav";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathName: string = usePathname();
+  const { data: session } = useSession();
 
   const isActive = (href: string) => {
     return pathName === href;
@@ -20,13 +22,12 @@ export default function Navbar() {
     { name: "Servers", href: "/servers" },
     { name: "Releases", href: "/releases" },
     { name: "Support", href: "/help/support" },
-    { name: "Login", href: "/login" },
   ];
 
   return (
     <nav className="bg-[#14171f] text-white px-6 md:px-20 py-4 shadow-md  w-full z-50">
       <div className="flex justify-between items-center">
-        <Link href="/public" className="flex items-center ">
+        <Link href="/" className="flex items-center ">
           <Image
             src="/logo.png"
             alt="Orbit Logo"
@@ -48,6 +49,19 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <li>
+            {session ? (
+              <Link
+                href="/dashboard"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link href="/login">
+                Login
+              </Link>
+            )}
+          </li>
         </ul>
 
         <div className="md:hidden">
@@ -105,6 +119,20 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+
+          <li>
+            {session ? (
+              <Link
+                href="/dashboard"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link href="/login">
+                Login
+              </Link>
+            )}
+          </li>
         </ul>
       )}
     </nav>
