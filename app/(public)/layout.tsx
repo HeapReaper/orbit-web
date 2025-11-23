@@ -4,6 +4,8 @@ import "../globals.css";
 import Script from "next/script";
 import Navbar from "@/app/(public)/components/Nav";
 import Link from "next/link";
+import Provider from "@/app/providers/SessionProvider";
+import React from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -75,11 +77,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       `}
       </Script>
 
-      <Navbar />
+      <Provider>
+        <Navbar />
 
-      <div>
-        {children}
-      </div>
+        <div>
+          {children}
+        </div>
+      </Provider>
 
       <footer className="bg-[#14171f] text-gray-500 text-center py-6 mt-auto">
         <div className="flex flex-col md:flex-row justify-center items-center gap-4">
