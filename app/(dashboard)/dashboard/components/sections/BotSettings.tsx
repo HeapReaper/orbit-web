@@ -11,13 +11,13 @@ import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import { botSettingsSchema } from "@/app/zod/botSettings";
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
+import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
 export default function BotSettings() {
   const [loading, setLoading] = useState<boolean>(false);
   const { notify } = useNotification();
-  const { selectedGuild, channels, currentGuild } = useGuild();
+  const { selectedGuild, currentGuild } = useGuild();
 
-  console.log(currentGuild)
   const [nickname, setNickname] = useState<string>("Orbit");
   const [language, setLanguage] = useState<string>("");
   const [updatesChannel, setUpdatesChannel] = useState<string>("");
@@ -161,11 +161,10 @@ export default function BotSettings() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <SelectInput
+          <ChannelSelect
             label="Updates channel"
             value={updatesChannel || ""}
             onChange={setUpdatesChannel}
-            options={channels.filter(c => c.type === 0).map(ch => ({ value: ch.id, label: ch.name }))}
           />
 
           <SelectInput

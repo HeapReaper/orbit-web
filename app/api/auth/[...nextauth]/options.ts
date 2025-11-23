@@ -1,7 +1,10 @@
 import { type NextAuthOptions } from "next-auth";
 import DiscordProvider, { type DiscordProfile } from "next-auth/providers/discord";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@/app/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID!,
@@ -10,27 +13,25 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "database",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
   callbacks: {
-    async jwt({ token, account, profile }) {
-      if (account && profile) {
-        const discordProfile = profile as DiscordProfile;
-        token.accessToken = account.access_token;
-        token.id = discordProfile.id;
-        token.username = discordProfile.username;
-        token.discriminator = discordProfile.discriminator;
-      }
-      return token;
-    },
-    async session({ session, token }) {
+    async session({ session, user }) {
+      // Find the Discord account for this user
+      const account = await prisma.account.findFirst({
+        where: { userId: user.id, provider: "discord" },
+      });
+
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id as string,
-          username: token.username as string,
-          discriminator: token.discriminator as string,
+          id: user.id,
+          username: user.name || "",
         },
-        accessToken: token.accessToken,
+        accessToken: account?.access_token ?? null, // add token here
       };
     },
   },
