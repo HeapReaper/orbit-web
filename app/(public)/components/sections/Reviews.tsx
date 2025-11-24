@@ -3,7 +3,7 @@ import { ReviewsType } from "@/app/types/reviews";
 import Image from "next/image";
 import React from "react";
 
-export default function OurUsersSection() {
+export default function ReviewsSection() {
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -22,7 +22,7 @@ export default function OurUsersSection() {
                 alt="User avatar"
                 width={50}
                 height={50}
-                className="rounded-full border border-gray-700 h-13 w-13"
+                className="rounded-full border border-[var(--primary-color)] h-13 w-13"
               />
               <div>
                 <h4 className="font-semibold">{review.name}</h4>

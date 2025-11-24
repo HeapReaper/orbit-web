@@ -7,7 +7,10 @@ import React from "react";
 export default function BotModulesSection(){
   return (
     <section className="px-6 md:px-20 py-16">
-      <h2 className="text-3xl font-bold text-white mb-8">Bot Modules</h2>
+      <h2 className="text-3xl font-bold text-white mb-12 text-center">
+        Bot modules
+      </h2>
+
       <div className="grid md:grid-cols-3 gap-8">
         {modules.map((module: moduleType) => (
           <div

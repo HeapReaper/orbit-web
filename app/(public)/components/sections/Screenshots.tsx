@@ -4,7 +4,9 @@ import React from "react";
 export default function ScreenshotsSection() {
   return (
     <section className="px-6 md:px-20 py-16">
-      <h2 className="text-3xl font-bold text-white mb-8">Configuration Previews</h2>
+      <h2 className="text-3xl font-bold text-white mb-12 text-center">
+        Config previews
+      </h2>
       <div className="grid md:grid-cols-2 gap-10 items-center">
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold">Bot Settings</h3>
@@ -19,7 +21,7 @@ export default function ScreenshotsSection() {
             alt="Bot Settings Screenshot"
             width={600}
             height={350}
-            className="rounded-lg border border-gray-700"
+            className="rounded-lg border border-[var(--primary-color)]"
           />
         </div>
       </div>
@@ -31,7 +33,7 @@ export default function ScreenshotsSection() {
             alt="Bump Reminder Screenshot"
             width={600}
             height={350}
-            className="rounded-lg border border-gray-700"
+            className="rounded-lg border border-[var(--primary-color)]"
           />
         </div>
         <div className="order-1 md:order-2 space-y-4">
@@ -58,7 +60,7 @@ export default function ScreenshotsSection() {
             alt="Bot Settings Screenshot"
             width={600}
             height={350}
-            className="rounded-lg border border-gray-700"
+            className="rounded-lg border border-[var(--primary-color)]"
           />
         </div>
       </div>
@@ -70,7 +72,7 @@ export default function ScreenshotsSection() {
             alt="Bump Reminder Screenshot"
             width={600}
             height={350}
-            className="rounded-lg border border-gray-700"
+            className="rounded-lg border border-[var(--primary-color)]"
           />
         </div>
         <div className="order-1 md:order-2 space-y-4">
