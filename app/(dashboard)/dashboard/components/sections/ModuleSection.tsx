@@ -3,7 +3,7 @@
 import ModuleCard from "@/app/(dashboard)/dashboard/components/cards/ModuleCard";
 import modules from "@/app/(dashboard)/dashboard/data/modules";
 import { Package } from "lucide-react";
-import {useState} from "react";
+import { useState } from "react";
 import TextInput from "@/app/(dashboard)/dashboard/components/inputs/Text";
 import { moduleType } from "@/app/types/modules";
 
@@ -14,11 +14,20 @@ export default function ModuleSection() {
     module.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const groupedModules = filteredModules.reduce(
+    (acc: Record<string, moduleType[]>, module) => {
+      const category = module.category || "Other";
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(module);
+      return acc;
+    },
+    {}
+  );
+
   return (
     <section className="bg-[#181b25] p-6 rounded-lg">
       <div className="flex items-center gap-2 mb-3">
         <Package className="w-8 h-8 text-[var(--primary-color)]" />
-
         <h2 className="text-2xl font-semibold">Modules</h2>
       </div>
 
@@ -29,12 +38,17 @@ export default function ModuleSection() {
         onChange={setSearch}
       />
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredModules.map((module: moduleType) => (
-          // @ts-ignore
-          <ModuleCard key={module.name} {...module} />
-        ))}
-      </div>
+      {Object.entries(groupedModules).map(([category, modulesInCategory]) => (
+        <div key={category} className="mt-6">
+          <h3 className="text-xl font-semibold text-white mb-4">{category}</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {modulesInCategory.map((module: moduleType) => (
+              // @ts-ignore
+              <ModuleCard key={module.name} {...module} />
+            ))}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }

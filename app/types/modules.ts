@@ -5,4 +5,5 @@ export interface moduleType {
   free: boolean;
   enabled: boolean;
   inDevelopment: boolean;
+  category: string;
 }
