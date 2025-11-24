@@ -27,7 +27,7 @@ export default async function HelpSection() {
         Help
       </h2>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="flex flex-wrap justify-center gap-8">
         {articles.map((article) => (
           <Link
             key={article.title}
