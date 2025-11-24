@@ -5,16 +5,20 @@ import modules from "@/app/(dashboard)/dashboard/data/modules";
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
 import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import helpData from "@/app/(dashboard)/dashboard/data/helpData";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { moduleType } from "@/app/types/modules";
 import reviews from "@/app/(public)/data/reviews";
 import { ReviewsType } from "@/app/types/reviews";
+import confetti from "canvas-confetti";
+import Link from "next/link";
 
 export default function Home() {
   const [totalServers, setTotalServers] = useState<number | null>(null);
   const [premiumServers, setPremiumServers] = useState<number | null>(null);
   const [totalUsers, setTotalUsers] = useState<number | null>(null);
   const [activeModules, setActiveModules] = useState<number | null>(null);
+  const joinDiscordButtonRef = useRef<HTMLAnchorElement | null>(null);
+  const addServerButtonRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +38,32 @@ export default function Home() {
     void fetchData();
   }, []);
 
+  const handleConfettiClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    ref: React.RefObject<HTMLAnchorElement | null>,
+    url: string
+  ) => {
+    e.preventDefault();
+
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const originX = x / window.innerWidth;
+      const originY = y / window.innerHeight;
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: originX, y: originY },
+      });
+    }
+
+    setTimeout(() => {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }, 1000);
+  };
+
   return (
     <main className="flex flex-col min-h-screen bg-[#0d0f13] text-white">
       {/* Hero Section */}
@@ -49,17 +79,25 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <a
+            <Link
               href="/dashboard"
               className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
-            >
-              Go to Dashboard
-            </a>
+              >
+                Go to Dashboard
+            </Link>
 
             <a
+              ref={addServerButtonRef}
               href="https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) =>
+                handleConfettiClick(
+                  e,
+                  addServerButtonRef,
+                  "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
+                )
+              }
               className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
             >
               Add to your server
@@ -67,9 +105,17 @@ export default function Home() {
           </div>
 
           <a
+            ref={joinDiscordButtonRef}
             href="https://discord.gg/HyGNHZCeTQ"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) =>
+              handleConfettiClick(
+                e,
+                joinDiscordButtonRef,
+                "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
+              )
+            }
             className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
           >
             Join our Discord
@@ -231,7 +277,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-
 
         <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
           <div className="space-y-4">

@@ -13,10 +13,12 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
 
   const session = useSession();
-
   if (!session) return null;
 
-  if (session.data?.user.id !== process.env.OWNER_ID) return null;
+  console.log(session);
+  const userId = session?.data?.user?.id;
+  console.log(userId);
+  if (!userId || userId.toString() !== process.env.OWNER_ID) return null
 
   const handleSend = async () => {
     if (!updateMessage.trim()) {
