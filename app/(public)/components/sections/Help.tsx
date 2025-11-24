@@ -1,5 +1,5 @@
-import helpData from "@/app/(dashboard)/dashboard/data/helpData";
 import React from "react";
+import Link from "next/link";
 
 interface HelpArticles {
   title: string;
@@ -29,7 +29,7 @@ export default async function HelpSection() {
 
       <div className="grid md:grid-cols-3 gap-8">
         {articles.map((article) => (
-          <a
+          <Link
             key={article.title}
             href={`/help/${article.slug}`}
             className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition hover:border-blue-600 border border-gray-900"
@@ -38,7 +38,7 @@ export default async function HelpSection() {
               {article.title}
             </h3>
             <p className="text-gray-400 text-sm">{article.description}</p>
-          </a>
+          </Link>
         ))}
       </div>
     </section>
