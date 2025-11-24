@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-type Team = {
+interface Team {
   name: string;
   title: string;
   urlName: string;
