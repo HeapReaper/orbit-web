@@ -1,341 +1,51 @@
 "use client";
 
-import Image from "next/image";
-import modules from "@/app/(dashboard)/dashboard/data/modules";
-import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
-import helpData from "@/app/(dashboard)/dashboard/data/helpData";
-import React, { useEffect, useState, useRef } from "react";
-import { moduleType } from "@/app/types/modules";
-import reviews from "@/app/(public)/data/reviews";
-import { ReviewsType } from "@/app/types/reviews";
-import confetti from "canvas-confetti";
-import Link from "next/link";
+import React from "react";
+import HeroSection from "@/app/(public)/components/sections/Hero";
+import StatisticsSection from "@/app/(public)/components/sections/Statistics";
+import ReviewsSection from "@/app/(public)/components/sections/Reviews";
+import OurTeamSection from "@/app/(public)/components/sections/Ourteam";
+import ScreenshotsSection from "@/app/(public)/components/sections/Screenshots";
+import BotModulesSection from "@/app/(public)/components/sections/BotModules";
+import HelpSection from "@/app/(public)/components/sections/Help";
 
 export default function Home() {
-  const [totalServers, setTotalServers] = useState<number | null>(null);
-  const [premiumServers, setPremiumServers] = useState<number | null>(null);
-  const [totalUsers, setTotalUsers] = useState<number | null>(null);
-  const [activeModules, setActiveModules] = useState<number | null>(null);
-  const joinDiscordButtonRef = useRef<HTMLAnchorElement | null>(null);
-  const addServerButtonRef = useRef<HTMLAnchorElement | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/stats");
-        const data = await res.json();
-
-        setTotalServers(data.totalGuilds);
-        setPremiumServers(data.premiumGuilds);
-        setTotalUsers(data.totalUsers);
-        setActiveModules(data.enabledModules);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    void fetchData();
-  }, []);
-
-  const handleConfettiClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    ref: React.RefObject<HTMLAnchorElement | null>,
-    url: string
-  ) => {
-    e.preventDefault();
-
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      const originX = x / window.innerWidth;
-      const originY = y / window.innerHeight;
-
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { x: originX, y: originY },
-      });
-    }
-
-    setTimeout(() => {
-      window.open(url, "_blank", "noopener,noreferrer");
-    }, 1000);
-  };
-
   return (
     <main className="flex flex-col min-h-screen bg-[#0d0f13] text-white">
-      {/* Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-20">
-        <div className="md:w-1/2 space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-white">
-            Welcome to Orbit
-          </h1>
-          <p className="text-gray-400 text-lg md:text-xl">
-            Take your Discord server to Orbit.
-            Enable, configure, and monitor features from the dashboard.
-            With Features like tickets, birthdays, Logging and analytics, all in one bot.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <Link
-              href="/dashboard"
-              className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
-              >
-                Go to Dashboard
-            </Link>
-
-            <a
-              ref={addServerButtonRef}
-              href="https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) =>
-                handleConfettiClick(
-                  e,
-                  addServerButtonRef,
-                  "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
-                )
-              }
-              className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
-            >
-              Add to your server
-            </a>
-          </div>
-
-          <a
-            ref={joinDiscordButtonRef}
-            href="https://discord.gg/HyGNHZCeTQ"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) =>
-              handleConfettiClick(
-                e,
-                joinDiscordButtonRef,
-                "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
-              )
-            }
-            className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
-          >
-            Join our Discord
-          </a>
-        </div>
-
-        <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
-          <Image
-            src="/logo.png"
-            alt="Orbit Logo"
-            width={300}
-            height={300}
-            priority
-            className="animate-spin-slow"
-          />
-        </div>
-      </section>
+      {/* Hero */}
+      <div className="">
+        <HeroSection />
+      </div>
 
       {/* Statistics */}
-      <section className="px-6 md:px-20 py-16 bg-[#101218]">
-        <h2 className="text-3xl font-bold text-white mb-8">Statistics</h2>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="bg-[#14171f] p-6 rounded-lg text-center hover:shadow-lg hover:border-blue-600 border border-gray-900 transition">
-            <h3 className="text-4xl font-bold text-[var(--primary-color)]">{totalServers ?? "-"}</h3>
-            <p className="text-gray-400 mt-2">Total Servers</p>
-          </div>
-
-          <div className="bg-[#14171f] p-6 rounded-lg text-center hover:shadow-lg hover:border-blue-600 border border-gray-900 transition">
-            <h3 className="text-4xl font-bold text-[var(--primary-color)]">{premiumServers ?? "-"}</h3>
-            <p className="text-gray-400 mt-2">Premium Guilds</p>
-          </div>
-
-          <div className="bg-[#14171f] p-6 rounded-lg text-center hover:shadow-lg hover:border-blue-600 border border-gray-900 transition">
-            <h3 className="text-4xl font-bold text-[var(--primary-color)]">{totalUsers ?? "-"}</h3>
-            <p className="text-gray-400 mt-2">Users</p>
-          </div>
-
-          <div className="bg-[#14171f] p-6 rounded-lg text-center hover:shadow-lg hover:border-blue-600 border border-gray-900 transition">
-            <h3 className="text-4xl font-bold text-[var(--primary-color)]">{activeModules ?? "-"}</h3>
-            <p className="text-gray-400 mt-2">Active Modules</p>
-          </div>
-        </div>
-      </section>
+      <div className="bg-[#101218]">
+        <StatisticsSection />
+      </div>
 
       {/* Review Section */}
-      <section className="px-6 md:px-20 py-16">
-        <h2 className="text-3xl font-bold text-white mb-12 ">
-          What our users say
-        </h2>
+      <div className="">
+        <ReviewsSection />
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {reviews.map((review: ReviewsType, index: number) => (
-            <div
-              className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg hover:border-blue-600 border border-gray-900 transition"
-              key={index}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Image
-                  src={review.avatar}
-                  alt="User avatar"
-                  width={50}
-                  height={50}
-                  className="rounded-full border border-gray-700 h-13 w-13"
-                />
-                <div>
-                  <h4 className="font-semibold">{review.name}</h4>
-                  <p className="text-gray-400 text-sm">{review.title}</p>
-                </div>
-              </div>
-
-              {/* Scrollable review text */}
-              <p className="text-gray-300 max-h-24 overflow-y-auto">
-                "{review.review}"
-              </p>
-
-              <div className="flex text-yellow-400 mt-4">
-                {review.stars.map((star, index) => (
-                  <div key={index} className="flex items-center gap-1">
-                    {star}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-        </div>
-      </section>
+      {/* Our Team Section */}
+      <div className="bg-[#101218]">
+        <OurTeamSection />
+      </div>
 
       {/* Bot Modules */}
-      <section className="px-6 md:px-20 py-16 bg-[#101218]">
-        <h2 className="text-3xl font-bold text-white mb-8">Bot Modules</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {modules.map((module: moduleType) => (
-            <div
-              key={module.url}
-              className={`p-6 rounded-lg hover:shadow-lg transition bg-[#14171f]  hover:border-blue-600 border border-gray-900`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xl font-semibold ">{module.name}</h3>
-                {module.free ? (
-                  <FreeLabel />
-                ) : (
-                  <PremiumLabel />
-                )}
-              </div>
-              <p className="text-gray-400 mb-4">{module.description}</p>
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  module.inDevelopment
-                    ? "bg-gray-700 text-gray-300"
-                    : "bg-green-500 text-black"
-                }`}
-              >
-                {module.inDevelopment ? "In development" : "Available"}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="">
+        <BotModulesSection />
+      </div>
 
       {/* Screenshots Section */}
-      <section className="px-6 md:px-20 py-16">
-        <h2 className="text-3xl font-bold text-white mb-8">Configuration Previews</h2>
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          <div className="space-y-4">
-            <h3 className="text-2xl font-semibold">Bot Settings</h3>
-            <p className="text-gray-400">
-              Manage global bot preferences, prefixes, and permissions directly from this page.
-              Everything is synced automatically with your Discord server.
-            </p>
-          </div>
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="/screenshots/dashboard.png"
-              alt="Bot Settings Screenshot"
-              width={600}
-              height={350}
-              className="rounded-lg border border-gray-700"
-            />
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
-          <div className="order-2 md:order-1 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="/screenshots/bump_reminder.png"
-              alt="Bump Reminder Screenshot"
-              width={600}
-              height={350}
-              className="rounded-lg border border-gray-700"
-            />
-          </div>
-          <div className="order-1 md:order-2 space-y-4">
-            <h3 className="text-2xl font-semibold">Bump Reminder</h3>
-            <p className="text-gray-400">
-              Set automatic reminders for server bumps, helping your community stay visible on Discord lists.
-              Fully configurable and easy to use.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
-          <div className="space-y-4">
-            <h3 className="text-2xl font-semibold">Auto message</h3>
-            <p className="text-gray-400">
-              Send automatic messages to your channels on a schedule.
-              Perfect for announcements, server updates, or community engagement.
-              Embeds and advanced customization are coming soon!
-            </p>
-          </div>
-          <div className="rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="/screenshots/auto_message_2.png"
-              alt="Bot Settings Screenshot"
-              width={600}
-              height={350}
-              className="rounded-lg border border-gray-700"
-            />
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
-          <div className="order-2 md:order-1 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="/screenshots/analytics.png"
-              alt="Bump Reminder Screenshot"
-              width={600}
-              height={350}
-              className="rounded-lg border border-gray-700"
-            />
-          </div>
-          <div className="order-1 md:order-2 space-y-4">
-            <h3 className="text-2xl font-semibold">Analytics</h3>
-            <p className="text-gray-400">
-              Get insight on what time your server is the most active, how many people have joined over time, active vs inactive members and more.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div className="bg-[#101218]">
+        <ScreenshotsSection />
+      </div>
 
       {/* Help section */}
-      <section className="px-6 md:px-20 py-16 bg-[#101218]">
-        <h2 className="text-3xl font-bold text-white mb-8">Help</h2>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          {helpData.map((article) => (
-            <a
-              key={article.title}
-              href={article.link}
-              className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition hover:border-blue-600 border border-gray-900"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-white">
-                {article.title}
-              </h3>
-              <p className="text-gray-400 text-sm">{article.description}</p>
-            </a>
-          ))}
-        </div>
-      </section>
+      <div className="">
+        <HelpSection />
+      </div>
     </main>
   );
 }
