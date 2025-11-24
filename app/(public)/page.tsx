@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import HeroSection from "@/app/(public)/components/sections/Hero";
 import StatisticsSection from "@/app/(public)/components/sections/Statistics";

@@ -1,7 +1,26 @@
 import helpData from "@/app/(dashboard)/dashboard/data/helpData";
 import React from "react";
 
-export default function HelpSection() {
+interface HelpArticles {
+  title: string;
+  slug: string;
+  author: any;
+  contentrich: string;
+  description: string;
+}
+
+async function getHelpArticles() {
+  const res = await fetch("https://strapi.botinorbit.com/api/helps?populate=*", {
+    next: { revalidate: 60 },
+  });
+
+  const data = await res.json();
+  return data.data;
+}
+
+export default async function HelpSection() {
+  const articles: HelpArticles[] = await getHelpArticles();
+
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -9,10 +28,10 @@ export default function HelpSection() {
       </h2>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {helpData.map((article) => (
+        {articles.map((article) => (
           <a
             key={article.title}
-            href={article.link}
+            href={`/help/${article.slug}`}
             className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition hover:border-blue-600 border border-gray-900"
           >
             <h3 className="text-xl font-semibold mb-2 text-white">

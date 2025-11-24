@@ -1,7 +1,26 @@
 import { BookOpen } from "lucide-react";
-import helpData from "@/app/(dashboard)/dashboard/data/helpData";
+import React from "react";
 
-export default function HelpArticles() {
+interface HelpArticlesType {
+  title: string;
+  slug: string;
+  author: any;
+  contentrich: string;
+  description: string;
+}
+
+async function getHelpArticles() {
+  const res = await fetch("https://strapi.botinorbit.com/api/helps?populate=*", {
+    next: { revalidate: 60 },
+  });
+
+  const data = await res.json();
+  return data.data;
+}
+
+export default async function HelpArticles() {
+  const articles: HelpArticlesType[] = await getHelpArticles();
+
   return (
     <section className="bg-[#181b25] p-6 rounded-lg">
       <div className="flex items-center gap-2 mb-4">
@@ -10,12 +29,11 @@ export default function HelpArticles() {
       </div>
 
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {helpData.map((article) => (
+        {articles.map((article) => (
           <a
             key={article.title}
-            href={article.link}
-            target="_blank"
-            className="bg-[#14171f] p-4 rounded-lg hover:border-blue-600 border border-gray-900 transition-colors flex flex-col gap-2 shadow-sm "
+            href={`/help/${article.slug}`}
+            className="bg-[#14171f] p-4 rounded-lg hover:border-blue-600 border border-gray-900 transition-colors flex flex-col gap-2 shadow-sm"
           >
             <h3 className="text-white font-semibold">{article.title}</h3>
             <p className="text-gray-400 text-sm">{article.description}</p>

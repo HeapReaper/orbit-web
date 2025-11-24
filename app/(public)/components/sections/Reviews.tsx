@@ -1,9 +1,19 @@
-import reviews from "@/app/(public)/data/reviews";
 import { ReviewsType } from "@/app/types/reviews";
 import Image from "next/image";
 import React from "react";
 
-export default function ReviewsSection() {
+async function getReviews() {
+  const res = await fetch("https://strapi.botinorbit.com/api/reviews?populate=*", {
+    next: { revalidate: 60 },
+  });
+
+  const data = await res.json();
+  return data.data;
+}
+
+export default async function ReviewsSection() {
+  const reviews: ReviewsType[] = await getReviews();
+
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -18,7 +28,11 @@ export default function ReviewsSection() {
           >
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src={review.avatar}
+                src={
+                  review.profilePicture
+                    ? "https://strapi.botinorbit.com" + review.profilePicture.formats.thumbnail.url
+                    : "/team/default-profile-picture.png"
+                }
                 alt="User avatar"
                 width={50}
                 height={50}
@@ -36,11 +50,7 @@ export default function ReviewsSection() {
             </p>
 
             <div className="flex text-yellow-400 mt-4">
-              {review.stars.map((star, index) => (
-                <div key={index} className="flex items-center gap-1">
-                  {star}
-                </div>
-              ))}
+              {review.stars}
             </div>
           </div>
         ))}

@@ -1,7 +1,7 @@
 export interface ReviewsType {
   name: string;
   title: string;
-  avatar: string;
+  profilePicture: string;
   review: string;
   stars: string[];
 }
