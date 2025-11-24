@@ -178,8 +178,8 @@ const modules: moduleType[] = [
     inDevelopment: true
   },
   {
-    name: "Daily Spark",
-    url: "daily-spark",
+    name: "Streak",
+    url: "streak",
     description: "Reward members for daily activity and maintain streaks.",
     free: true,
     enabled: false,
@@ -205,6 +205,30 @@ const modules: moduleType[] = [
     name: "Git Buddy",
     url: "git-buddy",
     description: "Track bugs, requests, and issues directly in Discord.",
+    free: true,
+    enabled: false,
+    inDevelopment: true
+  },
+  {
+    name: "QOTD",
+    url: "qotd",
+    description: "Send daily or weekly a question in a channel to simulate interaction",
+    free: true,
+    enabled: false,
+    inDevelopment: true
+  },
+  {
+    name: "Server Backups",
+    url: "server-backups",
+    description: "Backup channels, roles and settings to restore later",
+    free: false,
+    enabled: false,
+    inDevelopment: true
+  },
+  {
+    name: "Server Anniversary",
+    url: "server-anniversary",
+    description: "Celebrate your server's milestones each year.",
     free: true,
     enabled: false,
     inDevelopment: true
