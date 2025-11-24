@@ -32,23 +32,25 @@ export default async function ArticlePage({ params }: Props) {
   const article = await getArticle(slug);
 
   return (
-    <article className="px-6 md:px-20 py-16 text-white prose prose-invert">
-      <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+    <div className="flex justify-center px-4 md:px-10 py-8">
+      <article className="px-6 md:px-20 py-16 text-white prose prose-invert">
+        <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
 
-      {/* Author + Updated */}
-      <p className="text-gray-400 text-sm mb-8 flex items-center gap-2">
-        <span className="inline-flex items-center gap-1">
-          <User size={16} className="inline-block text-blue-500" />
-          {article.author?.name ?? "Unknown"}
-        </span>
-        •
-        <span className="inline-flex items-center gap-1">
-          <Calendar size={16} className="inline-block text-blue-500" />
-          Updated at: {new Date(article.updatedAt).toLocaleDateString()}
-        </span>
-      </p>
+        {/* Author + Updated */}
+        <p className="text-gray-400 text-sm mb-8 flex items-center gap-2">
+          <span className="inline-flex items-center gap-1">
+            <User size={16} className="inline-block text-blue-500" />
+            {article.author?.name ?? "Unknown"}
+          </span>
+          •
+          <span className="inline-flex items-center gap-1">
+            <Calendar size={16} className="inline-block text-blue-500" />
+            Updated at: {new Date(article.updatedAt).toLocaleDateString()}
+          </span>
+        </p>
 
-      <ShowMarkdown content={article.content} classes="" />
-    </article>
+        <ShowMarkdown content={article.content} classes="" />
+      </article>
+    </div>
   );
 }
