@@ -28,7 +28,7 @@ export default async function HelpArticles() {
         <h2 className="text-2xl font-semibold">Help Articles</h2>
       </div>
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="flex flex-wrap justify-center gap-8">
         {articles.map((article) => (
           <a
             key={article.title}
