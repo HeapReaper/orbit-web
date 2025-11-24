@@ -6,7 +6,7 @@ interface Team {
   title: string;
   urlName: string;
   url: string;
-  profilePicture: string;
+  profilePicture: any;
 }
 
 async function getTeam() {
