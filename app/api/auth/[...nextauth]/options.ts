@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, user }) {
-      // Find the Discord account for this user
+      // Get Discord account
       const account = await prisma.account.findFirst({
         where: { userId: user.id, provider: "discord" },
       });
@@ -28,11 +28,11 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          id: user.id,
+          id: account?.providerAccountId ?? user.id,
           username: user.name || "",
         },
-        accessToken: account?.access_token ?? null, // add token here
+        accessToken: account?.access_token ?? null,
       };
     },
-  },
+  }
 };

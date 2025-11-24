@@ -39,7 +39,6 @@ export default function InviteTrackerPage() {
         if (res.ok) {
           const data = await res.json();
 
-          console.log(data);
           setEnabled(data?.enabled ?? false);
           setInvites(data?.invites ?? []);
         } else {

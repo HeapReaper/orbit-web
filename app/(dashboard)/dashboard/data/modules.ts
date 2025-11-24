@@ -71,7 +71,7 @@ const modules: moduleType[] = [
     description: "See which invite links your members are using.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: false
   },
   {
     name: "Picture Contest",

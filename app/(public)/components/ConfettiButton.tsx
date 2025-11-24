@@ -1,4 +1,3 @@
-// LinkButton.tsx
 import React, { useRef } from "react";
 import confetti from "canvas-confetti";
 
@@ -11,12 +10,12 @@ interface LinkButtonProps {
 }
 
 const LinkButton: React.FC<LinkButtonProps> = ({
-                                                 href,
-                                                 children,
-                                                 target,
-                                                 rel,
-                                                 addConfetti = false,
-                                               }) => {
+  href,
+  children,
+  target,
+  rel,
+  addConfetti = false,
+}) => {
   const buttonRef = useRef<HTMLAnchorElement | null>(null);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
