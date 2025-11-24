@@ -6,6 +6,7 @@ import OurTeamSection from "@/app/(public)/components/sections/Ourteam";
 import ScreenshotsSection from "@/app/(public)/components/sections/Screenshots";
 import BotModulesSection from "@/app/(public)/components/sections/BotModules";
 import HelpSection from "@/app/(public)/components/sections/Help";
+import LatestArticlesSection from "@/app/(public)/components/sections/Articles";
 
 export default function Home() {
   return (
@@ -25,23 +26,28 @@ export default function Home() {
         <ReviewsSection />
       </div>
 
-      {/* Our Team Section */}
+      {/* Latest articles */}
       <div className="bg-[#101218]">
+        <LatestArticlesSection />
+      </div>
+
+      {/* Our Team Section */}
+      <div className="">
         <OurTeamSection />
       </div>
 
       {/* Bot Modules */}
-      <div className="">
+      <div className="bg-[#101218]">
         <BotModulesSection />
       </div>
 
       {/* Screenshots Section */}
-      <div className="bg-[#101218]">
+      <div className="">
         <ScreenshotsSection />
       </div>
 
       {/* Help section */}
-      <div className="">
+      <div className="bg-[#101218]">
         <HelpSection />
       </div>
     </main>

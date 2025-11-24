@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
 import { User, Calendar } from "lucide-react";
+import { Metadata } from "next";
 
 interface Props {
   params: { slug: string };
@@ -14,6 +15,16 @@ async function getArticle(slug: string) {
 
   const data = await res.json();
   return data.data?.[0] || null;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
+  const article = await getArticle(slug);
+
+  return {
+    title: `${article.title}`,
+    description: `${article.description}`,
+  };
 }
 
 export default async function HelpPage({ params }: Props) {
