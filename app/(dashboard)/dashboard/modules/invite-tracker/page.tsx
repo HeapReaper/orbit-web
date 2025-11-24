@@ -115,10 +115,14 @@ export default function InviteTrackerPage() {
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       {loading && <PageLoader />}
 
-      <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
+      <h1 className="text-2xl font-semibold  text-white flex items-center gap-2">
         Invite Tracker Settings
         <InfoTooltip text="Track and label your invite links" />
       </h1>
+
+      <p className="text-xs text-gray-400 mb-4">
+        To enable the Invite Tracker, make sure logging is turned on, select a channel, and enable the "Member Joined" event.
+      </p>
 
       {/* Enable */}
       <div className="flex items-center justify-between mb-6">

@@ -13,6 +13,7 @@ export default function ServersPage() {
         const res = await fetch("/api/servers");
         if (!res.ok) throw new Error("Failed to fetch servers");
         const data = await res.json();
+
         setServers(data);
       } catch (err) {
         console.error(err);
@@ -23,7 +24,7 @@ export default function ServersPage() {
     void fetchServers();
   }, []);
 
-  if (loading) return <p className="text-white p-6">Loading servers...</p>;
+  if (loading) return <p className="text-white p-6">Loading Servers...</p>
 
   return (
     <main className="p-6 text-white">
