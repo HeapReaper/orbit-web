@@ -7,7 +7,8 @@ const modules: moduleType[] = [
     description: "Receive reminders when it’s time to bump your server.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Automation"
   },
   {
     name: "Anti Bot",
@@ -15,7 +16,8 @@ const modules: moduleType[] = [
     description: "Protect your server from spam and malicious bots.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Moderation"
   },
   {
     name: "Analytics",
@@ -23,7 +25,8 @@ const modules: moduleType[] = [
     description: "View server activity and popular channels at a glance.",
     free: false,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Analytics / Tracking"
   },
   {
     name: "Auto Role",
@@ -31,7 +34,8 @@ const modules: moduleType[] = [
     description: "Automatically assign roles to new members joining your server.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Moderation"
   },
   {
     name: "Birthday",
@@ -39,7 +43,8 @@ const modules: moduleType[] = [
     description: "Let members share birthdays and get notifications on them.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Events / Server Management"
   },
   {
     name: "Tickets",
@@ -47,7 +52,8 @@ const modules: moduleType[] = [
     description: "Manage member requests with an easy ticketing system.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Events / Server Management"
   },
   {
     name: "Logging",
@@ -55,7 +61,8 @@ const modules: moduleType[] = [
     description: "Track server events like messages and voice activity.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Moderation"
   },
   {
     name: "Introduction",
@@ -63,7 +70,8 @@ const modules: moduleType[] = [
     description: "Set up how new members are welcomed and introduced.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Automation"
   },
   {
     name: "Invite Tracker",
@@ -71,7 +79,8 @@ const modules: moduleType[] = [
     description: "See which invite links your members are using.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Analytics / Tracking"
   },
   {
     name: "Picture Contest",
@@ -79,7 +88,8 @@ const modules: moduleType[] = [
     description: "Run photo contests and pick winners automatically.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Fun / Engagement"
   },
   {
     name: "Youtube Watcher",
@@ -87,7 +97,8 @@ const modules: moduleType[] = [
     description: "Get notified when your favorite YouTube channels post.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Streaming / Media"
   },
   {
     name: "Twitch Watcher",
@@ -95,7 +106,8 @@ const modules: moduleType[] = [
     description: "Receive alerts when selected Twitch streamers go live.",
     free: false,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Streaming / Media"
   },
   {
     name: "Kick Watcher",
@@ -103,7 +115,8 @@ const modules: moduleType[] = [
     description: "Get notifications when favorite Kick streamers start streaming.",
     free: false,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Streaming / Media"
   },
   {
     name: "Auto Message",
@@ -111,7 +124,8 @@ const modules: moduleType[] = [
     description: "Send automated messages to channels on a schedule.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Automation"
   },
   {
     name: "Welcome Message",
@@ -119,7 +133,8 @@ const modules: moduleType[] = [
     description: "Send messages automatically when new members join.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Automation"
   },
   {
     name: "Leave Message",
@@ -127,7 +142,8 @@ const modules: moduleType[] = [
     description: "Notify the server when a member leaves automatically.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Automation"
   },
   {
     name: "Leveling",
@@ -135,7 +151,8 @@ const modules: moduleType[] = [
     description: "Add a leveling system for members based on activity.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Events / Server Management"
   },
   {
     name: "Channel of Fame",
@@ -143,7 +160,8 @@ const modules: moduleType[] = [
     description: "Show starred messages in a special channel automatically.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Fun / Engagement"
   },
   {
     name: "Giveaway",
@@ -151,7 +169,8 @@ const modules: moduleType[] = [
     description: "Host giveaways and let members win prizes easily.",
     free: true,
     enabled: true,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Fun / Engagement"
   },
   {
     name: "Minecraft",
@@ -159,7 +178,8 @@ const modules: moduleType[] = [
     description: "Display online players and status of your Minecraft server.",
     free: true,
     enabled: true,
-    inDevelopment: false
+    inDevelopment: false,
+    category: "Streaming / Media"
   },
   {
     name: "Mod Link",
@@ -167,7 +187,8 @@ const modules: moduleType[] = [
     description: "Synchronize moderation actions across multiple servers automatically.",
     free: false,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Moderation"
   },
   {
     name: "Message Glue",
@@ -175,7 +196,8 @@ const modules: moduleType[] = [
     description: "Keep a specific message pinned as the last message.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Fun / Engagement"
   },
   {
     name: "Streak",
@@ -183,7 +205,8 @@ const modules: moduleType[] = [
     description: "Reward members for daily activity and maintain streaks.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Fun / Engagement"
   },
   {
     name: "Time Keeper",
@@ -191,7 +214,8 @@ const modules: moduleType[] = [
     description: "Set personal or server reminders for important moments.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Analytics / Tracking"
   },
   {
     name: "Boost Spotlight",
@@ -199,7 +223,8 @@ const modules: moduleType[] = [
     description: "Celebrate and notify whenever someone boosts your server.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Streaming / Media"
   },
   {
     name: "Git Buddy",
@@ -207,7 +232,8 @@ const modules: moduleType[] = [
     description: "Track bugs, requests, and issues directly in Discord.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Events / Server Management"
   },
   {
     name: "QOTD",
@@ -215,7 +241,8 @@ const modules: moduleType[] = [
     description: "Send daily or weekly a question in a channel to simulate interaction",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Fun / Engagement"
   },
   {
     name: "Server Backups",
@@ -223,7 +250,8 @@ const modules: moduleType[] = [
     description: "Backup channels, roles and settings to restore later",
     free: false,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Events / Server Management"
   },
   {
     name: "Server Anniversary",
@@ -231,7 +259,8 @@ const modules: moduleType[] = [
     description: "Celebrate your server's milestones each year.",
     free: true,
     enabled: false,
-    inDevelopment: true
+    inDevelopment: true,
+    category: "Events / Server Management"
   }
 ];
 
