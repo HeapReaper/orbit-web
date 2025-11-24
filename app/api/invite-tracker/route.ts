@@ -60,6 +60,7 @@ export async function GET(req: NextRequest) {
         inviter: inv.inviter?.username ?? "Unknown",
         channel: inv.channel?.name ?? "Unknown",
         type: db?.inviteType ?? "",
+        expiresAt: inv.expiresAt ?? null
       };
     });
 

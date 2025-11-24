@@ -16,7 +16,7 @@ export default function Page() {
 
   if (!session) return null;
 
-  if (session.data?.user.id !== "632677231113666601") return null;
+  if (session.data?.user.id !== process.env.OWNER_ID) return null;
 
   const handleSend = async () => {
     if (!updateMessage.trim()) {

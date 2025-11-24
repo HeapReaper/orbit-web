@@ -15,6 +15,7 @@ type Invite = {
   channel: string;
   uses: number;
   type: string;
+  expiresAt: any | null;
 };
 
 export default function InviteTrackerPage() {
@@ -37,6 +38,8 @@ export default function InviteTrackerPage() {
         const res = await fetch(`/api/invite-tracker?guildId=${selectedGuild}`);
         if (res.ok) {
           const data = await res.json();
+
+          console.log(data);
           setEnabled(data?.enabled ?? false);
           setInvites(data?.invites ?? []);
         } else {
@@ -66,17 +69,8 @@ export default function InviteTrackerPage() {
 
   const updateInviteType = (code: string, newType: string) => {
     setInvites((prev) =>
-      // `setInvites` updates the state based on the previous value (`prev`)
       prev.map((i) =>
-        // Loop through each invite object (`i`) in the previous array
-        i.code === code
-          // If the current invite's code matches the one we want to update...
-          ? {
-            ...i,          // ...copy all the existing invite data
-            type: newType  // ...but overwrite the `type` (invite label) with the new value
-          }
-          // Otherwise, leave this invite unchanged
-          : i
+        i.code === code ? { ...i, type: newType } : i
       )
     );
   };
@@ -94,6 +88,8 @@ export default function InviteTrackerPage() {
           invites: invites.map((i) => ({
             code: i.code,
             type: i.type,
+            inviter: i.inviter,
+            expiresAt: i.expiresAt,
           })),
         }),
       });
@@ -148,6 +144,7 @@ export default function InviteTrackerPage() {
         <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
           {invites.map((inv) => (
             <div key={inv.code} className="flex items-center gap-2">
+              {/* Invite code */}
               <span className="text-gray-400 bg-[#0f1117] border border-gray-700 px-3 py-2 rounded w-32 text-center">
                 #{inv.code}
               </span>
@@ -158,7 +155,16 @@ export default function InviteTrackerPage() {
                 placeholder="Enter custom label (like Facebook)"
                 className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
               />
-              <span className="text-sm text-gray-500 w-32">{inv.uses} uses</span>
+
+              <span className="text-sm text-gray-500 w-20">{inv.uses} uses</span>
+
+              <span className="text-sm text-gray-400 w-28 text-center">
+              {inv.inviter || "Unknown"}
+              </span>
+
+              <span className="text-sm text-gray-400 w-36 text-center">
+                {inv.expiresAt ? new Date(inv.expiresAt).toLocaleString() : "Permanent"}
+              </span>
             </div>
           ))}
         </div>
