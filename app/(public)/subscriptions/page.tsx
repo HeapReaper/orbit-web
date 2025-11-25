@@ -1,4 +1,4 @@
-"use client";
+import type { Metadata } from "next";
 
 interface PlansProps {
   name: string;
@@ -9,6 +9,12 @@ interface PlansProps {
   buttonText: string;
   buttonClass: string;
 }
+
+export const metadata: Metadata = {
+  title: "Subscriptions – Orbit",
+  description:
+    "Explore Orbit’s subscription plans for your Discord server. Unlock premium modules, advanced moderation tools, extended logs, analytics, and lifetime options. Choose the plan that fits your community.",
+};
 
 export default function Page() {
   const plans: PlansProps[] = [
@@ -71,6 +77,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-[#0d0f13] text-gray-300 px-6 md:px-20 py-16">
+
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-1">
           Subscriptions

@@ -1,4 +1,10 @@
-"use client";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms of Service – Orbit",
+  description:
+    "Read the Orbit Terms of Service to understand the rules and responsibilities for using our Discord bot, dashboard, and related services.",
+};
 
 export default function TermsOfService() {
   return (
@@ -96,10 +102,10 @@ export default function TermsOfService() {
             <p>
               For any questions or concerns about these Terms, please contact us at{" "}
               <a
-                href="mailto:support@orbit.gg"
+                href="mailto:support@klikbit.nl"
                 className="text-[var(--primary-color)] hover:underline"
               >
-                support@heapreaper.nl
+                support@klikbit.nl
               </a>.
             </p>
           </div>

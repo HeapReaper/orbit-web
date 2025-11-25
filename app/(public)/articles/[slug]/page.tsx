@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
-import Link from "next/link";
 import React from "react";
-import {Calendar, User} from "lucide-react";
+import { Calendar, User } from "lucide-react";
+
 interface Props {
   params: { slug: string };
 }
@@ -21,15 +21,50 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const article = await getArticle(slug);
 
+  if (!article) {
+    return {
+      title: "Article not found – Orbit",
+      description: "This article could not be found.",
+      openGraph: {
+        title: "Article not found – Orbit",
+        description: "This article could not be found.",
+        type: "article",
+      },
+      twitter: {
+        card: "summary",
+        title: "Article not found – Orbit",
+        description: "This article could not be found.",
+      },
+    };
+  }
+
   return {
-    title: `${article.title}`,
-    description: `${article.description}`,
+    title: `${article.title} – Orbit`,
+    description: article.description ?? "Read this article on Orbit.",
+    openGraph: {
+      title: `${article.title} – Orbit`,
+      description: article.description ?? "",
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${article.title} – Orbit`,
+      description: article.description ?? "",
+    },
   };
 }
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = params;
   const article = await getArticle(slug);
+
+  if (!article) {
+    return (
+      <div className="flex justify-center px-4 md:px-10 py-8">
+        <p className="text-gray-400">Article not found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center px-4 md:px-10 py-8">
@@ -45,7 +80,12 @@ export default async function ArticlePage({ params }: Props) {
           •
           <span className="inline-flex items-center gap-1">
             <Calendar size={16} className="inline-block text-blue-500" />
-            Created at: {new Date(article.updatedAt).toLocaleDateString()}
+            Updated:{" "}
+            {new Date(article.updatedAt).toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </span>
         </p>
 
