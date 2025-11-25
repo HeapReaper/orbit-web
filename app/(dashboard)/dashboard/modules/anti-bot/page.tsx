@@ -139,7 +139,7 @@ export default function AntiBotPage() {
 
       {/* Enable */}
       <div className="flex items-center justify-between mb-6">
-        <span className="text-gray-400">Enable anti-bot</span>
+        <span className="text-gray-400">Enable Anti Bot</span>
         <button
           type="button"
           onClick={() => setEnabled(!enabled)}
@@ -156,7 +156,7 @@ export default function AntiBotPage() {
       </div>
 
       <ChannelSelect
-        label="Select channel for birthday notifications"
+        label="Select channel for notifications"
         value={notificationChannel ?? ""}
         onChange={(value) => setNotificationChannel(value)}
       />
