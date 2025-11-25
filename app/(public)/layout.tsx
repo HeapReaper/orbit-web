@@ -18,16 +18,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Orbit – Dashboard and bot for Your Discord Server",
-  description: "Orbit is a powerful Discord bot with a sleek web panel that lets you manage your server effortlessly. Send automated messages, handle support tickets, send birthday notifications, track server analytics, and more. Perfect for keeping your community engaged and organized.",
+  title: "Orbit – Powerful Discord Bot with Dashboard",
+  description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
   keywords: ["Discord", "Dashboard", "Server management", "Orbit", "Automation", "Bots", "Analytics", "Tickets", "Notifications"],
   authors: [{ name: "HeapReaper", url: "https://heapreaper.nl" }],
   creator: "HeapReaper",
   publisher: "HeapReaper",
   openGraph: {
     type: "website",
-    title: "Orbit – Dashboard and bot for Your Discord Server",
-    description: "Orbit is a powerful Discord bot with a sleek web panel that lets you manage your server effortlessly. Send automated messages, handle support tickets, send birthday notifications, track server analytics, and more. Perfect for keeping your community engaged and organized.",
+    title: "Orbit – Powerful Discord Bot with Dashboard",
+    description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
     url: "https://botinorbit.com",
     siteName: "Orbit",
     images: [
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Orbit – Dashboard and bot for Your Discord Server",
-    description: "Orbit is a powerful Discord bot with a sleek web panel that lets you manage your server effortlessly. Send automated messages, handle support tickets, send birthday notifications, track server analytics, and more. Perfect for keeping your community engaged and organized.",
+    title: "Orbit – Powerful Discord Bot with Dashboard",
+    description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
     creator: "@HeapReaper",
     images: ["https://botinorbit.com/banner-v2.png"],
   },

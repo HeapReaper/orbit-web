@@ -43,8 +43,7 @@ export default function HeroSection() {
         </h1>
         <p className="text-gray-400 text-lg md:text-xl">
           Take your Discord server to Orbit.
-          Enable, configure, and monitor features from the dashboard.
-          With Features like tickets, birthdays, Logging and analytics, all in one bot.
+          Orbit is a powerful Discord bot that helps you manage, engage, and grow your server effortlessly. From moderation to analytics and community engagement, Orbit offers all the tools you need in a sleek dashboard.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-4">

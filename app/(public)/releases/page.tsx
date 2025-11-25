@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 
 type Release = {
   name: string;
@@ -11,6 +12,11 @@ type Release = {
 type RepoReleases = {
   repoName: string;
   releases: Release[];
+};
+
+export const metadata: Metadata = {
+  title: "Releases | Orbit",
+  description: "Check out the latest releases of the Orbit projects.",
 };
 
 export default async function ReleasesPage() {

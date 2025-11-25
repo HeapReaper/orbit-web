@@ -1,4 +1,10 @@
-"use client";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy – Orbit",
+  description:
+    "Read Orbit's Privacy Policy to learn how we collect, use, and protect your personal data when using our Discord bot and dashboard.",
+};
 
 export default function PrivacyPage() {
   return (
@@ -8,9 +14,7 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
 
-        <p className="text-gray-400 mb-10">
-          Last updated: 10/08/2025
-        </p>
+        <p className="text-gray-400 mb-10">Last updated: 10/08/2025</p>
 
         <section className="space-y-8">
           <div>
@@ -76,10 +80,10 @@ export default function PrivacyPage() {
             <p>
               For privacy questions, please contact us at{" "}
               <a
-                href="mailto:support@heapreaper.nl"
+                href="mailto:support@klikbit.nl"
                 className="text-[var(--primary-color)] hover:underline"
               >
-                support@heapreaper.nl
+                support@klikbit.nl
               </a>.
             </p>
           </div>
