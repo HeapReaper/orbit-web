@@ -10,6 +10,7 @@ export default function ArticlesPage() {
   const [filter, setFilter] = useState<string>("All");
 
   useEffect(() => {
+    document.title = "Articles";
     async function fetchArticles() {
       const data = await getLatestArticles();
       setArticles(data);

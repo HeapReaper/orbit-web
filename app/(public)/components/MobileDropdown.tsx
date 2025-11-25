@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import NavType from "@/app/types/nav";
 
@@ -9,9 +9,21 @@ interface MobileDropdownProps {
 
 export default function MobileDropdown({ item, closeMenu }: MobileDropdownProps) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="flex flex-col">
+    <div ref={dropdownRef} className="flex flex-col">
       <button
         onClick={() => setOpen(!open)}
         className="flex justify-between items-center w-full px-4 py-2 rounded hover:bg-[#1f222b] transition"
@@ -33,7 +45,10 @@ export default function MobileDropdown({ item, closeMenu }: MobileDropdownProps)
             <li key={child.href}>
               <Link
                 href={child.href!}
-                onClick={closeMenu}
+                onClick={() => {
+                  setOpen(false);
+                  closeMenu?.();
+                }}
                 className="block px-4 py-2 rounded hover:bg-[#1f222b] transition"
               >
                 {child.name}

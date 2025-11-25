@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import NavType from "@/app/types/nav";
 
@@ -9,9 +9,23 @@ interface DropdownProps {
 
 export default function Dropdown({ item, closeMenu }: DropdownProps) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <li className="relative">
+    <li ref={dropdownRef} className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1 font-medium hover:text-[var(--primary-color)] transition"
@@ -32,7 +46,10 @@ export default function Dropdown({ item, closeMenu }: DropdownProps) {
             <li key={child.href}>
               <Link
                 href={child.href!}
-                onClick={closeMenu}
+                onClick={() => {
+                  setOpen(false);
+                  closeMenu?.();
+                }}
                 className="block px-4 py-2 hover:bg-[#1f222b] transition"
               >
                 {child.name}
