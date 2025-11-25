@@ -1,23 +1,60 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import MarkdownEditor from "@/app/(dashboard)/dashboard/components/MarkdownEditor";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import MessagePreview from "@/app/(dashboard)/dashboard/components/previews/Message";
 import { Send } from "lucide-react";
+import GenericTable from "@/app/(dashboard)/dashboard/components/tables/Table";
+
+type GuildRow = {
+  id: string;
+  name: string;
+  isPremium: boolean;
+  trialEndsAt?: string | null;
+  createdAt?: string | null;
+};
 
 export default function Page() {
-  const [updateMessage, setUpdateMessage] = useState<string>("");
+  const session = useSession();
+  const [guilds, setGuilds] = useState<GuildRow[]>([]);
+  const [loadingGuilds, setLoadingGuilds] = useState(false);
+
+  const [updateMessage, setUpdateMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const session = useSession();
-  if (!session) return null;
+  useEffect(() => {
+    const fetchGuilds = async () => {
+      setLoadingGuilds(true);
+      try {
+        const res = await fetch("/api/discord/guilds");
+        const data = await res.json();
+        console.log(data);
+        if (data.guilds) {
+          setGuilds(
+            data.guilds.map((g: any) => ({
+              id: g.id,
+              name: g.name,
+              isPremium: g.isPremium,
+              trialEndsAt: g.trialEndsAt ?? null,
+              createdAt: g.createdAt ?? null,
+            }))
+          );
+        }
+      } catch (err) {
+        console.error("Failed to fetch guilds", err);
+      } finally {
+        setLoadingGuilds(false);
+      }
+    };
 
-  if (session.data?.user?.id !== "632677231113666601") {
-    return null;
-  }
+    void fetchGuilds();
+  }, []);
+
+  if (!session) return;
+  if (session.data?.user?.id !== "632677231113666601") return;
 
   const handleSend = async () => {
     if (!updateMessage.trim()) {
@@ -32,12 +69,9 @@ export default function Page() {
     try {
       const res = await fetch("/api/owner", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ updateMessage }),
       });
-
       const data = await res.json();
 
       if (res.ok) {
@@ -54,13 +88,27 @@ export default function Page() {
     }
   };
 
+  const headers = ["Name", "Premium", "Trial Ends", "Created At"];
+  const rows = guilds.map((g) => [
+    g.name,
+    g.isPremium ? "Yes" : "No",
+    g.trialEndsAt ? new Date(g.trialEndsAt).toLocaleDateString() : "–",
+    g.createdAt ? new Date(g.createdAt).toLocaleDateString() : "–",
+  ]);
+
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Owner page
       </h1>
 
-      <div className="mb-6">
+      {loadingGuilds ? (
+        <p className="text-gray-400">Loading guilds...</p>
+      ) : (
+        <GenericTable title="Guilds" headers={headers} rows={rows} maxHeight="64" />
+      )}
+
+      <div className="mb-6 mt-6">
         <label className="block text-gray-400 mb-2">Send update message</label>
         <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
           <MarkdownEditor
@@ -80,8 +128,9 @@ export default function Page() {
         onClick={handleSend}
         disabled={loading}
         className={`
-          flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--primary-color)] hover:bg-[var(--hover-color)]
-          text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed
+          flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--primary-color)]
+          hover:bg-[var(--hover-color)] text-white font-semibold transition-colors
+          disabled:opacity-50 disabled:cursor-not-allowed
         `}
       >
         <Send size={16} />
