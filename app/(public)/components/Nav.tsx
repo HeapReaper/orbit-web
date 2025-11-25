@@ -6,6 +6,8 @@ import Image from "next/image";
 import NavType from "@/app/types/nav";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Dropdown from "@/app/(public)/components/Dropdown";
+import MobileDropdown from "@/app/(public)/components/MobileDropdown";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,10 +20,18 @@ export default function Navbar() {
 
   const navItems: NavType[] = [
     { name: "Home", href: "/" },
-    { name: "Subscriptions", href: "/subscriptions" },
+    { name: "Pricing", href: "/subscriptions" },
     { name: "Servers", href: "/servers" },
     { name: "Releases", href: "/releases" },
-    { name: "Support", href: "/help/support" },
+    { name: "Articles", href: "/articles" },
+    {
+      name: "Info",
+      children: [
+        { name: "Help articles", href: "/help" },
+        { name :"Terms of Services", href: "/terms" },
+        { name :"Privacy policy", href: "/privacy" },
+      ],
+    },
   ];
 
   return (
@@ -39,28 +49,24 @@ export default function Navbar() {
         </Link>
 
         <ul className="hidden md:flex gap-6 items-center">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={`hover:text-[var(--primary-color)] transition font-medium ${isActive(item.href) ? "text-[var(--primary-color)] font-bold" : ""}`}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-          <li>
-            {session ? (
-              <Link
-                href="/dashboard"
-              >
-                Dashboard
-              </Link>
+          {navItems.map((item) =>
+            item.children ? (
+              <Dropdown key={item.name} item={item} />
             ) : (
-              <Link href="/login">
-                Login
-              </Link>
-            )}
+              <li key={item.href}>
+                <Link
+                  href={item.href!}
+                  className={`hover:text-[var(--primary-color)] transition font-medium ${
+                    isActive(item.href!) ? "text-[var(--primary-color)] font-bold" : ""
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            )
+          )}
+          <li>
+            {session ? <Link href="/dashboard">Dashboard</Link> : <Link href="/login">Login</Link>}
           </li>
         </ul>
 
@@ -105,18 +111,22 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <ul className="md:hidden mt-4 flex flex-col gap-4">
+        <ul className="md:hidden mt-4 flex flex-col gap-2">
           {navItems.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className={`block px-4 py-2 rounded transition ${
-                  isActive(item.href) ? "bg-[#1f222b]" : "hover:bg-[#1f222b]"
-                }`}
-              >
-                {item.name}
-              </Link>
+            <li key={item.name} className="flex flex-col">
+              {item.children ? (
+                <MobileDropdown item={item} closeMenu={() => setMenuOpen(false)} />
+              ) : (
+                <Link
+                  href={item.href!}
+                  onClick={() => setMenuOpen(false)}
+                  className={`block px-4 py-2 rounded transition ${
+                    isActive(item.href!) ? "bg-[#1f222b]" : "hover:bg-[#1f222b]"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )}
             </li>
           ))}
 
@@ -124,11 +134,17 @@ export default function Navbar() {
             {session ? (
               <Link
                 href="/dashboard"
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-2 rounded hover:bg-[#1f222b] transition"
               >
                 Dashboard
               </Link>
             ) : (
-              <Link href="/login">
+              <Link
+                href="/login"
+                onClick={() => setMenuOpen(false)}
+                className="block px-4 py-2 rounded hover:bg-[#1f222b] transition"
+              >
                 Login
               </Link>
             )}

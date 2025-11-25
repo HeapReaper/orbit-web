@@ -46,7 +46,7 @@ export default async function HelpPage({ params }: Props) {
           •
           <span className="inline-flex items-center gap-1">
             <Calendar size={16} className="inline-block text-blue-500" />
-            Updated at: {new Date(article.updatedAt).toLocaleDateString()}
+            Created at: {new Date(article.updatedAt).toLocaleDateString()}
           </span>
         </p>
 
