@@ -11,15 +11,16 @@ With Features like tickets, birthdays, Logging and analytics, all in one bot.
 ---
 
 ## Tech Stack
-- **Frontend/backend**: Next.js v15.5.4, React, TailwindCSS
+- **Frontend/backend**: Next.js v15.5.6, React, TailwindCSS
 - **Databases**: MariaDB with Prisma, Clickhouse, Redis (caching)
+- **CMS**: Strapi
 - **Authentication**: NextAuth.js (Discord OAuth)
 - **State Management**: React Context API
 - **Hosting**: Hetzner hosted Coolify
 ---
 
 ## Installation
-This project is not intended for you to self host.
+This project is not intended for you to self host. see the LICENCE for more information
 
 ## Screenshots
 **Dashboard**

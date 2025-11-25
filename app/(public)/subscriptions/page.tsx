@@ -17,16 +17,14 @@ export default function Page() {
       description:
         "Perfect for trying out basic features and managing smaller servers.",
       price: "€ 0 / month",
-      nonFeatures: [
-      ],
+      nonFeatures: [],
       features: [
         "Free modules",
         "1 week logs",
         "Community support"
       ],
       buttonText: "Default plan",
-      buttonClass:
-        "bg-gray-700 cursor-not-allowed opacity-70 hover:bg-gray-700",
+      buttonClass: "bg-gray-700 cursor-not-allowed opacity-70 hover:bg-gray-700",
     },
     {
       name: "🚀 Premium",
@@ -40,6 +38,34 @@ export default function Page() {
       ],
       buttonText: "Upgrade to premium",
       buttonClass: "bg-blue-600 hover:bg-blue-700 cursor-not-allowed",
+    },
+    {
+      name: "🌟 Early Supporter",
+      description:
+        "A special limited-time deal for early users.",
+      price: "€ 49 one-time",
+      features: [
+        "Premium modules",
+        "All future premium updates",
+        "Early Supporter badge",
+        "Support (Limited)"
+      ],
+      buttonText: "Get Early Supporter Deal",
+      buttonClass: "bg-yellow-500 hover:bg-yellow-600",
+    },
+    {
+      name: "💎 Lifetime Premium",
+      description:
+        "Pay once and enjoy full premium access forever.",
+      price: "€ 99.99 one-time",
+      features: [
+        "Premium modules",
+        "All future premium updates",
+        "Lifetime access",
+        "Priority support"
+      ],
+      buttonText: "Buy Lifetime Access",
+      buttonClass: "bg-purple-600 hover:bg-purple-700",
     },
   ];
 
