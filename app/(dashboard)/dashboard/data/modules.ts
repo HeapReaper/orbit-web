@@ -169,7 +169,7 @@ const modules: moduleType[] = [
     description: "Host giveaways and let members win prizes easily.",
     free: true,
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Fun / Engagement"
   },
   {
@@ -205,7 +205,7 @@ const modules: moduleType[] = [
     description: "Reward members for daily activity and maintain streaks.",
     free: true,
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Fun / Engagement"
   },
   {
