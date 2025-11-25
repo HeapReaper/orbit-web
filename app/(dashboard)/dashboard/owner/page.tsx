@@ -15,10 +15,9 @@ export default function Page() {
   const session = useSession();
   if (!session) return null;
 
-  console.log(session);
-  const userId = session?.data?.user?.id;
-  console.log(userId);
-  if (!userId || userId.toString() !== process.env.OWNER_ID) return null
+  if (session.data?.user?.id !== "632677231113666601") {
+    return null;
+  }
 
   const handleSend = async () => {
     if (!updateMessage.trim()) {
@@ -43,7 +42,7 @@ export default function Page() {
 
       if (res.ok) {
         setSuccess("Message sent successfully!");
-        setUpdateMessage(""); // reset editor
+        setUpdateMessage("");
       } else {
         setError(data.error || "Something went wrong");
       }
