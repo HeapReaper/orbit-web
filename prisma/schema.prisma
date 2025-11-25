@@ -308,16 +308,15 @@ model LevelingData {
 }
 
 model Giveaway {
-  id         Int      @id @default(autoincrement())
-  guildId    String
-  endsAt     DateTime
-  winners    Int
-  prize      String
-  extraRules String
-  active     Boolean  @default(true)
-  messageId  String?
-  createdAt  DateTime @default(now())
-
+  id           Int                   @id @default(autoincrement())
+  guildId      String
+  endsAt       DateTime
+  winners      Int
+  prize        String
+  extraRules   String
+  active       Boolean               @default(true)
+  messageId    String?
+  createdAt    DateTime              @default(now())
   participants GiveawayParticipant[]
 
   @@index([guildId])
@@ -347,10 +346,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id])
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
 }
 
 model Session {
@@ -358,8 +357,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
 
-  user User @relation(fields: [userId], references: [id])
+  @@index([userId], map: "Session_userId_fkey")
 }
 
 model VerificationToken {
@@ -382,9 +382,9 @@ model User {
 
 model StreakSettings {
   id      String  @id @default(cuid())
-  enabled Boolean @default(false)
   guildId String  @unique
   channel String
+  enabled Boolean
 }
 
 model Streak {
