@@ -393,3 +393,13 @@ model Streak {
   streak     Int
   lastActive DateTime
 }
+
+model BoostSpotlightSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  messages  Json?
+  channel   String?  @db.VarChar(22)
+  enabled   Boolean
+  randomize Boolean  @default(true)
+  createdAt DateTime @default(now()) @db.DateTime(0)
+}
