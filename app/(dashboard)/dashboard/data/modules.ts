@@ -222,8 +222,8 @@ const modules: moduleType[] = [
     url: "boost-spotlight",
     description: "Celebrate and notify whenever someone boosts your server.",
     free: true,
-    enabled: false,
-    inDevelopment: true,
+    enabled: true,
+    inDevelopment: false,
     category: "Streaming / Media"
   },
   {

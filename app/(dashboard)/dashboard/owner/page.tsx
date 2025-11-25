@@ -31,7 +31,7 @@ export default function Page() {
       try {
         const res = await fetch("/api/discord/guilds");
         const data = await res.json();
-        console.log(data);
+
         if (data.guilds) {
           setGuilds(
             data.guilds.map((g: any) => ({

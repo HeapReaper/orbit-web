@@ -146,13 +146,11 @@ export default function WelcomeMessagePage() {
 
       <div className="mb-6">
         {messages.map((msg, index) => (
-          <div key={index} className="mb-3">
+          <div key={index} className="mb-6">
             <div className="flex justify-between mb-2">
               <label className="block text-gray-400 mb-1">Message {index + 1}</label>
               {messages.length > 1 && (
-                <DeleteButton
-                  onClick={() => removeMessage(index)}
-                />
+                <DeleteButton onClick={() => removeMessage(index)} />
               )}
             </div>
             <div className="flex gap-2">
@@ -163,11 +161,17 @@ export default function WelcomeMessagePage() {
                   placeholder=""
                 />
               </div>
-
             </div>
-            <p className="text-sm text-gray-500 mb-4 mt-1">
+            <p className="text-sm text-gray-500 mb-2 mt-1">
               You can use <InlineCode text="{user}" /> to mention the user.
             </p>
+
+            {/* Message preview for each message */}
+            <MessagePreview
+              username="Orbit"
+              message={msg.replace("{user}", "@HeapReaper")}
+              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+            />
           </div>
         ))}
         <button
@@ -178,12 +182,6 @@ export default function WelcomeMessagePage() {
           Add Message
         </button>
       </div>
-
-      <MessagePreview
-        username="Orbit"
-        message={messages[0]?.replace("{user}", "@HeapReaper") ?? ""}
-        channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
-      />
 
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
