@@ -403,3 +403,21 @@ model BoostSpotlightSettings {
   randomize Boolean  @default(true)
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
+
+model TimeKeeperSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  enabled   Boolean
+  createdAt DateTime @default(now()) @db.DateTime(0)
+}
+
+model Reminder {
+  id        Int      @id @default(autoincrement())
+  userId    String   @db.VarChar(32)
+  guildId   String?  @db.VarChar(32)
+  channelId String   @db.VarChar(32)
+  message   String
+  remindAt  DateTime
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+}

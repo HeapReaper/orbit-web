@@ -213,8 +213,8 @@ const modules: moduleType[] = [
     url: "time-keeper",
     description: "Set personal or server reminders for important moments.",
     free: true,
-    enabled: false,
-    inDevelopment: true,
+    enabled: true,
+    inDevelopment: false,
     category: "Analytics / Tracking"
   },
   {
