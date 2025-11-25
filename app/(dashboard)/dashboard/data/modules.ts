@@ -204,7 +204,7 @@ const modules: moduleType[] = [
     url: "streak",
     description: "Reward members for daily activity and maintain streaks.",
     free: true,
-    enabled: false,
+    enabled: true,
     inDevelopment: true,
     category: "Fun / Engagement"
   },

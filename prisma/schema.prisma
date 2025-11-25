@@ -379,3 +379,17 @@ model User {
   accounts      Account[]
   sessions      Session[]
 }
+
+model StreakSettings {
+  id      String  @id @default(cuid())
+  enabled Boolean @default(false)
+  guildId String  @unique
+  channel String
+}
+
+model Streak {
+  id         String   @id @default(cuid())
+  userId     String
+  streak     Int
+  lastActive DateTime
+}
