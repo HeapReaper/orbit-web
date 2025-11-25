@@ -14,8 +14,10 @@ export async function GET(req: NextRequest) {
 
   const session = await getServerSession(authOptions);
 
-  if (!session) return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
-  if (!guildId) return NextResponse.json({ error: "guildId is required" }, { status: 400 });
+  if (!session)
+    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+  if (!guildId)
+    return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   if (!(await isUserGuildAdmin(session.user.id, guildId))) {
     return NextResponse.json({ error: "You must be a guild admin to access this" }, { status: 403 });
@@ -29,16 +31,26 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(JSON.parse(cached));
     }
 
-    const data = await prisma.premiumGuild.findFirst({
-      where: {
-        guildId: guildId,
-        premium: true,
-      },
+    let premiumGuild = await prisma.premiumGuild.findFirst({
+      where: { guildId },
     });
 
-    await redis.set(cacheKey, JSON.stringify(data), "EX", 180);
+    if (!premiumGuild) {
+      const trialEndsAt = new Date();
+      trialEndsAt.setDate(trialEndsAt.getDate() + 30);
 
-    return NextResponse.json(data);
+      premiumGuild = await prisma.premiumGuild.create({
+        data: {
+          guildId,
+          premium: true,
+          trialEndsAt,
+        },
+      });
+    }
+
+    await redis.set(cacheKey, JSON.stringify(premiumGuild), "EX", 180);
+
+    return NextResponse.json(premiumGuild);
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Could not fetch guild data" }, { status: 500 });

@@ -55,7 +55,7 @@ export function GuildProvider({ children }: { children: ReactNode }) {
         setGuilds(fetchedGuilds);
 
         // Fetch premium per guild
-        fetchedGuilds.forEach(async (g: Guild) => {
+        for (const g of fetchedGuilds) {
           try {
             const premRes = await fetch(`/api/discord/premium?guildId=${g.id}`);
             const premData = await premRes.json();
@@ -68,7 +68,7 @@ export function GuildProvider({ children }: { children: ReactNode }) {
           } catch (err) {
             console.error("Premium check failed:", err);
           }
-        });
+        }
       } catch (err) {
         console.error(err);
         setGuilds([]);

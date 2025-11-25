@@ -307,14 +307,31 @@ model LevelingData {
   @@unique([guildId, userId])
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+model Giveaway {
+  id         Int      @id @default(autoincrement())
+  guildId    String
+  endsAt     DateTime
+  winners    Int
+  prize      String
+  extraRules String
+  active     Boolean  @default(true)
+  messageId  String?
+  createdAt  DateTime @default(now())
+
+  participants GiveawayParticipant[]
+
+  @@index([guildId])
+  @@map("giveaways")
+}
+
+model GiveawayParticipant {
+  giveawayId Int
+  userId     String
+  winner     Boolean  @default(false)
+  Giveaway   Giveaway @relation(fields: [giveawayId], references: [id])
+
+  @@id([giveawayId, userId])
+  @@map("giveaway_participants")
 }
 
 model Account {
@@ -351,4 +368,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 }

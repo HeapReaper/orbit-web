@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/app/lib/prisma"
 import { getRedisClient } from "@/app/lib/redis";
 
-const prisma = new PrismaClient();
 const redis = getRedisClient();
 
 const DISCORD_API = "https://discord.com/api";
