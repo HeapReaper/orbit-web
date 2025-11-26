@@ -38,6 +38,10 @@ export default function ChannelSelect({ label, value, onChange, tooltip }: Props
   };
 
   useEffect(() => {
+    if (!value) {
+      setSearch(""); // Reset if no value found
+      return;
+    }
     const selected = allChannels.find((channel) => channel.value === value);
     if (selected) setSearch(selected.label);
   }, [value]);
