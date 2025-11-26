@@ -26,13 +26,17 @@ export default function StreakSettingsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/streak?guildId=${selectedGuild}`);
+        const res = await fetch(`/api/streak?guildId=${selectedGuild}`, { cache: "no-store" });
         const data = await res.json();
 
+        if (!data || data.error) {
+          setChannel("");
+          setEnabled(false);
+          return;
+        }
+
         setChannel(data.channel ?? "");
-        setEnabled(data.enabled != null ? data.enabled : false);
-      } catch (err) {
-        console.error(err);
+        setEnabled(data.enabled ?? false);
       } finally {
         setLoading(false);
       }
