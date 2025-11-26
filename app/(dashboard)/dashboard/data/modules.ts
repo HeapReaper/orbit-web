@@ -258,8 +258,8 @@ const modules: moduleType[] = [
     url: "server-anniversary",
     description: "Celebrate your server's milestones each year.",
     free: true,
-    enabled: false,
-    inDevelopment: true,
+    enabled: true,
+    inDevelopment: false,
     category: "Events / Server Management"
   }
 ];
