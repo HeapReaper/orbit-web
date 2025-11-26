@@ -20,8 +20,10 @@ export default function StreakSettingsPage() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    document.title = "Streak Settings";
     if (!selectedGuild) return;
+
+    setChannel("");
+    setEnabled(false);
 
     const fetchData = async () => {
       setLoading(true);
