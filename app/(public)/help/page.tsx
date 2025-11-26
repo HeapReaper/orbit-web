@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getHelpArticles } from "@/app/lib/getHelpArticles";
 import { HelpArticlesType } from "@/app/types/helpArticles";
+import {Calendar, User} from "lucide-react";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Help Articles – Orbit",
@@ -21,13 +23,26 @@ export default async function HelpArticlesPage() {
           <Link
             key={article.slug}
             href={`/help/${article.slug}`}
-            className="block bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition"
+            className="block bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition border border-gray-800 hover:border-blue-600"
           >
             <h2 className="text-xl font-bold text-white mb-2">{article.title}</h2>
             <p className="text-gray-400 text-sm mb-3">{article.description}</p>
-            {article.author?.name && (
-              <p className="text-gray-500 text-xs">By {article.author?.name}</p>
-            )}
+
+            <p className="text-gray-400 text-sm  flex items-center gap-2">
+              <span className="inline-flex items-center gap-1">
+                <User size={16} className="inline-block text-blue-500" />
+                {article.author?.name ?? "Unknown"}
+              </span>
+                  •
+              <span className="inline-flex items-center gap-1">
+                <Calendar size={16} className="inline-block text-blue-500" />
+                  {new Date(article.updatedAt).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+              </span>
+            </p>
           </Link>
         ))}
       </div>

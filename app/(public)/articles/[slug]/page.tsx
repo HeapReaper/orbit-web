@@ -72,7 +72,7 @@ export default async function ArticlePage({ params }: Props) {
         <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
 
         {/* Author + Updated */}
-        <p className="text-gray-400 text-sm mb-8 flex items-center gap-2">
+        <p className="text-gray-400 text-sm flex items-center gap-2">
           <span className="inline-flex items-center gap-1">
             <User size={16} className="inline-block text-blue-500" />
             {article.author?.name ?? "Unknown"}
@@ -80,7 +80,6 @@ export default async function ArticlePage({ params }: Props) {
           •
           <span className="inline-flex items-center gap-1">
             <Calendar size={16} className="inline-block text-blue-500" />
-            Updated:{" "}
             {new Date(article.updatedAt).toLocaleDateString(undefined, {
               year: "numeric",
               month: "long",
