@@ -381,15 +381,15 @@ model User {
 }
 
 model StreakSettings {
-  id      String  @id @default(cuid())
+  id      Int     @id @default(autoincrement())
   guildId String  @unique
   channel String
   enabled Boolean
 }
 
 model Streak {
-  id         String   @id @default(cuid())
-  userId     String
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique
   streak     Int
   lastActive DateTime
 }
