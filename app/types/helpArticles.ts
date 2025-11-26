@@ -4,4 +4,5 @@ export interface HelpArticlesType {
   author: any;
   contentrich: string;
   description: string;
+  updatedAt: string;
 }
