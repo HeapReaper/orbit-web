@@ -421,3 +421,14 @@ model Reminder {
   createdAt DateTime @default(now())
   isActive  Boolean  @default(true)
 }
+
+model ServerAnniversarySettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  messages  Json?
+  channel   String?  @db.VarChar(22)
+  time      String   @db.VarChar(5)
+  enabled   Boolean
+  randomize Boolean  @default(true)
+  createdAt DateTime @default(now()) @db.DateTime(0)
+}

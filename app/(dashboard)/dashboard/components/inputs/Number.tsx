@@ -2,7 +2,6 @@
 
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
-
 interface Props {
   label: string;
   value: number;
