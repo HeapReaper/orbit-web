@@ -7,11 +7,29 @@ export default function ScreenshotsSection() {
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
         Config previews
       </h2>
+      <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
+        <div className="order-2 md:order-1 rounded-lg overflow-hidden shadow-lg">
+          <Image
+            src="/screenshots/server-backup-screenshot.png"
+            alt="Server Backup Screenshot"
+            width={600}
+            height={350}
+            className="rounded-lg border border-[var(--primary-color)]"
+          />
+        </div>
+        <div className="order-1 md:order-2 space-y-4">
+          <h3 className="text-2xl font-semibold">Server Backup</h3>
+          <p className="text-gray-400">
+            Backup your server’s channels, category and channel positions, server settings (name, region, icon), roles, and permissions.
+          </p>
+        </div>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-10 items-center">
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold">Bot Settings</h3>
           <p className="text-gray-400">
-            Manage global bot preferences, prefixes, and permissions directly from this page.
+            Manage global bot preferences and permissions directly from this page.
             Everything is synced automatically with your Discord server.
           </p>
         </div>

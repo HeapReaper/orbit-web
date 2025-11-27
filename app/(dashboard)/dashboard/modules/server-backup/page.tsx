@@ -153,7 +153,7 @@ export default function ServerBackupPage() {
           { id: "roles", name: "Roles"},
           { id: "channels", name: "Channels"},
           { id: "emojis", name: "Emojis"},
-          { id: "stickers", name: "stickers"},
+          { id: "stickers", name: "Stickers"},
           { id: "server_settings", name: "Server Settings"},
         ]}
         selectedIds={backupContent}
@@ -199,11 +199,11 @@ export default function ServerBackupPage() {
               </tr>
 
               {/* Empty state */}
-              <tr>
-                <td colSpan={4} className="px-4 py-2 text-center text-gray-500">
-                  No backups
-                </td>
-              </tr>
+              {/*<tr>*/}
+              {/*  <td colSpan={4} className="px-4 py-2 text-center text-gray-500">*/}
+              {/*    No backups*/}
+              {/*  </td>*/}
+              {/*</tr>*/}
             </tbody>
           </table>
         </div>
