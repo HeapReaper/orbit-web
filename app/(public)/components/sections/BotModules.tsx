@@ -1,19 +1,34 @@
 import modules from "@/app/(dashboard)/dashboard/data/modules";
 import { moduleType } from "@/app/types/modules";
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
+import FreemiumLabel from "@/app/(dashboard)/dashboard/components/labels/Freemium";
 import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import React from "react";
 
-const groupedModules = modules.reduce((acc: Record<string, moduleType[]>, module) => {
-  const category = module.category || "Other";
-
-  if (!acc[category]) acc[category] = [];
-
-  acc[category].push(module);
-  return acc;
-}, {});
+const groupedModules = modules.reduce(
+  (acc: Record<string, moduleType[]>, module) => {
+    const category = module.category || "Other";
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(module);
+    return acc;
+  },
+  {}
+);
 
 export default function BotModulesSection() {
+  const renderLabel = (tier: moduleType["tier"]) => {
+    switch (tier) {
+      case "free":
+        return <FreeLabel />;
+      case "freemium":
+        return <FreemiumLabel />;
+      case "premium":
+        return <PremiumLabel />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -27,11 +42,11 @@ export default function BotModulesSection() {
             {modulesInCategory.map((module: moduleType) => (
               <div
                 key={module.url}
-                className={`p-6 rounded-lg hover:shadow-lg transition bg-[#14171f] hover:border-blue-600 border border-gray-900`}
+                className="p-6 rounded-lg hover:shadow-lg transition bg-[#14171f] hover:border-blue-600 border border-gray-900"
               >
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-xl font-semibold">{module.name}</h4>
-                  {module.free ? <FreeLabel /> : <PremiumLabel />}
+                  {renderLabel(module.tier)}
                 </div>
                 <p className="text-gray-400 mb-4">{module.description}</p>
                 <span
