@@ -16,11 +16,11 @@ interface MarkdownEditorProps {
 }
 
 export default function MarkdownEditor({
-                                         value,
-                                         onChange,
-                                         placeholder = "Start typing...",
-                                         className = "",
-                                       }: MarkdownEditorProps) {
+  value,
+  onChange,
+  placeholder = "Start typing...",
+  className = "",
+}: MarkdownEditorProps) {
   const options = useMemo(() => {
     return {
       spellChecker: false,
@@ -56,17 +56,17 @@ export default function MarkdownEditor({
   );
 
   return (
-    <div className={`rounded-lg border border-gray-700 bg-[#1f2330] ${className}`}>
+    <div className={`rounded-lg border border-gray-700 bg-[#1f2330] ${className} `}>
       <SimpleMdeReact value={value} onChange={handleChange} options={options} />
 
       <style jsx global>{`
         .EasyMDEContainer .editor-toolbar {
-          background-color: #1f2330;
+          background-color: #0f1117;
           border-color: #2a2d3a;
         }
 
         .EasyMDEContainer .CodeMirror {
-          background-color: #1f2330;
+          background-color: #0f1117;
           color: #fff;
           border: none;
         }
@@ -77,17 +77,24 @@ export default function MarkdownEditor({
 
         .EasyMDEContainer .editor-toolbar button {
           color: #bbb;
-          background-color: #1f2330;
+          background-color: #0f1117;
         }
 
         .EasyMDEContainer .editor-toolbar button.active,
         .EasyMDEContainer .editor-toolbar button:hover {
           color: #fff;
-          background-color: #2a2d3a;
+          background-color: #0f1117;
         }
 
-        .EasyMDEContainer .CodeMirror-scroll {
-          min-height: 200px;
+        .EasyMDEContainer {
+          border-radius: 0.2rem;
+          outline: none !important;
+          box-shadow: none !important;
+          transition: box-shadow 0.15s ease;
+        }
+
+        .EasyMDEContainer:has(.CodeMirror-focused) {
+          box-shadow: 0 0 0 2px var(--primary-color) !important;
         }
       `}</style>
     </div>
