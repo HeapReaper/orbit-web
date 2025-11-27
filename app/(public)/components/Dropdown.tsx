@@ -43,17 +43,29 @@ export default function Dropdown({ item, closeMenu }: DropdownProps) {
       {open && item.children && (
         <ul className="absolute top-full left-0 mt-2 bg-[#14171f] border border-gray-800 rounded shadow-lg w-48">
           {item.children.map((child) => (
-            <li key={child.href}>
-              <Link
-                href={child.href!}
-                onClick={() => {
-                  setOpen(false);
-                  closeMenu?.();
-                }}
-                className="block px-4 py-2 hover:bg-[#1f222b] transition"
-              >
-                {child.name}
-              </Link>
+            <li key={child.href || child.name}>
+              {child.target === "_blank" ? (
+                <a
+                  href={child.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-2 hover:bg-[#1f222b] transition"
+                  onClick={() => closeMenu?.()}
+                >
+                  {child.name}
+                </a>
+              ) : (
+                <Link
+                  href={child.href!}
+                  onClick={() => {
+                    setOpen(false);
+                    closeMenu?.();
+                  }}
+                  className="block px-4 py-2 hover:bg-[#1f222b] transition"
+                >
+                  {child.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
