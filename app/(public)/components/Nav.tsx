@@ -22,7 +22,6 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/subscriptions" },
     { name: "Servers", href: "/servers" },
-    { name: "Releases", href: "/releases" },
     { name: "Articles", href: "/articles" },
     {
       name: "Info",
@@ -30,6 +29,8 @@ export default function Navbar() {
         { name: "Help articles", href: "/help" },
         { name :"Terms of Services", href: "/terms" },
         { name :"Privacy policy", href: "/privacy" },
+        { name: "Releases", href: "/releases" },
+        { name: "Status", href: "https://uptime.klikbit.nl/status/klikbit", target: "_blank" },
       ],
     },
   ];
