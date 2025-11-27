@@ -82,7 +82,7 @@ export default function TimeKeeperSettingsPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Time Keeper Settings
+        Time Keeper
         <InfoTooltip text="Enable the Time Keeper command. With this users can set reminders for themself or the server" />
       </h1>
 

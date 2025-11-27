@@ -87,7 +87,6 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Analytics
-        <PremiumLabel />
       </h1>
 
       <div className="flex gap-2 mb-6">

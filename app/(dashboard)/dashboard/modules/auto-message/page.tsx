@@ -116,7 +116,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Automatic Messages Settings
+        Automatic Messages
         <InfoTooltip text="Work in progress" />
       </h1>
 

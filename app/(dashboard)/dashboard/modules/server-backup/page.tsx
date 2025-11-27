@@ -21,6 +21,7 @@ export default function ServerBackupPage() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    document.title = "Server Backup";
     if (!selectedGuild) return;
 
     setChannel("");
@@ -93,7 +94,7 @@ export default function ServerBackupPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Streak Settings
+        Server backup
         <InfoTooltip text="For each day users are active, their streak will go + 1 day. You can select here the channel where notification will display." />
       </h1>
 

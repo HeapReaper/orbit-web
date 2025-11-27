@@ -91,7 +91,7 @@ export default function TicketsSettingsPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Tickets Settings
+        Tickets
         <InfoTooltip text="Work in progress" />
       </h1>
 
