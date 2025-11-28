@@ -111,7 +111,7 @@ export default function InviteTrackerPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold  text-white flex items-center gap-2">
-        Invite Tracker Settings
+        Invite Tracker
         <InfoTooltip text="Track and label your invite links" />
       </h1>
 

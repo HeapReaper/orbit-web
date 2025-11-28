@@ -11,7 +11,6 @@ import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import cleanMessage from "@/app/lib/cleanMessage";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
-import { birthdaySettingsSchema } from "@/app/zod/birthdaySettings";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
 export default function Page() {
@@ -97,7 +96,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Birthday Settings
+        Birthday
         <InfoTooltip text="Work in progress" />
       </h1>
 

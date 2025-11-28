@@ -11,9 +11,7 @@ import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import { useGuild } from "@/app/context/GuildContext";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
-import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
 export default function AntiBotPage() {
@@ -132,9 +130,8 @@ export default function AntiBotPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Anti Bot Settings
+        Anti Bot
         <InfoTooltip text="Work in progress" />
-        <FreeLabel />
       </h1>
 
       {/* Enable */}

@@ -121,7 +121,7 @@ export default function MinecraftPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Minecraft Settings
+        Minecraft
         <InfoTooltip text="Monitor your Minecraft server and show online players." />
       </h1>
 

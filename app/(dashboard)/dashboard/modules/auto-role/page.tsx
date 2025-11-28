@@ -94,7 +94,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Auto Role Settings
+        Auto Role
         <InfoTooltip text="You can automaticly add specific roles to new users when they join your server." />
       </h1>
 

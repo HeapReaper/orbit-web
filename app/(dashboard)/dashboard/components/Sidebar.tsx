@@ -31,23 +31,25 @@ export default function Sidebar() {
     return href === usePathname();
   }
 
-  // Fetch only the guilds the user is in
   useEffect(() => {
     const fetchUserGuilds = async () => {
       try {
-        const token = localStorage.getItem("next-auth.session-token");
-        if (!token) return;
+        const res = await fetch("/api/discord/guilds");
 
-        const res = await fetch("https://discord.com/api/users/@me/guilds", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        if (!res.ok) {
+          console.error("Failed to fetch guilds");
+          setGuilds([]);
+          return;
+        }
 
-        const userGuilds = await res.json();
-        //const filteredGuilds = userGuilds.filter((g: any) => botGuildIds.includes(g.id));
-        console.log(userGuilds);
-        setGuilds(userGuilds);
+        const data = await res.json();
+
+        if (!data.guilds) {
+          setGuilds([]);
+          return;
+        }
+
+        setGuilds(data.guilds);
       } catch (err) {
         console.error(err);
         setGuilds([]);

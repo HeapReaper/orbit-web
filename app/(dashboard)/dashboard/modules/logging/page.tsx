@@ -17,7 +17,7 @@ export default function Page() {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -169,7 +169,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Logging Settings
+        Logging
         <InfoTooltip text="Select what server events should be logged." />
       </h1>
 

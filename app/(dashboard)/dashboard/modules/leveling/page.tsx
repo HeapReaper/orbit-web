@@ -193,7 +193,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Leveling Settings
+        Leveling
         <InfoTooltip
           text="With the default settings there are ~100,000 messages needed to reach level 10,
           which will get harder when you go higher in levels. That can be changed by changing the Curve Exponent.

@@ -92,7 +92,7 @@ export default function StreakSettingsPage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Streak Settings
+        Streak
         <InfoTooltip text="For each day users are active, their streak will go + 1 day. You can select here the channel where notification will display." />
       </h1>
 

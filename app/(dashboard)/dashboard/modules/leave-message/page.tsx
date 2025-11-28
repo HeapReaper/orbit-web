@@ -105,7 +105,7 @@ export default function LeaveMessagePage() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Leave Message Settings
+        Leave Message
         <InfoTooltip text="Work in progress" />
       </h1>
 
