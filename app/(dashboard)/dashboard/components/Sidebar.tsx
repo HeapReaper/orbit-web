@@ -50,9 +50,11 @@ export default function Sidebar() {
         }
 
         const saved: string | null = localStorage.getItem("selectedGuild");
-        if (saved && guilds.some(guild => guild.id === saved)) {
+        // @ts-ignore
+        if (saved && data.guilds.some(g => g.id === saved)) {
           setSelectedGuild(saved);
         }
+        setGuilds(data.guilds);
 
         setGuilds(data.guilds);
       } catch (err) {
@@ -62,13 +64,13 @@ export default function Sidebar() {
     };
 
     void fetchUserGuilds();
-  }, [guilds, setGuilds]);
+  }, [setGuilds, setSelectedGuild]);
 
   useEffect(() => {
     if (selectedGuild) {
       localStorage.setItem("selectedGuild", selectedGuild);
     }
-  }, [guilds, selectedGuild, setSelectedGuild]);
+  }, [selectedGuild, setSelectedGuild]);
 
   // Check if the selected guild is premium
   useEffect(() => {
