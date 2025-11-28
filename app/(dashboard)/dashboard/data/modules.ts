@@ -249,8 +249,8 @@ const modules: moduleType[] = [
     url: "server-backup",
     description: "Backup channels, roles and settings to restore later",
     tier: "freemium",
-    enabled: true,
-    inDevelopment: false,
+    enabled: false,
+    inDevelopment: true,
     category: "Events / Server Management"
   },
   {

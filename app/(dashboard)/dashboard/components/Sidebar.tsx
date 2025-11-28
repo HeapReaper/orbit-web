@@ -49,6 +49,11 @@ export default function Sidebar() {
           return;
         }
 
+        const saved: string | null = localStorage.getItem("selectedGuild");
+        if (saved && guilds.some(guild => guild.id === saved)) {
+          setSelectedGuild(saved);
+        }
+
         setGuilds(data.guilds);
       } catch (err) {
         console.error(err);
@@ -57,12 +62,11 @@ export default function Sidebar() {
     };
 
     void fetchUserGuilds();
-  }, [setGuilds]);
+  }, [guilds, setGuilds]);
 
-  // Select first guild if none selected
   useEffect(() => {
-    if (guilds.length > 0 && !selectedGuild) {
-      setSelectedGuild(guilds[0].id);
+    if (selectedGuild) {
+      localStorage.setItem("selectedGuild", selectedGuild);
     }
   }, [guilds, selectedGuild, setSelectedGuild]);
 
