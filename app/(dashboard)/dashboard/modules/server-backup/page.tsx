@@ -11,7 +11,9 @@ import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/Channel
 import CheckList from "@/app/(dashboard)/dashboard/components/inputs/CheckList";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import TimeInput from "@/app/(dashboard)/dashboard/components/inputs/Time";
-import { Download, Undo, Trash } from "lucide-react";
+import { Undo, Trash } from "lucide-react";
+import formatDateTime from "@/app/lib/formatDateTime";
+import { BackupType } from "@/app/types/backups";
 
 export default function ServerBackupPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,37 +22,38 @@ export default function ServerBackupPage() {
   const [backupContent, setBackupContent] = useState<string[]>([]);
   const [frequency, setFrequency] = useState<string>("weekly");
   const [time, setTime] = useState<string>("00:00");
+  const [backups, setBackups] = useState<BackupType[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const { selectedGuild } = useGuild();
   const { notify } = useNotification();
-
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Fetch settings & backups
+  const fetchSettingsAndBackups = async () => {
+    if (!selectedGuild) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/server-backup?guildId=${selectedGuild}`, { cache: "no-store" });
+      const data = await res.json();
+      if (!data || data.error) {
+        setEnabled(false);
+        return;
+      }
+      setChannel(data.channel ?? "");
+      setBackupContent(data.content ?? []);
+      setFrequency(data.frequency ?? "weekly");
+      setTime(data.time ?? "00:00");
+      setBackups(data.backups ?? []);
+      setEnabled(data.enabled ?? false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     document.title = "Server Backup";
-    if (!selectedGuild) return;
-
-    setEnabled(false);
-
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/server-backup?guildId=${selectedGuild}`, { cache: "no-store" });
-        const data = await res.json();
-
-        if (!data || data.error) {
-          setEnabled(false);
-          return;
-        }
-
-        setEnabled(data.enabled ?? false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    void fetchData();
+    void fetchSettingsAndBackups();
   }, [selectedGuild]);
 
   const triggerAutoSave = () => {
@@ -63,14 +66,17 @@ export default function ServerBackupPage() {
   const handleSave = async (auto = false) => {
     if (!selectedGuild) return;
     setIsSaving(true);
-
     try {
       const resp = await fetch("/api/server-backup", {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          enabled: enabled,
+          channel,
+          frequency,
+          time,
+          content: backupContent,
+          enabled,
         }),
       });
 
@@ -84,6 +90,40 @@ export default function ServerBackupPage() {
       if (!auto) notify("Error", `${error}`, "error");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const createBackup = async () => {
+    if (!selectedGuild) return;
+    const res = await fetch("/api/server-backup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guildId: selectedGuild }),
+    });
+
+    if (res.ok) {
+      notify("Backup created!", "", "success");
+      await fetchSettingsAndBackups();
+    } else {
+      notify("Error", "Could not create backup", "error");
+    }
+  };
+
+  const deleteBackup = async (backupId: number) => {
+    const confirmDelete = confirm("Are you sure you want to delete this backup?");
+    if (!confirmDelete) return;
+
+    const res = await fetch("/api/server-backup", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ backupId, guildId: selectedGuild }),
+    });
+
+    if (res.ok) {
+      notify("Backup deleted!", "", "success");
+      await fetchSettingsAndBackups();
+    } else {
+      notify("Error", "Could not delete backup", "error");
     }
   };
 
@@ -150,60 +190,57 @@ export default function ServerBackupPage() {
       <CheckList
         label="Backup content"
         items={[
-          { id: "roles", name: "Roles"},
-          { id: "channels", name: "Channels"},
-          { id: "emojis", name: "Emojis"},
-          { id: "stickers", name: "Stickers"},
-          { id: "server_settings", name: "Server Settings"},
+          { id: "roles", name: "Roles" },
+          { id: "channels", name: "Channels" },
+          { id: "emojis", name: "Emojis" },
+          { id: "stickers", name: "Stickers" },
+          { id: "server_settings", name: "Server Settings" },
         ]}
         selectedIds={backupContent}
-        onToggle={(id) => {
+        onToggle={(id) =>
           setBackupContent((prev) =>
             prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-          );
-        }}
+          )
+        }
       />
 
       <div className="mt-6">
-        <label className="block text-gray-400 mb-2">Backups</label>
+        <button
+          onClick={createBackup}
+          className="mb-4 bg-[var(--primary-color)] px-4 py-2 rounded-md text-white hover:opacity-80 transition"
+        >
+          Backup now
+        </button>
 
+        <label className="block text-gray-400 mb-2">Backups</label>
         <div className="overflow-x-auto rounded-lg border border-gray-700 bg-[#1f2330] max-h-64 overflow-y-auto">
           <table className="w-full text-left text-gray-300">
             <thead className="bg-[#14171f] text-gray-400 sticky top-0">
-              <tr>
-                <th className="px-4 py-2">Backup Time</th>
-                <th className="px-4 py-2">Download</th>
-                <th className="px-4 py-2">Restore</th>
-                <th className="px-4 py-2">Delete</th>
-              </tr>
+            <tr>
+              <th className="px-4 py-2">Backup Time</th>
+              <th className="px-4 py-2">Restore</th>
+              <th className="px-4 py-2">Delete</th>
+            </tr>
             </thead>
-
             <tbody>
-              <tr className="border-t border-gray-700">
-                <td className="px-4 py-2">27-11-2025 12:00</td>
-                <td className="px-4 py-2">
-                  <button className="text-blue-400 hover:underline">
-                    <Download />
-                  </button>
-                </td>
+            {backups.map((backup: BackupType) => (
+              <tr key={backup.id} className="border-t border-gray-700">
+                <td className="px-4 py-2">{formatDateTime(backup.createdAt)}</td>
                 <td className="px-4 py-2">
                   <button className="text-green-400 hover:underline">
                     <Undo />
                   </button>
                 </td>
                 <td className="px-4 py-2">
-                  <button className="text-red-400 hover:underline">
+                  <button
+                    className="text-red-400 hover:underline"
+                    onClick={() => deleteBackup(backup.id)}
+                  >
                     <Trash />
                   </button>
                 </td>
               </tr>
-
-              {/* Empty state */}
-              {/*<tr>*/}
-              {/*  <td colSpan={4} className="px-4 py-2 text-center text-gray-500">*/}
-              {/*    No backups*/}
-              {/*  </td>*/}
-              {/*</tr>*/}
+            ))}
             </tbody>
           </table>
         </div>
