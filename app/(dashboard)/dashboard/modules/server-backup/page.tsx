@@ -29,7 +29,6 @@ export default function ServerBackupPage() {
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Fetch settings & backups
   const fetchSettingsAndBackups = async () => {
     if (!selectedGuild) return;
     setLoading(true);
@@ -127,6 +126,31 @@ export default function ServerBackupPage() {
     }
   };
 
+  const handleRestore = async (guildId: string, backup: BackupType) => {
+    const confirmRestore: boolean = confirm(
+      "⚠️ Are you sure you want to restore this backup? Orbit is not responsible for any damages. ⚠️"
+    );
+    if (!confirmRestore) return;
+
+    try {
+      const res = await fetch("/api/restore-server", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guildId, backup }),
+      });
+
+      if (res.ok) {
+        notify("Backup restored successfully!", "", "success");
+        // await fetchSettingsAndBackups();
+      } else {
+        const data = await res.json();
+        notify("Error", data.error || "Could not restore backup", "error");
+      }
+    } catch (err) {
+      notify("Error", `${err}`, "error");
+    }
+  };
+
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
@@ -205,12 +229,9 @@ export default function ServerBackupPage() {
       />
 
       <div className="mt-6">
-        <button
-          onClick={createBackup}
-          className="mb-4 bg-[var(--primary-color)] px-4 py-2 rounded-md text-white hover:opacity-80 transition"
-        >
-          Backup now
-        </button>
+        <div className="mb-4 p-3 rounded-md bg-yellow-600/20 text-yellow-300 border border-yellow-500 text-sm">
+          ⚠️ The restore function hasn't been fully tested yet. Proceed with caution.
+        </div>
 
         <label className="block text-gray-400 mb-2">Backups</label>
         <div className="overflow-x-auto rounded-lg border border-gray-700 bg-[#1f2330] max-h-64 overflow-y-auto">
@@ -227,7 +248,10 @@ export default function ServerBackupPage() {
               <tr key={backup.id} className="border-t border-gray-700">
                 <td className="px-4 py-2">{formatDateTime(backup.createdAt)}</td>
                 <td className="px-4 py-2">
-                  <button className="text-green-400 hover:underline">
+                  <button
+                    className="text-green-400 hover:underline"
+                    onClick={() => handleRestore(selectedGuild, backup.backup)}
+                  >
                     <Undo />
                   </button>
                 </td>
