@@ -442,3 +442,25 @@ model MessageGlue {
   createdAt DateTime @default(now()) @db.DateTime(0)
   updatedAt DateTime @default(now()) @db.DateTime(0)
 }
+
+model ServerBackupSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique @db.VarChar(22)
+  channel   String   @db.VarChar(22)
+  enabled   Boolean  @default(false)
+  frequency String   @db.VarChar(10)
+  time      String   @db.VarChar(5)
+  content   Json?
+  createdAt DateTime @default(now()) @db.DateTime(0)
+
+  backups ServerBackups[]
+}
+
+model ServerBackups {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @db.VarChar(22)
+  backup    Json
+  createdAt DateTime @default(now()) @db.DateTime(0)
+
+  guild ServerBackupSettings @relation(fields: [guildId], references: [guildId])
+}
