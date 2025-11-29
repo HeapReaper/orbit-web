@@ -126,7 +126,7 @@ export default function ServerBackupPage() {
     }
   };
 
-  const handleRestore = async (guildId: string, backup: BackupType) => {
+  const handleRestore = async (guildId: string, backup: any) => {
     const confirmRestore: boolean = confirm(
       "⚠️ Are you sure you want to restore this backup? Orbit is not responsible for any damages. ⚠️"
     );
