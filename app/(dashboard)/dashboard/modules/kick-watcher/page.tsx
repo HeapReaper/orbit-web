@@ -7,7 +7,6 @@ import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { useGuild } from "@/app/context/GuildContext";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
@@ -118,8 +117,6 @@ export default function Page() {
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Kick Watcher
         <InfoTooltip text="Work in progress" />
-
-        <PremiumLabel />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
