@@ -91,11 +91,9 @@ export default function Page() {
 
       if (!res.ok) throw new Error(data.error || "Failed to generate roles");
 
-      // Add generated role IDs to levelRoles
       const newRoleIds = data.roles.map((r: { id: string }) => r.id);
       setLevelRoles((prev) => [...prev, ...newRoleIds]);
 
-      // Add generated role objects to local roles state
       setRoles((prevRoles) => [...prevRoles, ...data.roles]);
 
       notify("Level roles generated and selected successfully", "", "success");
