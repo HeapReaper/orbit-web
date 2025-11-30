@@ -8,14 +8,16 @@ import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import RolesInput from "@/app/(dashboard)/dashboard/components/inputs/Role";
 
 export default function StreakSettingsPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
   const [channel, setChannel] = useState<string>("");
+  const [role, setRole] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const { selectedGuild } = useGuild();
+  const { selectedGuild, roles } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -37,6 +39,7 @@ export default function StreakSettingsPage() {
           return;
         }
 
+        setChannel(data.channel ?? "");
         setChannel(data.channel ?? "");
         setEnabled(data.enabled ?? false);
       } finally {
@@ -64,8 +67,9 @@ export default function StreakSettingsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          channel: channel,
-          enabled: enabled,
+          channel,
+          role,
+          enabled,
         }),
       });
 
@@ -93,7 +97,7 @@ export default function StreakSettingsPage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Streak
-        <InfoTooltip text="For each day users are active, their streak will go + 1 day. You can select here the channel where notification will display." />
+        <InfoTooltip text="For each day users are active, their streak will go + 1 day. You can select here the channel where notification will display and the reward role." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
@@ -119,6 +123,12 @@ export default function StreakSettingsPage() {
         onChange={(value) => setChannel(value)}
       />
 
+      <RolesInput
+        label="Reward role"
+        roles={roles}
+        selectedRoles={role ? [role] : []}
+        onToggle={(roleId) => setRole(roleId)}
+      />
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
       </div>
