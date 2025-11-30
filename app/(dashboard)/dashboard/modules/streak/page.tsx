@@ -41,6 +41,7 @@ export default function StreakSettingsPage() {
 
         setChannel(data.channel ?? "");
         setChannel(data.channel ?? "");
+        setRole(data.role ?? "");
         setEnabled(data.enabled ?? false);
       } finally {
         setLoading(false);
