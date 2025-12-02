@@ -230,6 +230,7 @@ model IntroductionSettings {
   maxMessages Int      @default(1)
   autoReply   String?
   autoEmoji   String?
+  autoDelete  Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

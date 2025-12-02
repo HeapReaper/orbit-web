@@ -11,6 +11,7 @@ import MarkdownEditor from "@/app/(dashboard)/dashboard/components/MarkdownEdito
 import MessagePreview from "@/app/(dashboard)/dashboard/components/previews/Message";
 import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,10 +20,12 @@ export default function Page() {
   const [maxMessages, setMaxMessages] = useState<number>(1);
   const [autoReply, setAutoReply] = useState<string>("");
   const [autoEmoji, setAutoEmoji] = useState<string>("");
+  const [autoDelete, setAutoDelete] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
+
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -34,11 +37,13 @@ export default function Page() {
       try {
         const res = await fetch(`/api/introduction?guildId=${selectedGuild}`);
         const data = await res.json();
+
         setEnabled(data.enabled ?? false);
         setSelectedChannel(data.channel ?? "");
         setMaxMessages(data.maxMessages ?? 1);
         setAutoReply(data.autoReply ?? "");
         setAutoEmoji(data.autoEmoji ?? "");
+        setAutoDelete(data.autoDelete ?? false);
       } catch (err) {
         console.error(err);
       } finally {
@@ -71,6 +76,7 @@ export default function Page() {
           maxMessages,
           autoReply,
           autoEmoji,
+          autoDelete,
         }),
       });
 
@@ -88,11 +94,10 @@ export default function Page() {
     }
   };
 
-  // Auto-save on change
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [enabled, selectedChannel, maxMessages, autoReply, autoEmoji]);
+  }, [enabled, selectedChannel, maxMessages, autoReply, autoEmoji, autoDelete]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -100,7 +105,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Introduction
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="From automatic replies to limit the max allowed message count in a introduction channel, below you can configure it all!" />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
@@ -137,6 +142,12 @@ export default function Page() {
         />
       </div>
 
+      <ToggleSwitch
+        label="Automatic delete introduction when a user leaves the server"
+        enabled={autoDelete}
+        onChange={(value) => setAutoDelete(value)}
+      />
+
       <div className="mb-6">
         <label className="block text-gray-400 mb-2">Auto reply (optional)</label>
         <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
@@ -155,6 +166,7 @@ export default function Page() {
           message={autoReply.replace("{user}", "@HeapReaper")}
         />
       </div>
+
       <div className="mb-4">
         <label className="block text-sm text-gray-400 mb-2">Auto emoji reaction (optional)</label>
         <input

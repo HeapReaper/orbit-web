@@ -6,7 +6,6 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guildId = searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
@@ -22,9 +21,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, channel, enabled, maxMessages, autoReply, autoEmoji } = data;
+  const { guildId, channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete } = data;
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
@@ -32,8 +30,8 @@ export async function POST(req: NextRequest) {
   try {
     const updated = await prisma.introductionSettings.upsert({
       where: { guildId },
-      update: { channel, enabled, maxMessages, autoReply, autoEmoji },
-      create: { guildId, channel, enabled, maxMessages, autoReply, autoEmoji },
+      update: { channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete },
+      create: { guildId, channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete },
     });
 
     return NextResponse.json(updated);

@@ -33,7 +33,7 @@ export default function ToggleSwitch({
   };
 
   return (
-    <div className={`inline-flex items-center cursor-pointer ${className}`}>
+    <div className={`inline-flex items-center mb-6 cursor-pointer ${className}`}>
       <button
         type="button"
         onClick={toggle}
