@@ -466,3 +466,22 @@ model ServerBackups {
 
   guild ServerBackupSettings @relation(fields: [guildId], references: [guildId])
 }
+
+model MessageReportSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique
+  enabled   Boolean  @default(false)
+  channel   String   @db.VarChar(22)
+  createdAt DateTime @default(now())
+}
+
+model MessageReports {
+  id        Int      @id @default(autoincrement())
+  guildId   String
+  userId    String   @db.VarChar(22)
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([guildId])
+  @@index([guildId, userId])
+}
