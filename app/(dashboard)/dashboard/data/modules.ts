@@ -261,6 +261,15 @@ const modules: moduleType[] = [
     enabled: true,
     inDevelopment: false,
     category: "Events / Server Management"
+  },
+  {
+    name: "Message Report",
+    url: "message-report",
+    description: "Allow members to easily report messages to staff for review.",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Moderation"
   }
 ];
 
