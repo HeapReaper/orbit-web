@@ -101,7 +101,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         YouTube Watcher
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Get notified when a Youtuber posts a new video!" />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
