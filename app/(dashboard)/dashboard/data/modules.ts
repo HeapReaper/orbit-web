@@ -97,7 +97,7 @@ const modules: moduleType[] = [
     description: "Get notified when your favorite YouTube channels post.",
     tier: "free",
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Streaming / Media"
   },
   {
@@ -106,7 +106,7 @@ const modules: moduleType[] = [
     description: "Receive alerts when selected Twitch streamers go live.",
     tier: "premium",
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Streaming / Media"
   },
   {
