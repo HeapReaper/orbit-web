@@ -106,7 +106,7 @@ export default function BoostSpotlightPage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Boost Spotlight
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Automatically highlight server boosters by sending customizable messages in a selected channel. Use placeholders for the user and their boost count, and optionally randomize messages." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

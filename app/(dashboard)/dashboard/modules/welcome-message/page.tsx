@@ -106,7 +106,7 @@ export default function WelcomeMessagePage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Welcome Message
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Automatically send a customizable join message to a selected channel when a user joins the server. You can enable multiple messages and choose to pick them randomly." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

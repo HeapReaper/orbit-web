@@ -92,7 +92,7 @@ export default function TicketsSettingsPage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Tickets
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Manage ticket threads: normal tickets will be created in the first channel, confidential tickets in the second channel. Users can open tickets via the configured commands or buttons." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

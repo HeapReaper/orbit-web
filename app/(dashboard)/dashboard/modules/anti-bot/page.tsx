@@ -131,7 +131,7 @@ export default function AntiBotPage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Anti Bot
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Configure automated protection against bot accounts: message rate limits, punishments, forbidden words, notifications, and admin exemptions." />
       </h1>
 
       {/* Enable */}

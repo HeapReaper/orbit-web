@@ -162,7 +162,7 @@ export default function ServerBackupPage() {
 
       <h1 className="text-2xl font-semibold text-white flex items-center gap-2">
         Server backup
-        <InfoTooltip text="Automatically backup your server at regular intervals." />
+        <InfoTooltip text="Automatically backup your server at regular intervals and restore them to an earlier state." />
       </h1>
 
       <p className="text-sm text-gray-500 mb-4 mt-1">

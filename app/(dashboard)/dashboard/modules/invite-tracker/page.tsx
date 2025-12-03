@@ -112,7 +112,7 @@ export default function InviteTrackerPage() {
 
       <h1 className="text-2xl font-semibold  text-white flex items-center gap-2">
         Invite Tracker
-        <InfoTooltip text="Track and label your invite links" />
+        <InfoTooltip text="Enable tracking of server invite links and assign custom labels to each invite." />
       </h1>
 
       <p className="text-xs text-gray-400 mb-4">

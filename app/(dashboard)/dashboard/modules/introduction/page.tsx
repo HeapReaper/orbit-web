@@ -105,7 +105,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Introduction
-        <InfoTooltip text="From automatic replies to limit the max allowed message count in a introduction channel, below you can configure it all!" />
+        <InfoTooltip text="Configure automatic introductions: set a channel, max messages per user, optional auto-replies, and emoji reactions." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

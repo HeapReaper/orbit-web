@@ -88,7 +88,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Message Report
-        <InfoTooltip text="Let users report messages by: Right click -> Apps -> Report Message. This message and the user who reported it will be send to the specified channel below." />
+        <InfoTooltip text="Users can report messages via the context menu. Reports, including the reporting user, will be sent to the selected channel." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
