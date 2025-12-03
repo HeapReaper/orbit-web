@@ -117,7 +117,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Auto Messages
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Create automated scheduled messages for your server: customize content, channels, timing, days, and enable or disable each message individually." />
       </h1>
 
       {autoMessages.map((msg, i) => (

@@ -97,7 +97,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Birthday
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Automatically send birthday messages to users in a chosen channel. Customize the message, mention the user, display their age, and schedule the announcement time." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

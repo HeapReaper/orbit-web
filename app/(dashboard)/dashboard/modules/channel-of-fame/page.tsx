@@ -94,9 +94,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Channel of Fame
-        <InfoTooltip
-          text="When a message get's a certain amount of emojis, the message will be posted to the selected channel as a Channel of Fame message."
-        />
+        <InfoTooltip text="Automatically post messages that reach a set number of reactions with a specific emoji to a designated Channel of Fame." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

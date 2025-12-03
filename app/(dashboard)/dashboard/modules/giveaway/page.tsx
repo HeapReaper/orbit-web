@@ -88,7 +88,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Giveaway
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Configure the Giveaway module: enable it and select the channel where giveaway notifications should be posted." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

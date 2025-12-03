@@ -18,7 +18,7 @@ export default function Page() {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isPremium, setIsPremium] = useState<boolean>(false);
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -116,7 +116,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Kick Watcher
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Automatically monitor kicked users and track events in the selected channel." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

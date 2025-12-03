@@ -96,7 +96,7 @@ export default function BumpReminderPage() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Bump Reminder
-        <InfoTooltip text="Work in progress" />
+        <InfoTooltip text="Automatically remind members to bump your server at regular intervals. Customize the message, choose the notification channel, and set the reminder interval." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">

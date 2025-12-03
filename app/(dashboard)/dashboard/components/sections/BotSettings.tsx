@@ -9,7 +9,6 @@ import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
-import { botSettingsSchema } from "@/app/zod/botSettings";
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
@@ -26,7 +25,6 @@ export default function BotSettings() {
   const [primaryColor, setPrimaryColor] = useState<string>("");
   const [secondaryColor, setSecondaryColor] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -40,8 +38,6 @@ export default function BotSettings() {
       try {
         const res = await fetch(`/api/bot-settings?guildId=${selectedGuild}`);
         const data = await res.json();
-
-        console.log(`SHow in server list: ${data.showInGuildList}`)
 
         setNickname(data.nickname ?? "");
         setLanguage(data.language ?? "");
@@ -71,36 +67,20 @@ export default function BotSettings() {
     if (!selectedGuild) return;
     setIsSaving(true);
 
-    const formData = {
-      guildId: selectedGuild,
-      nickname,
-      language,
-      updatesChannel,
-      timezone,
-      primaryColor,
-      secondaryColor,
-      showInGuildList,
-    }
-
-    // Validate data and show errors
-    const validation = botSettingsSchema.safeParse(formData);
-    if (!validation.success) {
-      const formatted: Record<string, string> = {};
-
-      Object.entries(validation.error.flatten().fieldErrors).forEach(([key, value]) => {
-        if (value && value.length > 0) formatted[key] = value[0];
-        notify("Validation error", `${value[0]}`)
-      });
-
-      setIsSaving(false);
-      return;
-    }
-
     try {
       const resp = await fetch("/api/bot-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(validation.data),
+        body: JSON.stringify({
+          guildId: selectedGuild,
+          nickname,
+          language,
+          updatesChannel,
+          timezone,
+          primaryColor,
+          secondaryColor,
+          showInGuildList,
+        }),
       });
 
       if (!resp.ok) {
@@ -136,8 +116,8 @@ export default function BotSettings() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Bot Settings
-        <InfoTooltip text="Work in progress" />
+        Settings
+        <InfoTooltip text="Update your bot's language, nickname, theme colors, timezone, and more. Changes save automatically." />
       </h1>
 
       <form className="space-y-6">

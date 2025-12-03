@@ -194,8 +194,8 @@ export default function Page() {
         Leveling
         <InfoTooltip
           text="With the default settings there are ~100,000 messages needed to reach level 10,
-          which will get harder when you go higher in levels. That can be changed by changing the Curve Exponent.
-          With voice you need in total 200,000 minutes to reach level 10 (without sending messages)."
+            which will get harder when you go higher in levels. That can be changed by changing the Curve Exponent.
+            With voice you need in total 200,000 minutes to reach level 10 (without sending messages)."
         />
       </h1>
 

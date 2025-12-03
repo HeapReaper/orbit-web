@@ -95,7 +95,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Auto Role
-        <InfoTooltip text="You can automaticly add specific roles to new users when they join your server." />
+        <InfoTooltip text="Automatically assign predefined roles to new members when they join your server. Configure which roles are applied and whether the module is enabled." />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
