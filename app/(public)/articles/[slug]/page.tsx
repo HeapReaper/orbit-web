@@ -1,4 +1,4 @@
-import { Metadata, PageProps} from "next";
+import { Metadata } from "next";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
 import React from "react";
 import { Calendar, User } from "lucide-react";
