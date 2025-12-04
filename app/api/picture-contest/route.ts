@@ -14,14 +14,14 @@ export async function GET(req: NextRequest) {
   try {
     let data = await prisma.pictureContestSettings.findUnique({
       where: { guildId },
-      include: { contests: true },
+      include: { PictureContestItem: true },
     });
 
     // Auto-create empty settings if none exist
     if (!data) {
       data = await prisma.pictureContestSettings.create({
         data: { guildId },
-        include: { contests: true },
+        include: { PictureContestItem: true },
       });
     }
 
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     // Return updated settings
     const updated = await prisma.pictureContestSettings.findUnique({
       where: { guildId },
-      include: { contests: true },
+      include: { PictureContestItem: true },
     });
 
     return NextResponse.json(updated);

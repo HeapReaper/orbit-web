@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const settings = await prisma.serverBackupSettings.findFirst({
       where: { guildId },
       include: {
-        backups: {
+        ServerBackups: {
           orderBy: { createdAt: "desc" },
         },
       },
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
       frequency: settings?.frequency ?? "weekly",
       time: settings?.time ?? "00:00",
       content: settings?.content ?? [],
-      backups: settings?.backups ?? [],
+      backups: settings?.ServerBackups ?? [],
     });
   } catch (err) {
     console.error("GET backups error:", err);
