@@ -1,23 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import isUserGuildAdmin from "@/app/lib/isGuildAdmin";
 import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAndGuildAdmin";
 
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const guildId = searchParams.get("guildId");
+  const guildId = req.nextUrl.searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (!guildId) return NextResponse.json({ error: "guild_id is missing" }, { status: 403 });
 
   try {
-    const data = await prisma.loggingSettings.findUnique({ where: { guildId } });
+    const data = await prisma.logging_settings.findUnique({ where: { guild_id: guildId } });
     return NextResponse.json(data ?? { enabled: false, channel: null, events: [] });
   } catch (err) {
     console.error(err);
@@ -29,16 +24,15 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   const { guildId, channel, events, enabled } = data;
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (!guildId) return NextResponse.json({ error: "guild_id is missing" }, { status: 403 });
 
   try {
-    const updated = await prisma.loggingSettings.upsert({
-      where: { guildId },
+    const updated = await prisma.logging_settings.upsert({
+      where: { guild_id: guildId },
       update: { channel, events, enabled },
-      create: { guildId, channel, events, enabled },
+      create: { guild_id: guildId, channel, events, enabled },
     });
 
     return NextResponse.json(updated);

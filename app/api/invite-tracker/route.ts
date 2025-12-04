@@ -6,36 +6,23 @@ import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAnd
 const redis = getRedisClient();
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const guildId = searchParams.get("guildId");
+  const guildId = req.nextUrl.searchParams.get("guildId");
+  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-  if (!DISCORD_BOT_TOKEN) {
-    return NextResponse.json({ error: "Missing bot token" }, { status: 500 });
-  }
+  if (!DISCORD_BOT_TOKEN) return NextResponse.json({ error: "Missing bot token" }, { status: 500 });
 
   const cacheKey = `invite_tracker:${guildId}`;
 
   try {
-    // Try to read from Redis cache first
     const cached = await redis.get(cacheKey);
-    if (cached) {
-      console.log(`[Cache Hit] ${cacheKey}`);
-      return NextResponse.json(JSON.parse(cached));
-    }
+    if (cached) return NextResponse.json(JSON.parse(cached));
 
-    console.log(`[Cache Miss] ${cacheKey} → fetching from Discord & DB`);
-
-    // Fetch invites from Discord API
     const discordRes = await fetch(`https://discord.com/api/v10/guilds/${guildId}/invites`, {
-      headers: {
-        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-      },
+      headers: { Authorization: `Bot ${DISCORD_BOT_TOKEN}` },
     });
 
     if (!discordRes.ok) {
@@ -45,36 +32,27 @@ export async function GET(req: NextRequest) {
 
     const discordInvites = await discordRes.json();
 
-    // Fetch invites from our database
-    const dbInvites = await prisma.inviteTrackerInvite.findMany({
-      where: { guildId },
+    const dbInvites = await prisma.invite_tracker_invite.findMany({
+      where: { guild_id: guildId },
     });
 
-    // Merge Discord + DB data
     const merged = discordInvites.map((inv: any) => {
-      const db = dbInvites.find((d) => d.inviteCode === inv.code);
+      const db = dbInvites.find((d) => d.invite_code === inv.code);
       return {
         code: inv.code,
         url: `https://discord.gg/${inv.code}`,
         uses: inv.uses,
         inviter: inv.inviter?.username ?? "Unknown",
         channel: inv.channel?.name ?? "Unknown",
-        type: db?.inviteType ?? "",
-        expiresAt: inv.expiresAt ?? null
+        type: db?.invite_type ?? "",
+        expiresAt: inv.expiresAt ?? null,
       };
     });
 
-    // Get guild settings
-    const settings = await prisma.guildInviteSettings.findUnique({
-      where: { guildId },
-    });
+    const settings = await prisma.guild_invite_settings.findUnique({ where: { guild_id: guildId } });
 
-    const result = {
-      enabled: settings?.enabled ?? false,
-      invites: merged,
-    };
+    const result = { enabled: settings?.enabled ?? false, invites: merged };
 
-    // Cache the result in Redis for 3 minutes (180s)
     await redis.set(cacheKey, JSON.stringify(result), "EX", 180);
 
     return NextResponse.json(result);
@@ -87,32 +65,29 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { guildId, enabled, invites } = body;
+  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    await prisma.guildInviteSettings.upsert({
-      where: { guildId },
+    await prisma.guild_invite_settings.upsert({
+      where: { guild_id: guildId },
       update: { enabled },
-      create: { guildId, enabled },
+      create: { guild_id: guildId, enabled },
     });
 
-    await prisma.inviteTrackerInvite.deleteMany({ where: { guildId } });
-    await prisma.inviteTrackerInvite.createMany({
+    await prisma.invite_tracker_invite.deleteMany({ where: { guild_id: guildId } });
+    await prisma.invite_tracker_invite.createMany({
       data: invites.map((i: any) => ({
-        guildId,
-        inviteCode: i.code,
-        inviteType: i.type ?? null,
+        guild_id: guildId,
+        invite_code: i.code,
+        invite_type: i.type ?? null,
       })),
     });
 
-    // Invalidate Redis cache after saving
     const cacheKey = `invite_tracker:${guildId}`;
     await redis.del(cacheKey);
-    console.log(`[Cache Cleared] ${cacheKey}`);
 
     return NextResponse.json({ success: true });
   } catch (err) {

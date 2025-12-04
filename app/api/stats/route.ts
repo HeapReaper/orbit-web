@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 
     if (cachedData)  return NextResponse.json(JSON.parse(cachedData));
 
-    const data = await prisma.premiumGuild.findMany({
+    const data = await prisma.premium_guild.findMany({
       where: { premium: true },
     });
 

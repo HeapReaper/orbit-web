@@ -3,18 +3,14 @@ import { prisma } from "@/app/lib/prisma";
 import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAndGuildAdmin";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const guildId = searchParams.get("guildId");
+  const guildId = req.nextUrl.searchParams.get("guildId");
+  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.leaveMessageSettings.findFirst({
-      where: { guildId },
-    });
+    const data = await prisma.leave_message_settings.findFirst({ where: { guild_id: guildId } });
     return NextResponse.json(
       data || { messages: [""], channel: null, enabled: 0, randomize: false }
     );
@@ -25,30 +21,18 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const { guildId, messages, channel, enabled, randomize } = data;
+  const body = await req.json();
+  const { guildId, messages, channel, enabled, randomize } = body;
+  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const updated = await prisma.leaveMessageSettings.upsert({
-      where: { guildId },
-      update: {
-        messages,
-        channel,
-        enabled,
-        randomize,
-      },
-      create: {
-        guildId,
-        messages,
-        channel,
-        enabled,
-        randomize,
-      },
+    const updated = await prisma.leave_message_settings.upsert({
+      where: { guild_id: guildId },
+      update: { messages, channel, enabled, randomize },
+      create: { guild_id: guildId, messages, channel, enabled, randomize },
     });
 
     return NextResponse.json(updated);

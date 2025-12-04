@@ -12,9 +12,9 @@ export async function GET(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.ticketSettings.findFirst({
+    const data = await prisma.ticket_settings.findFirst({
       where: {
-        guildId: guildId,
+        guild_id: guildId,
       },
     });
 
@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
-  const updated = await prisma.ticketSettings.upsert({
-    where: { guildId },
-    update: { channel, channelConf, enabled },
-    create: { guildId, channel, channelConf, enabled }
+  const updated = await prisma.ticket_settings.upsert({
+    where: { guild_id: guildId },
+    update: { channel, channel_conf: channelConf, enabled },
+    create: { guild_id: guildId, channel, channel_conf: channelConf, enabled }
   })
 
   return NextResponse.json(updated);

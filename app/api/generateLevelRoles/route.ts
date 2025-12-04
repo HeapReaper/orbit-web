@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     if (!count) return NextResponse.json({ error: "Count is missing" }, { status: 400 });
     if (!BOT_TOKEN) return NextResponse.json({ error: "Bot token not set" }, { status: 500 });
 
-    // Validate authentication & admin permissions
     const session = await validateApiSessionAndGuildAdmin(guildId);
     if (typeof session === "string") {
       return NextResponse.json({ error: session }, { status: 403 });

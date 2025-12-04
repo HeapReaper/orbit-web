@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   if (!data.type) return NextResponse.json({ error: "type_is_required" });
   if (!data.message) return NextResponse.json({ error: "message_is_required" });
 
-  const { guild_id, type, message } = data;
+  const { guildId, type, message } = data;
 
   // @ts-ignore
   const is_admin = await isUserGuildAdmin(session.user.id, guild_id);
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
   await prisma.dashboard_log.create({
     data: {
-      guild_id,
+      guild_id: guildId,
       type,
       message,
     },

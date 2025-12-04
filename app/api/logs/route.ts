@@ -6,10 +6,9 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   const { guildId, type, time_range } = data;
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (!guildId) return NextResponse.json({ error: "guild_id is missing" }, { status: 403 });
 
   let startDate: Date | undefined;
   const now = new Date();
@@ -21,11 +20,11 @@ export async function POST(req: NextRequest) {
     startDate.setMonth(now.getMonth() - 1);
   }
 
-  const whereClause: any = { guildId };
+  const whereClause: any = { guild_id: guildId };
   if (startDate) whereClause.timestamp = { gte: startDate };
 
   if (type === "guild") {
-    const logs = await prisma.guildLog.findMany({
+    const logs = await prisma.guild_log.findMany({
       where: whereClause,
       orderBy: { timestamp: "desc" },
     });
@@ -34,7 +33,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (type === "dashboard") {
-    const logs = await prisma.dashboardLog.findMany({
+    const logs = await prisma.dashboard_log.findMany({
       where: whereClause,
       orderBy: { timestamp: "desc" },
     });

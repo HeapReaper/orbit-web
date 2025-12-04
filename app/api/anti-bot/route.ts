@@ -4,27 +4,42 @@ import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAnd
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const guildId = searchParams.get("guildId");
+  const guildID = searchParams.get("guildId");
+
+  if (!guildID) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   // Validate authentication by session and if user is guild admin
-  const session = await validateApiSessionAndGuildAdmin(guildId);
+  const session = await validateApiSessionAndGuildAdmin(guildID);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.antibotsettings.findUnique({ where: { guildid: guildId } });
+    const data = await prisma.anti_bot_settings.findUnique({ where: { guild_id: guildID } });
+
     return NextResponse.json(
-      data ?? {
-        enabled: false,
-        timeWindow: 10,
-        channelLimit: 3,
-        punishment: "none",
-        forbiddenWords: [],
-        notificationChannel: null,
-        jailRole: null,
-        excludeAdmins: false,
-        blockInvites: false,
-      }
+      data
+        ? {
+          guildID: data.guild_id,
+          enabled: data.enabled,
+          timeWindow: data.time_window,
+          channelLimit: data.channel_limit,
+          punishment: data.punishment,
+          forbiddenWords: data.forbidden_words,
+          notificationChannel: data.notification_channel,
+          jailRole: data.jailrole,
+          excludeAdmins: data.exclude_admins,
+          blockInvites: data.block_invites,
+        }
+        : {
+          enabled: false,
+          timeWindow: 10,
+          channelLimit: 3,
+          punishment: "none",
+          forbiddenWords: [],
+          notificationChannel: null,
+          jailRole: null,
+          excludeAdmins: false,
+          blockInvites: false,
+        }
     );
   } catch (err) {
     console.error("GET /api/anti-bot failed:", err);
@@ -35,7 +50,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const data = await req.json();
   const {
-    guildId,
+    guildID,
     enabled = false,
     timeWindow = 10,
     channelLimit = 3,
@@ -47,40 +62,51 @@ export async function POST(req: NextRequest) {
     blockInvites = false,
   } = data;
 
-  // Validate authentication by session and if user is guild admin
-  const session = await validateApiSessionAndGuildAdmin(guildId);
+  if (!guildID) return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
+
+  const session = await validateApiSessionAndGuildAdmin(guildID);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const updated = await prisma.antibotsettings.upsert({
-      where: { guildid: guildId },
+    const updated = await prisma.anti_bot_settings.upsert({
+      where: { guild_id: guildID },
       update: {
         enabled,
-        timeWindow,
-        channelLimit,
+        time_window: timeWindow,
+        channel_limit: channelLimit,
         punishment,
-        forbiddenWords,
-        notificationChannel,
-        jailRole,
-        excludeAdmins,
-        blockInvites,
+        forbidden_words: forbiddenWords,
+        notification_channel: notificationChannel,
+        jailrole: jailRole,
+        exclude_admins: excludeAdmins,
+        block_invites: blockInvites,
       },
       create: {
-        guildid: guildId,
+        guild_id: guildID,
         enabled,
-        timewindow,
-        channellimit,
+        time_window: timeWindow,
+        channel_limit: channelLimit,
         punishment,
-        forbiddenWords,
-        notificationChannel,
-        jailRole,
-        excludeAdmins,
-        blockInvites,
+        forbidden_words: forbiddenWords,
+        notification_channel: notificationChannel,
+        jailrole: jailRole,
+        exclude_admins: excludeAdmins,
+        block_invites: blockInvites,
       },
     });
 
-    return NextResponse.json(updated);
+    return NextResponse.json({
+      guildID: updated.guild_id,
+      enabled: updated.enabled,
+      timeWindow: updated.time_window,
+      channelLimit: updated.channel_limit,
+      punishment: updated.punishment,
+      forbiddenWords: updated.forbidden_words,
+      notificationChannel: updated.notification_channel,
+      jailRole: updated.jailrole,
+      excludeAdmins: updated.exclude_admins,
+      blockInvites: updated.block_invites,
+    });
   } catch (err) {
     console.error("POST /api/anti-bot failed:", err);
     return NextResponse.json({ error: "Failed to save anti-bot settings" }, { status: 500 });

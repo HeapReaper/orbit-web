@@ -15,14 +15,14 @@ export async function POST(req: NextRequest) {
     const { updateMessage } = data;
     if (!updateMessage) return NextResponse.json({ error: "Please fill in a message" });
 
-    const botSettings = await prisma.botSettings.findMany();
+    const botSettings = await prisma.bot_settings.findMany();
     const token = process.env.DISCORD_BOT_TOKEN;
 
     for (const botSetting of botSettings) {
-      if (!botSetting.updatesChannel) continue;
+      if (!botSetting.updates_channel) continue;
 
       try {
-        await fetch(`https://discord.com/api/v10/channels/${botSetting.updatesChannel}/messages`, {
+        await fetch(`https://discord.com/api/v10/channels/${botSetting.updates_channel}/messages`, {
           method: "POST",
           headers: {
             "Authorization": `Bot ${token}`,
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({ content: updateMessage }),
         });
       } catch (err) {
-        console.error(`Failed to send message to channel ${botSetting.updatesChannel}:`, err);
+        console.error(`Failed to send message to channel ${botSetting.updates_channel}:`, err);
       }
     }
 

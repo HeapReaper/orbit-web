@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
   if (!session)
     return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
   if (!guildId)
-    return NextResponse.json({ error: "guildId is required" }, { status: 400 });
+    return NextResponse.json({ error: "guild_id is required" }, { status: 400 });
 
   if (!(await isUserGuildAdmin(session.user.id, guildId))) {
     return NextResponse.json({ error: "You must be a guild admin to access this" }, { status: 403 });
@@ -31,19 +31,19 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(JSON.parse(cached));
     }
 
-    let premiumGuild = await prisma.premiumGuild.findFirst({
-      where: { guildId },
+    let premiumGuild = await prisma.premium_guild.findFirst({
+      where: { guild_id: guildId },
     });
 
     if (!premiumGuild) {
       const trialEndsAt = new Date();
       trialEndsAt.setDate(trialEndsAt.getDate() + 30);
 
-      premiumGuild = await prisma.premiumGuild.create({
+      premiumGuild = await prisma.premium_guild.create({
         data: {
-          guildId,
+          guild_id: guildId,
           premium: true,
-          trialEndsAt,
+          trial_ends_at: trialEndsAt,
         },
       });
     }

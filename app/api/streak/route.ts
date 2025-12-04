@@ -11,9 +11,9 @@ export async function GET(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.streakSettings.findFirst({
+    const data = await prisma.streak_settings.findFirst({
       where: {
-        guildId: guildId,
+        guild_id: guildId,
       },
     });
 
@@ -31,12 +31,12 @@ export async function POST(req: NextRequest) {
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
-  const updated = await prisma.streakSettings.upsert({
+  const updated = await prisma.streak_settings.upsert({
     where: {
-      guildId: guildId
+      guild_id: guildId
     },
     update: { channel, role, enabled },
-    create: { guildId, channel, role, enabled }
+    create: { guild_id: guildId, channel, role, enabled }
   })
 
   return NextResponse.json(updated);

@@ -9,14 +9,14 @@ export async function GET(req: NextRequest) {
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (!guildId) return NextResponse.json({ error: "guild_id is missing" }, { status: 403 });
 
   const rateLimitResp = await rateLimitApi(`${session.user.id}:getRequest`, guildId, 10, 60);
   if (rateLimitResp) return rateLimitResp;
 
   try {
-    const data = await prisma.messageReportSettings.findFirst({
-      where: { guildId },
+    const data = await prisma.message_report_settings.findFirst({
+      where: { guild_id: guildId },
     });
 
     return NextResponse.json(data);
@@ -32,21 +32,21 @@ export async function POST(req: NextRequest) {
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (!guildId) return NextResponse.json({ error: "guild_id is missing" }, { status: 403 });
 
   const rateLimitResp = await rateLimitApi(`${session.user.id}:postRequest`, guildId, 10, 60);
   if (rateLimitResp) return rateLimitResp;
 
   try {
-    const updated = await prisma.messageReportSettings.upsert({
-      where: { guildId },
+    const updated = await prisma.message_report_settings.upsert({
+      where: { guild_id: guildId },
       update: { enabled, channel },
-      create: { guildId, enabled, channel },
+      create: { guild_id: guildId, enabled, channel },
     });
 
     return NextResponse.json(updated);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update birthday settings" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update message report settings" }, { status: 500 });
   }
 }

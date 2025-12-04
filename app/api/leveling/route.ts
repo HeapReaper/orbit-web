@@ -5,33 +5,30 @@ import isUserGuildAdmin from "@/app/lib/isGuildAdmin";
 import { prisma } from "@/app/lib/prisma";
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const guildId = searchParams.get("guildId");
+  const guildId = req.nextUrl.searchParams.get("guildId");
   const session = await getServerSession(authOptions);
 
-  if (!session)
-    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
-  if (!guildId)
-    return NextResponse.json({ error: "guildId is required" }, { status: 400 });
+  if (!session) return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+  if (!guildId) return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   // @ts-ignore
   if (!(await isUserGuildAdmin(session.user.id, guildId)))
     return NextResponse.json({ error: "You must be a guild admin" }, { status: 403 });
 
   try {
-    const data = await prisma.levelingSettings.findUnique({ where: { guildId } });
+    const data = await prisma.leveling_settings.findUnique({ where: { guild_id: guildId } });
 
     return NextResponse.json(
       data ?? {
         enabled: false,
         channel: null,
-        levelRoles: [],
-        xpRate: 1,
-        xpPerMessage: 10,
-        xpPerVoice: 5,
-        curveExponent: 2.65,
-        xpMessageGainSpeed: "oneTimeAMinute",
-        xpVoiceGainSpeed: "everyMinute",
+        level_roles: [],
+        xp_rate: 1,
+        xp_per_message: 10,
+        xp_per_voice: 5,
+        curve_exponent: 2.65,
+        xp_message_gainspeed: "oneTimeAMinute",
+        xp_voice_gainspeed: "everyMinute",
       }
     );
   } catch (err) {
@@ -44,10 +41,8 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   const session = await getServerSession(authOptions);
 
-  if (!session)
-    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
-  if (!data.guildId)
-    return NextResponse.json({ error: "guildId is required" }, { status: 400 });
+  if (!session) return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+  if (!data.guildId) return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   // @ts-ignore
   if (!(await isUserGuildAdmin(session.user.id, data.guildId)))
@@ -67,30 +62,30 @@ export async function POST(req: NextRequest) {
   } = data;
 
   try {
-    const updated = await prisma.levelingSettings.upsert({
-      where: { guildId },
+    const updated = await prisma.leveling_settings.upsert({
+      where: { guild_id: guildId },
       update: {
         channel,
-        levelRoles,
-        xpRate,
+        level_roles: levelRoles,
+        xp_rate: xpRate,
         enabled,
-        xpPerMessage,
-        xpPerVoice,
-        curveExponent,
-        xpMessageGainSpeed,
-        xpVoiceGainSpeed,
+        xp_per_message: xpPerMessage,
+        xp_pervoice: xpPerVoice,
+        curve_exponent: curveExponent,
+        xp_message_gainspeed: xpMessageGainSpeed,
+        xp_voice_gainspeed: xpVoiceGainSpeed,
       },
       create: {
-        guildId,
+        guild_id: guildId,
         channel,
-        levelRoles,
-        xpRate,
+        level_roles: levelRoles,
+        xp_rate: xpRate,
         enabled,
-        xpPerMessage,
-        xpPerVoice,
-        curveExponent,
-        xpMessageGainSpeed,
-        xpVoiceGainSpeed,
+        xp_per_message: xpPerMessage,
+        xp_pervoice: xpPerVoice,
+        curve_exponent: curveExponent,
+        xp_message_gainspeed: xpMessageGainSpeed,
+        xp_voice_gainspeed: xpVoiceGainSpeed,
       },
     });
 

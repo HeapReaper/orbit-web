@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const data = await prisma.userAction.findMany();
+    const data = await prisma.user_action.findMany();
 
     return NextResponse.json({ data: data });
   } catch (err) {
@@ -31,10 +31,10 @@ export async function POST(req: NextRequest) {
 
   const { guildId, action, userId } = data;
 
-  const updatedUser = await prisma.userAction.create({
+  const updatedUser = await prisma.user_action.create({
     data: {
-      userId: userId,
-      guildId: guildId,
+      user_id: userId,
+      guild_id: guildId,
       action: action
     }
   })

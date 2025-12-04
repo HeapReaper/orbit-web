@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.youtubeWatcher.findUnique({
-      where: { guildId },
+    const data = await prisma.youtube_watcher.findUnique({
+      where: { guild_id: guildId },
     });
 
     return NextResponse.json({
@@ -36,15 +36,15 @@ export async function POST(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const updated = await prisma.youtubeWatcher.upsert({
-      where: { guildId },
+    const updated = await prisma.youtube_watcher.upsert({
+      where: { guild_id: guildId },
       update: {
         channel,
         enabled,
         users: Array.isArray(users) ? users : [],
       },
       create: {
-        guildId,
+        guild_id: guildId,
         channel,
         enabled,
         users: Array.isArray(users) ? users : [],
