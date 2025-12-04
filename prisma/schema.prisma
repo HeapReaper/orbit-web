@@ -7,57 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model automessage {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @db.VarChar(22)
-  message   String   @db.Text
-  channel   String   @db.VarChar(22)
-  time      String   @db.VarChar(5)
-  days      Json
-  enabled   Boolean  @default(true)
-  createdat DateTime @default(now())
-  updatedat DateTime @default(now())
+model auto_message {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @db.VarChar(22)
+  message    String   @db.Text
+  channel    String   @db.VarChar(22)
+  time       String   @db.VarChar(5)
+  days       Json
+  enabled    Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
-model birthsettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  message   String   @db.Text
-  time      String   @db.VarChar(5)
-  enabled   Boolean
-  createdat DateTime @default(now())
+model birthday_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  message    String   @db.Text
+  time       String   @db.VarChar(5)
+  enabled    Boolean
+  created_at DateTime @default(now())
 }
 
 model birthday {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @db.VarChar(22)
-  userid    String   @db.VarChar(22)
-  birthdate DateTime @db.Date
-  createdat DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @db.VarChar(22)
+  user_id    String   @db.VarChar(22)
+  birth_date DateTime @db.Date
+  created_at DateTime @default(now())
 }
 
-model botsettings {
-  id              Int      @id @default(autoincrement())
-  guildid         String   @unique
-  nickname        String?  @db.VarChar(50)
-  language        String?  @db.VarChar(3)
-  updateschannel  String?  @db.VarChar(22)
-  timezone        String?  @db.VarChar(22)
-  primarycolor    String?  @db.VarChar(22)
-  secondarycolor  String?  @db.VarChar(22)
-  createdat       DateTime @default(now())
-  showinguildlist Boolean  @default(true)
+model bot_settings {
+  id                 Int      @id @default(autoincrement())
+  guild_id           String   @unique
+  nickname           String?  @db.VarChar(50)
+  language           String?  @db.VarChar(3)
+  updates_channel    String?  @db.VarChar(22)
+  timezone           String?  @db.VarChar(22)
+  primary_color      String?  @db.VarChar(22)
+  secondary_color    String?  @db.VarChar(22)
+  created_at         DateTime @default(now())
+  show_in_guild_list Boolean  @default(true)
 }
 
-model bumpremindersettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  message   String   @db.Text
-  interval  Int
-  enabled   Int      @default(1)
-  createdat DateTime @default(now())
+model bump_reminder_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  message    String   @db.Text
+  interval   Int
+  enabled    Int      @default(1)
+  created_at DateTime @default(now())
 }
 
 model migration {
@@ -66,302 +66,302 @@ model migration {
   runat DateTime @default(now())
 }
 
-model premiumguild {
-  id          Int       @id @default(autoincrement())
-  guildid     String    @unique
-  premium     Boolean   @default(false)
-  trialendsat DateTime?
-  createdat   DateTime  @default(now())
+model premium_guild {
+  id            Int       @id @default(autoincrement())
+  guild_id      String    @unique
+  premium       Boolean   @default(false)
+  trial_ends_at DateTime?
+  created_at    DateTime  @default(now())
 }
 
-model useraction {
-  id        Int      @id @default(autoincrement())
-  guildid   String
-  userid    String
-  action    String
-  createdat DateTime @default(now())
+model user_action {
+  id         Int      @id @default(autoincrement())
+  guild_id   String
+  user_id    String
+  action     String
+  created_at DateTime @default(now())
 }
 
-model welcomemessagesettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  enabled   Int
-  randomize Boolean  @default(false)
-  createdat DateTime @default(now())
+model welcome_message_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  messages   Json?
+  channel    String?  @db.VarChar(22)
+  enabled    Int
+  randomize  Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model leavemessagesettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  enabled   Int
-  randomize Boolean  @default(false)
-  createdat DateTime @default(now())
+model leave_message_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  messages   Json?
+  channel    String?  @db.VarChar(22)
+  enabled    Int
+  randomize  Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model ticketsettings {
-  id          Int      @id @default(autoincrement())
-  guildid     String   @unique
-  channel     String?  @db.VarChar(22)
-  channelconf String?  @db.VarChar(22)
-  enabled     Int
-  createdat   DateTime @default(now())
+model ticket_settings {
+  id           Int      @id @default(autoincrement())
+  guild_id     String   @unique
+  channel      String?  @db.VarChar(22)
+  channel_conf String?  @db.VarChar(22)
+  enabled      Int
+  created_at   DateTime @default(now())
 }
 
-model botlog {
+model bot_log {
   id        Int      @id @default(autoincrement())
   type      String
   message   String
   timestamp DateTime @default(now())
 }
 
-model dashboardlog {
+model dashboard_log {
   id        Int      @id @default(autoincrement())
-  guildid   String
+  guild_id  String
   type      String
   message   String
   timestamp DateTime @default(now())
 
-  @@index([guildid])
+  @@index([guild_id])
 }
 
-model guildlog {
+model guild_log {
   id        Int      @id @default(autoincrement())
-  guildid   String
+  guild_id  String
   type      String
   message   String
   timestamp DateTime @default(now())
 
-  @@index([guildid])
+  @@index([guild_id])
 }
 
 model kickwatcher {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  users     Json
-  enabled   Boolean
-  createdat DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  users      Json
+  enabled    Boolean
+  created_at DateTime @default(now())
 }
 
-model twitchwatcher {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  users     Json
-  enabled   Boolean
-  createdat DateTime @default(now())
+model twitch_watcher {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  users      Json
+  enabled    Boolean
+  created_at DateTime @default(now())
 }
 
-model youtubewatcher {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  users     Json
-  enabled   Boolean
-  createdat DateTime @default(now())
+model youtube_watcher {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  users      Json
+  enabled    Boolean
+  created_at DateTime @default(now())
 }
 
-model antibotsettings {
-  id                  Int      @id @default(autoincrement())
-  guildid             String   @unique
-  enabled             Boolean  @default(false)
-  timewindow          Int      @default(10)
-  channellimit        Int      @default(3)
-  punishment          String   @default("none") @db.VarChar(20)
-  forbiddenwords      Json?
-  notificationchannel String?  @db.VarChar(22)
-  jailrole            String?  @db.VarChar(22)
-  createdat           DateTime @default(now())
-  updatedat           DateTime @updatedAt
-  blockinvites        Boolean  @default(false)
-  excludeadmins       Boolean  @default(false)
+model anti_bot_settings {
+  id                   Int      @id @default(autoincrement())
+  guild_id             String   @unique
+  enabled              Boolean  @default(false)
+  time_window          Int      @default(10)
+  channel_limit        Int      @default(3)
+  punishment           String   @default("none") @db.VarChar(20)
+  forbidden_words      Json?
+  notification_channel String?  @db.VarChar(22)
+  jailrole             String?  @db.VarChar(22)
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+  block_invites        Boolean  @default(false)
+  exclude_admins       Boolean  @default(false)
 }
 
-model channeloffame {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String?  @db.VarChar(22)
-  emoji     String?  @db.VarChar(10)
-  amount    Int      @default(0)
-  enabled   Boolean  @default(false)
-  createdat DateTime @default(now())
+model channel_of_fame {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String?  @db.VarChar(22)
+  emoji      String?  @db.VarChar(10)
+  amount     Int      @default(0)
+  enabled    Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model levelingsettings {
-  id                 Int      @id @default(autoincrement())
-  guildid            String   @unique
-  channel            String?  @db.VarChar(22)
-  levelroles         Json?
-  xprate             Float    @default(200)
-  enabled            Boolean  @default(false)
-  createdat          DateTime @default(now())
-  curveexponent      Float    @default(2.65)
-  xpmessagegainspeed String   @default("oneTimeAMinute")
-  xppermessage       Int      @default(10)
-  xppervoice         Int      @default(5)
-  xpvoicegainspeed   String   @default("everyMinute")
+model leveling_settings {
+  id                   Int      @id @default(autoincrement())
+  guild_id             String   @unique
+  channel              String?  @db.VarChar(22)
+  level_roles          Json?
+  xp_rate              Float    @default(200)
+  enabled              Boolean  @default(false)
+  created_at           DateTime @default(now())
+  curve_exponent       Float    @default(2.65)
+  xp_message_gainspeed String   @default("oneTimeAMinute")
+  xp_per_message       Int      @default(10)
+  xp_pervoice          Int      @default(5)
+  xp_voice_gainspeed   String   @default("everyMinute")
 }
 
-model loggingsettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String?  @db.VarChar(22)
-  events    Json?
-  enabled   Boolean  @default(false)
-  createdat DateTime @default(now())
+model logging_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String?  @db.VarChar(22)
+  events     Json?
+  enabled    Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model giveawaysettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String?  @db.VarChar(22)
-  enabled   Boolean  @default(false)
-  createdat DateTime @default(now())
+model giveaway_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String?  @db.VarChar(22)
+  enabled    Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model introductionsettings {
-  guildid     String   @id
-  enabled     Boolean  @default(false)
-  channel     String?
-  maxmessages Int      @default(1)
-  autoreply   String?
-  autoemoji   String?
-  autodelete  Boolean  @default(false)
-  createdat   DateTime @default(now())
-  updatedat   DateTime @updatedAt
+model introduction_settings {
+  guild_id     String   @id
+  enabled      Boolean  @default(false)
+  channel      String?
+  max_messages Int      @default(1)
+  auto_reply   String?
+  auto_emoji   String?
+  auto_delete  Boolean  @default(false)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 }
 
-model minecraftsettings {
-  guildid       String   @id
-  enabled       Boolean  @default(false)
-  ip            String
-  port          Int      @default(25565)
-  notifyenabled Boolean  @default(false)
-  channel       String?
-  createdat     DateTime @default(now())
-  updatedat     DateTime @updatedAt
+model minecraft_settings {
+  guild_id       String   @id
+  enabled        Boolean  @default(false)
+  ip             String
+  port           Int      @default(25565)
+  notify_enabled Boolean  @default(false)
+  channel        String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 }
 
-model guildinvitesettings {
-  id        Int                   @id @default(autoincrement())
-  guildid   String                @unique
-  enabled   Boolean               @default(false)
-  createdat DateTime              @default(now())
-  invites   inviteTrackerInvite[]
+model guild_invite_settings {
+  id         Int                     @id @default(autoincrement())
+  guild_id   String                  @unique
+  enabled    Boolean                 @default(false)
+  created_at DateTime                @default(now())
+  invites    invite_tracker_invite[]
 }
 
-model inviteTrackerInvite {
-  id         Int                 @id @default(autoincrement())
-  guildid    String
-  invitecode String              @unique
-  invitetype String?
-  createdat  DateTime            @default(now())
-  guild      guildinvitesettings @relation(fields: [guildid], references: [guildid], onDelete: Cascade)
+model invite_tracker_invite {
+  id          Int                   @id @default(autoincrement())
+  guild_id    String
+  invite_code String                @unique
+  invite_type String?
+  created_at  DateTime              @default(now())
+  guild       guild_invite_settings @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
-  @@index([guildid])
+  @@index([guild_id])
 }
 
-model autorolesettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  autoroles Json?
-  enabled   Boolean  @default(false)
-  createdat DateTime @default(now())
+model auto_role_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  auto_roles Json?
+  enabled    Boolean  @default(false)
+  created_at DateTime @default(now())
 }
 
-model picturecontestsettings {
-  id        Int                  @id @default(autoincrement())
-  guildid   String               @unique
-  createdat DateTime             @default(now())
-  contests  picturecontestitem[]
+model picture_contest_settings {
+  id         Int                    @id @default(autoincrement())
+  guild_id   String                 @unique
+  created_at DateTime               @default(now())
+  contests   picture_contest_item[]
 }
 
-model picturecontestitem {
-  id              Int                    @id @default(autoincrement())
-  guildid         String
-  name            String                 @default("New Contest")
-  contestchannel  String
-  announcechannel String
-  voteemoji       String                 @default("?")
-  votetype        String                 @default("highest")
-  requiredvotes   Int?
-  schedule        String                 @default("end_month")
-  enabled         Boolean                @default(true)
-  createdat       DateTime               @default(now())
-  guild           picturecontestsettings @relation(fields: [guildid], references: [guildid], onDelete: Cascade)
+model picture_contest_item {
+  id               Int                      @id @default(autoincrement())
+  guild_id         String
+  name             String                   @default("New Contest")
+  contest_channel  String
+  announce_channel String
+  vote_emoji       String                   @default("?")
+  vote_type        String                   @default("highest")
+  required_votes   Int?
+  schedule         String                   @default("end_month")
+  enabled          Boolean                  @default(true)
+  created_at       DateTime                 @default(now())
+  guild            picture_contest_settings @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
 
-  @@index([guildid])
+  @@index([guild_id])
 }
 
-model levelingdata {
-  id        Int      @id @default(autoincrement())
-  guildid   String
-  userid    String
-  xp        Int      @default(0)
-  level     Int      @default(0)
-  updatedat DateTime
+model leveling_data {
+  id         Int      @id @default(autoincrement())
+  guild_id   String
+  user_id    String
+  xp         Int      @default(0)
+  level      Int      @default(0)
+  updated_at DateTime
 
-  @@unique([guildid, userid])
+  @@unique([guild_id, user_id])
 }
 
 model giveaway {
-  id           Int                   @id @default(autoincrement())
-  guildid      String
-  endsat       DateTime
+  id           Int                    @id @default(autoincrement())
+  guild_id     String
+  ends_at      DateTime
   winners      Int
   prize        String
-  extrarules   String
-  active       Boolean               @default(true)
-  messageid    String?
-  createdat    DateTime              @default(now())
-  participants giveawayparticipant[]
+  extra_rules  String
+  active       Boolean                @default(true)
+  message_id   String?
+  created_at   DateTime               @default(now())
+  participants giveaway_participant[]
 
-  @@index([guildid])
+  @@index([guild_id])
 }
 
-model giveawayparticipant {
-  giveawayid Int
-  userid     String
-  winner     Boolean  @default(false)
-  giveaway   giveaway @relation(fields: [giveawayid], references: [id])
+model giveaway_participant {
+  giveaway_id Int
+  user_id     String
+  winner      Boolean  @default(false)
+  giveaway    giveaway @relation(fields: [giveaway_id], references: [id])
 
-  @@id([giveawayid, userid])
+  @@id([giveaway_id, user_id])
 }
 
 model account {
-  id                String  @id @default(cuid())
-  userid            String
-  type              String
-  provider          String
-  provideraccountid String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  user              user    @relation(fields: [userid], references: [id])
+  id                  String  @id @default(cuid())
+  user_id             String
+  type                String
+  provider            String
+  provider_account_id String
+  refresh_token       String?
+  access_token        String?
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?
+  session_state       String?
+  user                user    @relation(fields: [user_id], references: [id])
 
-  @@unique([provider, provideraccountid])
-  @@index([userid])
+  @@unique([provider, provider_account_id])
+  @@index([user_id])
 }
 
 model session {
-  id           String   @id @default(cuid())
-  sessiontoken String   @unique
-  userid       String
-  expires      DateTime
-  user         user     @relation(fields: [userid], references: [id])
+  id            String   @id @default(cuid())
+  session_token String   @unique
+  user_id       String
+  expires       DateTime
+  user          user     @relation(fields: [user_id], references: [id])
 
-  @@index([userid])
+  @@index([user_id])
 }
 
-model verificationtoken {
+model verification_token {
   identifier String
   token      String   @unique
   expires    DateTime
@@ -370,116 +370,116 @@ model verificationtoken {
 }
 
 model user {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailverified DateTime?
-  image         String?
-  accounts      account[]
-  sessions      session[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  email_verified DateTime?
+  image          String?
+  accounts       account[]
+  sessions       session[]
 }
 
-model streaksettings {
-  id      Int     @id @default(autoincrement())
-  guildid String  @unique
-  channel String  @db.VarChar(22)
-  role    String? @db.VarChar(22)
-  enabled Boolean
+model streak_settings {
+  id       Int     @id @default(autoincrement())
+  guild_id String  @unique
+  channel  String  @db.VarChar(22)
+  role     String? @db.VarChar(22)
+  enabled  Boolean
 }
 
 model streak {
+  id          Int      @id @default(autoincrement())
+  user_id     String   @unique
+  streak      Int
+  last_active DateTime
+}
+
+model boost_spotlight_settings {
   id         Int      @id @default(autoincrement())
-  userid     String   @unique
-  streak     Int
-  lastactive DateTime
+  guild_id   String   @unique
+  messages   Json?
+  channel    String?  @db.VarChar(22)
+  enabled    Boolean
+  randomize  Boolean  @default(true)
+  created_at DateTime @default(now())
 }
 
-model boostspotlightsettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  enabled   Boolean
-  randomize Boolean  @default(true)
-  createdat DateTime @default(now())
-}
-
-model timekeepersettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  enabled   Boolean
-  createdat DateTime @default(now())
+model time_keeper_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  enabled    Boolean
+  created_at DateTime @default(now())
 }
 
 model reminder {
-  id        Int      @id @default(autoincrement())
-  userid    String   @db.VarChar(32)
-  guildid   String?  @db.VarChar(32)
-  channelid String   @db.VarChar(32)
-  message   String
-  remindat  DateTime
-  createdat DateTime @default(now())
-  isactive  Boolean  @default(true)
+  id         Int      @id @default(autoincrement())
+  user_id    String   @db.VarChar(32)
+  guild_id   String?  @db.VarChar(32)
+  channel_id String   @db.VarChar(32)
+  message    String
+  remind_at  DateTime
+  created_at DateTime @default(now())
+  is_active  Boolean  @default(true)
 }
 
-model serveranniversarysettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  time      String   @db.VarChar(5)
-  enabled   Boolean
-  randomize Boolean  @default(true)
-  createdat DateTime @default(now())
+model server_anniversary_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  messages   Json?
+  channel    String?  @db.VarChar(22)
+  time       String   @db.VarChar(5)
+  enabled    Boolean
+  randomize  Boolean  @default(true)
+  created_at DateTime @default(now())
 }
 
-model messageglue {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @db.VarChar(22)
-  message   String   @db.Text
-  channel   String   @db.VarChar(22)
-  enabled   Boolean  @default(true)
-  createdat DateTime @default(now())
-  updatedat DateTime @default(now())
+model message_glue {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @db.VarChar(22)
+  message    String   @db.Text
+  channel    String   @db.VarChar(22)
+  enabled    Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
 
-model serverbackupsettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  channel   String   @db.VarChar(22)
-  enabled   Boolean  @default(false)
-  frequency String   @db.VarChar(10)
-  time      String   @db.VarChar(5)
-  content   Json?
-  createdat DateTime @default(now())
+model server_backup_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  channel    String   @db.VarChar(22)
+  enabled    Boolean  @default(false)
+  frequency  String   @db.VarChar(10)
+  time       String   @db.VarChar(5)
+  content    Json?
+  created_at DateTime @default(now())
 
-  backups serverbackups[]
+  backups server_backups[]
 }
 
-model serverbackups {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @db.VarChar(22)
-  backup    Json
-  createdat DateTime @default(now())
+model server_backups {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @db.VarChar(22)
+  backup     Json
+  created_at DateTime @default(now())
 
-  guild serverbackupsettings @relation(fields: [guildid], references: [guildid])
+  guild server_backup_settings @relation(fields: [guild_id], references: [guild_id])
 }
 
-model messagereportsettings {
-  id        Int      @id @default(autoincrement())
-  guildid   String   @unique
-  enabled   Boolean  @default(false)
-  channel   String   @db.VarChar(22)
-  createdat DateTime @default(now())
+model message_report_settings {
+  id         Int      @id @default(autoincrement())
+  guild_id   String   @unique
+  enabled    Boolean  @default(false)
+  channel    String   @db.VarChar(22)
+  created_at DateTime @default(now())
 }
 
-model messagereports {
-  id        Int      @id @default(autoincrement())
-  guildid   String
-  userid    String   @db.VarChar(22)
-  message   String   @db.Text
-  createdat DateTime @default(now())
+model message_reports {
+  id         Int      @id @default(autoincrement())
+  guild_id   String
+  user_id    String   @db.VarChar(22)
+  message    String   @db.Text
+  created_at DateTime @default(now())
 
-  @@index([guildid])
-  @@index([guildid, userid])
+  @@index([guild_id])
+  @@index([guild_id, user_id])
 }

@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const data = await prisma.antiBotSettings.findUnique({ where: { guildId } });
+    const data = await prisma.antibotsettings.findUnique({ where: { guildid: guildId } });
     return NextResponse.json(
       data ?? {
         enabled: false,
@@ -53,8 +53,8 @@ export async function POST(req: NextRequest) {
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
   try {
-    const updated = await prisma.antiBotSettings.upsert({
-      where: { guildId },
+    const updated = await prisma.antibotsettings.upsert({
+      where: { guildid: guildId },
       update: {
         enabled,
         timeWindow,
@@ -67,10 +67,10 @@ export async function POST(req: NextRequest) {
         blockInvites,
       },
       create: {
-        guildId,
+        guildid: guildId,
         enabled,
-        timeWindow,
-        channelLimit,
+        timewindow,
+        channellimit,
         punishment,
         forbiddenWords,
         notificationChannel,

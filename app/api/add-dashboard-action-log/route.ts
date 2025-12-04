@@ -8,20 +8,20 @@ export async function POST(req: NextRequest) {
   const data = await req.json();
   const session = await getServerSession(authOptions);
 
-  if (!session) return NextResponse.json({ error: "Please authenticate first" });
-  if (!data.guildId) return NextResponse.json({ error: "guildId is required" });
-  if (!data.type) return NextResponse.json({ error: "type is required" });
-  if (!data.message) return NextResponse.json({ error: "message is required" });
+  if (!session) return NextResponse.json({ error: "please_authenticate_first" });
+  if (!data.guild_id) return NextResponse.json({ error: "guild_id_is_required" });
+  if (!data.type) return NextResponse.json({ error: "type_is_required" });
+  if (!data.message) return NextResponse.json({ error: "message_is_required" });
 
-  const { guildId, type, message } = data;
+  const { guild_id, type, message } = data;
 
   // @ts-ignore
-  const isAdmin = await isUserGuildAdmin(session.user.id, guildId);
-  if (!isAdmin) return NextResponse.json({ error: "You must be a guild admin to access this" });
+  const is_admin = await isUserGuildAdmin(session.user.id, guild_id);
+  if (!is_admin) return NextResponse.json({ error: "you_must_be_a_guild_admin_to_access_this" });
 
-  await prisma.dashboardLog.create({
+  await prisma.dashboard_log.create({
     data: {
-      guildId,
+      guild_id,
       type,
       message,
     },
