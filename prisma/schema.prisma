@@ -18,7 +18,7 @@ model AntiBotSettings {
   notificationChannel String?  @db.VarChar(22)
   jailRole            String?  @db.VarChar(22)
   createdAt           DateTime @default(now()) @db.DateTime(0)
-  updatedAt           DateTime @db.DateTime(0)
+  updatedAt           DateTime @updatedAt @db.DateTime(0)
   blockInvites        Boolean  @default(false)
   excludeAdmins       Boolean  @default(false)
 }
@@ -145,7 +145,7 @@ model IntroductionSettings {
   autoReply   String?
   autoEmoji   String?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime @updatedAt @db.DateTime(0)
   autoDelete  Boolean  @default(false)
 }
 
@@ -217,7 +217,7 @@ model MinecraftSettings {
   notifyEnabled Boolean  @default(false)
   channel       String?
   createdAt     DateTime @default(now())
-  updatedAt     DateTime
+  updatedAt     DateTime @updatedAt @db.DateTime(0)
 }
 
 model PictureContestItem {
