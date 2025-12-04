@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,18 +15,18 @@ model AutoMessage {
   time      String   @db.VarChar(5)
   days      Json
   enabled   Boolean  @default(true)
-  createdAt DateTime @default(now()) @db.DateTime(0)
-  updatedAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model BirthdaySettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "BirthdaySettings_guildId")
   channel   String   @db.VarChar(22)
   message   String   @db.Text
   time      String   @db.VarChar(5)
   enabled   Boolean
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model Birthday {
@@ -34,44 +34,44 @@ model Birthday {
   guildId   String   @db.VarChar(22)
   userId    String   @db.VarChar(22)
   birthdate DateTime @db.Date
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model BotSettings {
   id              Int      @id @default(autoincrement())
-  guildId         String   @unique(map: "guildId") @db.VarChar(22)
+  guildId         String   @unique(map: "BotSettings_guildId")
   nickname        String?  @db.VarChar(50)
   language        String?  @db.VarChar(3)
   updatesChannel  String?  @db.VarChar(22)
   timezone        String?  @db.VarChar(22)
   primaryColor    String?  @db.VarChar(22)
   secondaryColor  String?  @db.VarChar(22)
-  createdAt       DateTime @default(now()) @db.DateTime(0)
+  createdAt       DateTime @default(now())
   showInGuildList Boolean  @default(true)
 }
 
 model BumpReminderSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique @db.VarChar(22)
+  guildId   String   @unique(map: "BumpReminderSettings_guildId")
   channel   String   @db.VarChar(22)
   message   String   @db.Text
   interval  Int
   enabled   Int      @default(1)
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model Migration {
   id    Int      @id @default(autoincrement())
   name  String   @db.Text
-  runAt DateTime @default(now()) @db.DateTime(0)
+  runAt DateTime @default(now())
 }
 
 model PremiumGuild {
   id          Int       @id @default(autoincrement())
-  guildId     String    @unique @db.VarChar(22)
+  guildId     String    @unique(map: "PremiumGuild_guildId")
   premium     Boolean   @default(false)
-  trialEndsAt DateTime? @db.DateTime(0)
-  createdAt   DateTime  @default(now()) @db.DateTime(0)
+  trialEndsAt DateTime?
+  createdAt   DateTime  @default(now())
 }
 
 model UserAction {
@@ -84,31 +84,31 @@ model UserAction {
 
 model WelcomeMessageSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "WelcomeMessageSettings_guildId")
   messages  Json?
   channel   String?  @db.VarChar(22)
   enabled   Int
   randomize Boolean  @default(false)
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model LeaveMessageSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "LeaveMessageSettings_guildId")
   messages  Json?
   channel   String?  @db.VarChar(22)
   enabled   Int
   randomize Boolean  @default(false)
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model TicketSettings {
   id          Int      @id @default(autoincrement())
-  guildId     String   @unique(map: "guildId") @db.VarChar(22)
+  guildId     String   @unique(map: "TicketSettings_guildId")
   channel     String?  @db.VarChar(22)
   channelConf String?  @db.VarChar(22)
   enabled     Int
-  createdAt   DateTime @default(now()) @db.DateTime(0)
+  createdAt   DateTime @default(now())
 }
 
 model BotLog {
@@ -140,34 +140,34 @@ model GuildLog {
 
 model KickWatcher {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildIdKick") @db.VarChar(22)
+  guildId   String   @unique(map: "KickWatcher_guildId")
   channel   String   @db.VarChar(22)
   users     Json
   enabled   Boolean
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model TwitchWatcher {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildIdTwitch") @db.VarChar(22)
+  guildId   String   @unique(map: "TwitchWatcher_guildId")
   channel   String   @db.VarChar(22)
   users     Json
   enabled   Boolean
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model YoutubeWatcher {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildIdYoutube") @db.VarChar(22)
+  guildId   String   @unique(map: "YoutubeWatcher_guildId")
   channel   String   @db.VarChar(22)
   users     Json
   enabled   Boolean
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model AntiBotSettings {
   id                  Int      @id @default(autoincrement())
-  guildId             String   @unique @db.VarChar(22)
+  guildId             String   @unique(map: "AntiBotSettings_guildId")
   enabled             Boolean  @default(false)
   timeWindow          Int      @default(10)
   channelLimit        Int      @default(3)
@@ -175,15 +175,15 @@ model AntiBotSettings {
   forbiddenWords      Json?
   notificationChannel String?  @db.VarChar(22)
   jailRole            String?  @db.VarChar(22)
-  createdAt           DateTime @default(now()) @db.DateTime(0)
-  updatedAt           DateTime @updatedAt @db.DateTime(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
   blockInvites        Boolean  @default(false)
   excludeAdmins       Boolean  @default(false)
 }
 
 model ChannelOfFame {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique
+  guildId   String   @unique(map: "ChannelOfFame_guildId")
   channel   String?  @db.VarChar(22)
   emoji     String?  @db.VarChar(10)
   amount    Int      @default(0)
@@ -193,7 +193,7 @@ model ChannelOfFame {
 
 model LevelingSettings {
   id                 Int      @id @default(autoincrement())
-  guildId            String   @unique
+  guildId            String   @unique(map: "LevelingSettings_guildId")
   channel            String?  @db.VarChar(22)
   levelRoles         Json?
   xpRate             Float    @default(200)
@@ -208,7 +208,7 @@ model LevelingSettings {
 
 model LoggingSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique
+  guildId   String   @unique(map: "LoggingSettings_guildId")
   channel   String?  @db.VarChar(22)
   events    Json?
   enabled   Boolean  @default(false)
@@ -217,7 +217,7 @@ model LoggingSettings {
 
 model GiveawaySettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique
+  guildId   String   @unique(map: "GiveawaySettings_guildId")
   channel   String?  @db.VarChar(22)
   enabled   Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -248,7 +248,7 @@ model MinecraftSettings {
 
 model GuildInviteSettings {
   id        Int                   @id @default(autoincrement())
-  guildId   String                @unique
+  guildId   String                @unique(map: "GuildInviteSettings_guildId")
   enabled   Boolean               @default(false)
   createdAt DateTime              @default(now())
   invites   InviteTrackerInvite[]
@@ -267,7 +267,7 @@ model InviteTrackerInvite {
 
 model AutoRoleSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique
+  guildId   String   @unique(map: "AutoRoleSettings_guildId")
   autoRoles Json?
   enabled   Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -275,7 +275,7 @@ model AutoRoleSettings {
 
 model PictureContestSettings {
   id        Int                  @id @default(autoincrement())
-  guildId   String               @unique
+  guildId   String               @unique(map: "PictureContestSettings_guildId")
   createdAt DateTime             @default(now())
   contests  PictureContestItem[]
 }
@@ -350,7 +350,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
-  @@index([userId], map: "Account_userId_fkey")
+  @@index([userId])
 }
 
 model Session {
@@ -360,7 +360,7 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id])
 
-  @@index([userId], map: "Session_userId_fkey")
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -383,7 +383,7 @@ model User {
 
 model StreakSettings {
   id      Int     @id @default(autoincrement())
-  guildId String  @unique
+  guildId String  @unique(map: "StreakSettings_guildId")
   channel String  @db.VarChar(22)
   role    String? @db.VarChar(22)
   enabled Boolean
@@ -398,19 +398,19 @@ model Streak {
 
 model BoostSpotlightSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "BoostSpotlightSettings_guildId")
   messages  Json?
   channel   String?  @db.VarChar(22)
   enabled   Boolean
   randomize Boolean  @default(true)
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model TimeKeeperSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "TimeKeeperSettings_guildId")
   enabled   Boolean
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model Reminder {
@@ -426,13 +426,13 @@ model Reminder {
 
 model ServerAnniversarySettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guildId") @db.VarChar(22)
+  guildId   String   @unique(map: "ServerAnniversarySettings_guildId")
   messages  Json?
   channel   String?  @db.VarChar(22)
   time      String   @db.VarChar(5)
   enabled   Boolean
   randomize Boolean  @default(true)
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model MessageGlue {
@@ -441,19 +441,19 @@ model MessageGlue {
   message   String   @db.Text
   channel   String   @db.VarChar(22)
   enabled   Boolean  @default(true)
-  createdAt DateTime @default(now()) @db.DateTime(0)
-  updatedAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model ServerBackupSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique @db.VarChar(22)
+  guildId   String   @unique(map: "ServerBackupSettings_guildId")
   channel   String   @db.VarChar(22)
   enabled   Boolean  @default(false)
   frequency String   @db.VarChar(10)
   time      String   @db.VarChar(5)
   content   Json?
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 
   backups ServerBackups[]
 }
@@ -462,14 +462,14 @@ model ServerBackups {
   id        Int      @id @default(autoincrement())
   guildId   String   @db.VarChar(22)
   backup    Json
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 
   guild ServerBackupSettings @relation(fields: [guildId], references: [guildId])
 }
 
 model MessageReportSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique
+  guildId   String   @unique(map: "MessageReportSettings_guildId")
   enabled   Boolean  @default(false)
   channel   String   @db.VarChar(22)
   createdAt DateTime @default(now())
