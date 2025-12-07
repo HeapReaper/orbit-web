@@ -390,7 +390,7 @@ model GiveawayParticipant {
 }
 
 model Account {
-  id                Int     @id @default(autoincrement())
+  id                String  @id @default(uuid())
   userId            String  @map("user_id")
   type              String
   provider          String
