@@ -6,12 +6,12 @@ interface Team {
   title: string;
   urlName: string;
   url: string;
-  profilePicture: any;
+  avatar: any;
 }
 
 async function getTeam() {
-  const res = await fetch("https://strapi.botinorbit.com/api/teams?populate=*", {
-    next: { revalidate: 60 },
+  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Team`, {
+    next: { revalidate: 30 },
   });
 
   const data = await res.json();
@@ -21,6 +21,7 @@ async function getTeam() {
 export default async function OurTeamSection() {
   const team: Team[] = await getTeam();
 
+  console.log(team);
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-8 text-center">Our Team</h2>
@@ -31,8 +32,8 @@ export default async function OurTeamSection() {
           <div key={index} className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg hover:border-blue-600 border border-gray-900 text-center transition w-60">
             <Image
               src={
-                member.profilePicture
-                  ? "https://strapi.botinorbit.com" + member.profilePicture.formats.thumbnail.url
+                member.avatar
+                  ? `${process.env.DIRECTUS_URL}/assets/${member.avatar}`
                   : "/team/default-profile-picture.png"
               }
               alt={member.name}

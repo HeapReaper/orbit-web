@@ -19,7 +19,6 @@ async function getTerms() {
   return json.data;
 }
 
-
 export default async function TermsOfService() {
   const data = await getTerms();
 
