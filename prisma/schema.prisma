@@ -390,7 +390,7 @@ model GiveawayParticipant {
 }
 
 model Account {
-  id                String  @id
+  id                Int     @id @default(autoincrement())
   userId            String  @map("user_id")
   type              String
   provider          String
@@ -402,7 +402,7 @@ model Account {
   scope             String?
   id_token          String? @map("id_token")
   session_state     String? @map("session_state")
-  User              User    @relation(fields: [userId], references: [id])
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
   @@index([userId], map: "Account_userId_fkey")
@@ -421,7 +421,7 @@ model Session {
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
