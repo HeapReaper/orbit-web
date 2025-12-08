@@ -572,8 +572,8 @@ model ModLinkSettings {
   enabled Boolean @default(false)
   channel String? @db.VarChar(22)
 
-  syncedGuilds  String[] @default([])
-  actionsToSync String[] @default([])
+  syncedGuilds  String[] @default([]) @map("synced_guilds")
+  actionsToSync String[] @default([]) @map("actions_to_sync")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
