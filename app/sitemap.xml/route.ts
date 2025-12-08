@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-async function getStrapiArticles() {
+async function getDirectusArticles() {
   const res = await fetch(
-    `${process.env.STRAPI_URL}/api/articles?fields=slug&pagination[pageSize]=100`,
+    `${process.env.DIRECTUS_URL}/items/Article?fields=slug&limit=-1`,
     { next: { revalidate: 60 } }
   );
 
@@ -10,9 +10,9 @@ async function getStrapiArticles() {
   return data.data.map((item: any) => `/articles/${item.slug}`);
 }
 
-async function getStrapiHelpArticles() {
+async function getDirectusHelpArticles() {
   const res = await fetch(
-    `${process.env.STRAPI_URL}/api/helps?fields=slug&pagination[pageSize]=100`,
+    `${process.env.DIRECTUS_URL}/items/Help?fields=slug&limit=-1`,
     { next: { revalidate: 60 } }
   );
 
@@ -23,17 +23,17 @@ async function getStrapiHelpArticles() {
 export async function GET() {
   const localRoutes = ["", "/help", "/subscriptions", "/servers", "/releases"];
 
-  const articleRoutes = await getStrapiArticles();
-  const helpRoutes = await getStrapiHelpArticles();
+  const articleRoutes = await getDirectusArticles();
+  const helpRoutes = await getDirectusHelpArticles();
 
-  // Combine all routes and remove duplicates
   const allRoutes = Array.from(new Set([...localRoutes, ...articleRoutes, ...helpRoutes]));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allRoutes
     .map(
-      (route) => `<url><loc>${process.env.NEXT_PUBLIC_BASE_URL}${route}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
+      (route) =>
+        `<url><loc>${process.env.NEXT_PUBLIC_BASE_URL}${route}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
     )
     .join("")}
 </urlset>`;
