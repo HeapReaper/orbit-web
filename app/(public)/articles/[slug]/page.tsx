@@ -21,7 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const article = await getArticle(slug);
 
-  console.log(article);
   if (!article) {
     return {
       title: "Article not found – Orbit",
