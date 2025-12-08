@@ -96,7 +96,6 @@ export default function BotSettings() {
     }
   };
 
-  // Watch changes for auto-save
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();

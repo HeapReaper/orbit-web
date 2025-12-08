@@ -36,7 +36,7 @@ export default async function BotInfo() {
           <span className="font-semibold text-white">Ping: </span> <InlineCode text={data.ping} />ms
         </p>
         <p>
-          <span className="font-semibold text-white">Guilds: </span> <InlineCode text={data.guilds} />
+          <span className="font-semibold text-white">Servers: </span> <InlineCode text={data.guilds} />
         </p>
         <p>
           <span className="font-semibold text-white">Users: </span>  <InlineCode text={data.users} />

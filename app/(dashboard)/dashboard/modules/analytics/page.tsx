@@ -8,8 +8,6 @@ import JoinsOverTimeChart from "@/app/(dashboard)/dashboard/components/charts/Jo
 import ActiveVsInactiveChart from "@/app/(dashboard)/dashboard/components/charts/ActiveVsInactiveMembers";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { useGuild } from "@/app/context/GuildContext";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
-import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import TotalMessagesChart from "@/app/(dashboard)/dashboard/components/charts/TotalMessagesOverTime";
 
 const TIME_RANGES = ["last_week", "last_month", "last_year", "last_5_years"] as const;
