@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "strapi.botinorbit.com",
         pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "directus.botinorbit.com",
+        pathname: "/**",
       }
     ],
   },

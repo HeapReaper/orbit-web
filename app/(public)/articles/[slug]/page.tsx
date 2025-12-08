@@ -9,8 +9,8 @@ interface Props {
 
 async function getArticle(slug: string) {
   const res = await fetch(
-    `https://strapi.botinorbit.com/api/articles?filters[slug][$eq]=${slug}&populate=*`,
-    { next: { revalidate: 60 } }
+    `${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&filter[slug][_eq]=${slug}`,
+    { next: { revalidate: 30 } }
   );
 
   const data = await res.json();
@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const article = await getArticle(slug);
 
+  console.log(article);
   if (!article) {
     return {
       title: "Article not found – Orbit",
@@ -67,25 +68,25 @@ export default async function ArticlePage({ params }: Props) {
   }
 
   return (
-    <div className="flex justify-center px-4 md:px-10 py-8">
-      <article className="px-6 md:px-20 py-16 text-white prose prose-invert">
-        <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+    <div className="min-h-screen px-4 md:px-10 py-8">
+      <article className="max-w-3xl mx-auto px-6 md:px-0 py-16 text-white prose prose-invert">
+        <h1 className="text-4xl font-bold mb-2">{article.title}</h1>
 
         {/* Author + Updated */}
         <p className="text-gray-400 text-sm flex items-center gap-2">
-          <span className="inline-flex items-center gap-1">
-            <User size={16} className="inline-block text-blue-500" />
-            {article.author?.name ?? "Unknown"}
-          </span>
+        <span className="inline-flex items-center gap-1">
+          <User size={16} className="inline-block text-blue-500" />
+          {article.Author.name ?? "Unknown"}
+        </span>
           •
-          <span className="inline-flex items-center gap-1">
-            <Calendar size={16} className="inline-block text-blue-500" />
-            {new Date(article.updatedAt).toLocaleDateString(undefined, {
+        <span className="inline-flex items-center gap-1">
+          <Calendar size={16} className="inline-block text-blue-500" />
+            {new Date(article.date_created).toLocaleDateString(undefined, {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
-          </span>
+        </span>
         </p>
 
         <ShowMarkdown content={article.content} classes="" />

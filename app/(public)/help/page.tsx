@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getHelpArticles } from "@/app/lib/getHelpArticles";
 import { HelpArticlesType } from "@/app/types/helpArticles";
-import {Calendar, User} from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -11,8 +10,19 @@ export const metadata: Metadata = {
     "Browse Orbit's help articles to learn how to manage your Discord server, use our bot, and troubleshoot common issues.",
 };
 
+async function getArticles() {
+  const res = await fetch(
+    `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*`,
+    { next: { revalidate: 30 } }
+  );
+
+  const data = await res.json();
+
+  return data.data || null;
+}
+
 export default async function HelpArticlesPage() {
-  const articles: HelpArticlesType[] = await getHelpArticles();
+  const articles: HelpArticlesType[] = await getArticles();
 
   return (
     <div className="px-6 md:px-20 py-12 min-h-screen">
@@ -31,12 +41,12 @@ export default async function HelpArticlesPage() {
             <p className="text-gray-400 text-sm  flex items-center gap-2">
               <span className="inline-flex items-center gap-1">
                 <User size={16} className="inline-block text-blue-500" />
-                {article.author?.name ?? "Unknown"}
+                {article.author.name ?? "Unknown"}
               </span>
                   •
               <span className="inline-flex items-center gap-1">
                 <Calendar size={16} className="inline-block text-blue-500" />
-                  {new Date(article.updatedAt).toLocaleDateString(undefined, {
+                  {new Date(article.date_created).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "long",
                     day: "numeric",

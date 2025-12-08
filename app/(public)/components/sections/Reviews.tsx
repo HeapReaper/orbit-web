@@ -3,8 +3,8 @@ import Image from "next/image";
 import React from "react";
 
 async function getReviews() {
-  const res = await fetch("https://strapi.botinorbit.com/api/reviews?populate=*", {
-    next: { revalidate: 60 },
+  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Review`, {
+    next: { revalidate: 30 },
   });
 
   const data = await res.json();
@@ -14,6 +14,7 @@ async function getReviews() {
 export default async function ReviewsSection() {
   const reviews: ReviewsType[] = await getReviews();
 
+  console.log(reviews);
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -29,8 +30,8 @@ export default async function ReviewsSection() {
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src={
-                  review.profilePicture
-                    ? "https://strapi.botinorbit.com" + review.profilePicture.formats.thumbnail.url
+                  review.avatar
+                    ? `${process.env.DIRECTUS_URL}/assets/${review.avatar}`
                     : "/team/default-profile-picture.png"
                 }
                 alt="User avatar"

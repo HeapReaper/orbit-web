@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getLatestArticles } from "@/app/lib/getArticles";
 import { ArticleType } from "@/app/types/articles";
-import {Calendar, User} from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -11,16 +10,24 @@ export const metadata: Metadata = {
     "Browse the latest articles from Orbit, including tutorials, updates, moderation guides, and community features.",
 };
 
-export default async function ArticlesPage() {
-  const articles: ArticleType[] = await getLatestArticles();
+async function getArticles() {
+  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*`, {
+    next: { revalidate: 30 },
+  });
 
-  const categories = ["All", ...Array.from(new Set(articles.map(a => a.category)))];
+  const data = await res.json();
+  console.log(data.data);
+
+  return data.data;
+}
+
+export default async function ArticlesPage() {
+  const articles: ArticleType[] = await getArticles();
 
   return (
     <div className="px-6 md:px-20 py-12 min-h-screen">
       <h1 className="text-4xl font-bold text-white mb-6">Articles</h1>
 
-      {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {articles.map((article: ArticleType) => (
           <Link
@@ -39,12 +46,12 @@ export default async function ArticlesPage() {
             <p className="text-gray-400 text-sm flex items-center gap-2">
               <span className="inline-flex items-center gap-1">
                 <User size={16} className="inline-block text-blue-500" />
-                {article.author?.name ?? "Unknown"}
+                {article.Author.name ? article.Author.name : "Unknown"}
               </span>
                   •
                   <span className="inline-flex items-center gap-1">
                 <Calendar size={16} className="inline-block text-blue-500" />
-                  {new Date(article.updatedAt).toLocaleDateString(undefined, {
+                  {new Date(article.date_created).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
