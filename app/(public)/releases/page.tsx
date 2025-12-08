@@ -63,12 +63,9 @@ export default async function ReleasesPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#0d0f13] text-gray-300 px-6 md:px-20 py-16">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-8">
-          Releases
-        </h1>
-
+    <main className="min-h-screen bg-[#0d0f13] text-gray-300 ">
+      <div className="px-6 md:px-20 py-12 min-h-screen">
+        <h1 className="text-4xl font-bold text-white mb-6">Releases</h1>
         {repos.map(({ repoName, releases }) => (
           <div key={repoName} style={{ marginBottom: "3rem" }}>
             <h3 className="text-3xl font-bold mb-1">{repoName}</h3>

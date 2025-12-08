@@ -21,7 +21,14 @@ async function getDirectusHelpArticles() {
 }
 
 export async function GET() {
-  const localRoutes = ["", "/help", "/subscriptions", "/servers", "/releases"];
+  const localRoutes = [
+    "",
+    "/help",
+    "/subscriptions",
+    "/servers",
+    "/releases",
+    "/preview"
+  ];
 
   const articleRoutes = await getDirectusArticles();
   const helpRoutes = await getDirectusHelpArticles();

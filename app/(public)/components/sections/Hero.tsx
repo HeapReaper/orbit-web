@@ -97,7 +97,7 @@ export default function HeroSection() {
           width={300}
           height={300}
           priority
-          className="animate-spin-slow"
+          className="animate-spin-ultra-slow"
         />
       </div>
     </section>
