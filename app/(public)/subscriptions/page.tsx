@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 
 interface PlansProps {
   name: string;
@@ -76,12 +77,9 @@ export default function Page() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#0d0f13] text-gray-300 px-6 md:px-20 py-16">
-
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-1">
-          Subscriptions
-        </h1>
+    <main className="min-h-screen bg-[#0d0f13] text-gray-300 ">
+      <div className="px-6 md:px-20 py-12 min-h-screen">
+        <h1 className="text-4xl font-bold text-white mb-6">Subscriptions</h1>
         <p className="text-gray-400 mb-2">
           <strong>(Coming soon)</strong> Choose the plan that fits your needs and unlock additional features
           for your server.
