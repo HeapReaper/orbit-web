@@ -3,13 +3,11 @@
 import { useEffect, useState, useRef } from "react";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import { useNotification } from "@/app/context/NotificationContext";
-import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import { useGuild } from "@/app/context/GuildContext";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
-import {c} from "@codemirror/legacy-modes/mode/clike";
 
 export default function TicketsSettingsPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +16,7 @@ export default function TicketsSettingsPage() {
   const [channelConfidential, setChannelConfidential] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 

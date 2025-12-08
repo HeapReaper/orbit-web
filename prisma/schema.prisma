@@ -565,3 +565,18 @@ model MessageReports {
   @@index([guildId, userId])
   @@map("message_reports")
 }
+
+model ModLinkSettings {
+  id      Int     @id @default(autoincrement())
+  guildId String  @unique @map("guild_id") @db.VarChar(22)
+  enabled Boolean @default(false)
+  channel String? @db.VarChar(22)
+
+  syncedGuilds  String[] @default([])
+  actionsToSync String[] @default([])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("mod_link_settings")
+}

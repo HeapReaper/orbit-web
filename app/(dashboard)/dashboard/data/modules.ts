@@ -186,8 +186,8 @@ const modules: moduleType[] = [
     url: "mod-link",
     description: "Synchronize moderation actions across multiple servers automatically.",
     tier: "premium",
-    enabled: false,
-    inDevelopment: true,
+    enabled: true,
+    inDevelopment: false,
     category: "Moderation"
   },
   {
