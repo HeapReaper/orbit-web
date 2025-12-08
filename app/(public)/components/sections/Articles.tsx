@@ -24,7 +24,7 @@ export default async function HelpSection() {
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
-        Help
+        Articles
       </h2>
 
       <div className="flex flex-wrap justify-center gap-8">
@@ -32,7 +32,7 @@ export default async function HelpSection() {
           <Link
             key={article.slug}
             href={`/articles/${article.slug}`}
-            className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition hover:border-blue-600 border border-gray-900"
+            className="bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition hover:border-blue-600 border border-gray-900 max-w-sm w-full"
           >
             <h3 className="text-xl font-semibold mb-2 text-white">
               {article.title}
