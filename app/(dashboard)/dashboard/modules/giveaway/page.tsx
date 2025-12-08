@@ -15,7 +15,7 @@ export default function Page() {
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 

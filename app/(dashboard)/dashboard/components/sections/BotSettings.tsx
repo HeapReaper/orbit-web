@@ -112,7 +112,7 @@ export default function BotSettings() {
   });
 
   return (
-    <section className="relative bg-[#181b25] p-6 rounded-lg space-y-6">
+    <section className="relative bg-[#181b25] p-6 rounded-lg space-y-6 max-w-3xl mx-auto">
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
