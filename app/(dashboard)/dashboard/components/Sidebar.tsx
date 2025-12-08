@@ -155,7 +155,7 @@ export default function Sidebar() {
 
         {/* Guild select */}
         <SelectInput
-          label=""
+          label="Select server"
           value={selectedGuild}
           onChange={setSelectedGuild}
           options={guilds.map((g) => ({ value: g.id, label: g.name }))}
