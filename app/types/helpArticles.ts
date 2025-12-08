@@ -2,7 +2,7 @@ export interface HelpArticlesType {
   title: string;
   slug: string;
   author: any;
-  contentrich: string;
+  content: string;
   description: string;
-  updatedAt: string;
+  date_created: string;
 }

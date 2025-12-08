@@ -3,8 +3,8 @@ export interface ArticleType {
   id: number;
   title: string;
   description: string;
-  author?: { name: string; };
-  updatedAt: string;
+  Author: { name: string; };
+  date_created: string;
   slug: string;
   category?: string;
 }
