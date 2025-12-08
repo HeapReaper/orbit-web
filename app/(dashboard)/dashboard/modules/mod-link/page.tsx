@@ -143,7 +143,7 @@ export default function ModLinkSettings() {
         items={[
           { id: "ban", name: "Ban"},
           { id: "kick", name: "Kick"},
-          { id: "Mute", name: "Mute"},
+          { id: "mute", name: "Mute"},
         ]}
         selectedIds={actionsToSync}
         onToggle={(id) =>
