@@ -5,21 +5,23 @@ interface HelpArticles {
   title: string;
   slug: string;
   author: any;
-  contentrich: string;
+  content: string;
   description: string;
 }
 
-async function getHelpArticles() {
-  const res = await fetch("https://strapi.botinorbit.com/api/helps?populate=*", {
-    next: { revalidate: 60 },
-  });
+async function getArticle(slug: string) {
+  const res = await fetch(
+    `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*`,
+    { next: { revalidate: 30 } }
+  );
 
   const data = await res.json();
-  return data.data;
+
+  return data.data || null;
 }
 
 export default async function HelpSection() {
-  const articles: HelpArticles[] = await getHelpArticles();
+  const articles: HelpArticles[] = await getArticle();
 
   return (
     <section className="px-6 md:px-20 py-16">

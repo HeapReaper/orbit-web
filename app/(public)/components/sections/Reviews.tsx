@@ -14,7 +14,6 @@ async function getReviews() {
 export default async function ReviewsSection() {
   const reviews: ReviewsType[] = await getReviews();
 
-  console.log(reviews);
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-12 text-center">
@@ -45,7 +44,6 @@ export default async function ReviewsSection() {
               </div>
             </div>
 
-            {/* Scrollable review text */}
             <p className="text-gray-300 max-h-24 overflow-y-auto">
               "{review.review}"
             </p>

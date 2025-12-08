@@ -5,7 +5,6 @@ async function getArticles() {
 
   const data = await res.json();
 
-  console.log(data.data);
   return data.data;
 }
 

@@ -21,7 +21,6 @@ async function getTeam() {
 export default async function OurTeamSection() {
   const team: Team[] = await getTeam();
 
-  console.log(team);
   return (
     <section className="px-6 md:px-20 py-16">
       <h2 className="text-3xl font-bold text-white mb-8 text-center">Our Team</h2>
