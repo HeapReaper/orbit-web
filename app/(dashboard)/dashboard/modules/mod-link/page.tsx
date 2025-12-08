@@ -9,6 +9,7 @@ import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 import CheckList from "@/app/(dashboard)/dashboard/components/inputs/CheckList";
+import InfoLabel from "@/app/(dashboard)/dashboard/components/labels/Info";
 
 export default function ModLinkSettings() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -101,6 +102,10 @@ export default function ModLinkSettings() {
         />
       </h1>
 
+      <InfoLabel
+        text="This syncs moderation actions from the currently selected guild (on the left in the menu bar) to the other servers selected under 'Servers to Sync'. If you want a ban from one of the servers below to sync to the currently selected guild, you need to manually change the selected guild and choose the desired servers to sync."
+      />
+
       <div className="flex items-center justify-between mb-4">
         <span className="text-gray-400">Enable</span>
         <button
@@ -120,7 +125,6 @@ export default function ModLinkSettings() {
 
       <ChannelSelect
         label="Notification channel"
-        tooltip="If you want the notification in another server, you can change your selected server from the menu bar"
         value={channel ?? ""}
         onChange={(value) => setChannel(value)}
       />

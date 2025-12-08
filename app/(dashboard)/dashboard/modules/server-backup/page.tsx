@@ -14,6 +14,7 @@ import TimeInput from "@/app/(dashboard)/dashboard/components/inputs/Time";
 import { Undo, Trash } from "lucide-react";
 import formatDateTime from "@/app/lib/formatDateTime";
 import { BackupType } from "@/app/types/backups";
+import DangerLabel from "@/app/(dashboard)/dashboard/components/labels/Danger";
 
 export default function ServerBackupPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -229,9 +230,7 @@ export default function ServerBackupPage() {
       />
 
       <div className="mt-6">
-        <div className="mb-4 p-3 rounded-md bg-yellow-600/20 text-yellow-300 border border-yellow-500 text-sm">
-          ⚠️ The restore function hasn't been fully tested yet. Proceed with caution.
-        </div>
+        <DangerLabel text="⚠️ The restore function hasn't been fully tested yet. Proceed with caution." />
 
         <label className="block text-gray-400 mb-2">Backups</label>
         <div className="overflow-x-auto rounded-lg border border-gray-700 bg-[#1f2330] max-h-64 overflow-y-auto">
