@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
 import { formatDate } from "@/app/lib/formatDate";
+import {Calendar} from "lucide-react";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy – Orbit",
@@ -29,7 +31,14 @@ export default async function PrivacyPage() {
           Privacy Policy
         </h1>
 
-        <p className="text-gray-400 mb-10">Last updated: {formatDate(data.date_created)}</p>
+        <span className="inline-flex items-center gap-1">
+          <Calendar size={16} className="inline-block text-blue-500" />
+            {new Date(data.date_created).toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+        </span>
 
         <div className="space-y-8 mx-auto">
           <ShowMarkdown
