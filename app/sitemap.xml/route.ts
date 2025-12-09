@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 async function getDirectusArticles() {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Article?fields=slug&limit=-1`,
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 30 } }
   );
 
   const data = await res.json();
@@ -13,7 +13,7 @@ async function getDirectusArticles() {
 async function getDirectusHelpArticles() {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Help?fields=slug&limit=-1`,
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 30 } }
   );
 
   const data = await res.json();

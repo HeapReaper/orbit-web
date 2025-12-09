@@ -11,7 +11,7 @@ interface HelpArticlesType {
 
 async function getArticles() {
   const res = await fetch(
-    `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*`,
+    `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*&sort[]=-date_created`,
     { next: { revalidate: 30 } }
   );
 

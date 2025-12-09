@@ -11,7 +11,7 @@ export interface Props {
 async function getArticle(slug: string) {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*&filters[slug][_eq]=${slug}`,
-    { next: { revalidate: 60 } }
+    { next: { revalidate: 30 } }
   );
 
   const data = await res.json();

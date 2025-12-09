@@ -34,7 +34,7 @@ export default async function ReleasesPage() {
             headers: {
               Authorization: `token ${process.env.GITHUB_TOKEN}`,
             },
-            next: { revalidate: 600 },
+            next: { revalidate: 30 },
           }
         );
 

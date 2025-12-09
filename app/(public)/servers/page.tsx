@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 async function getServers(): Promise<ServerType[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/servers`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) throw new Error("Failed to fetch servers");

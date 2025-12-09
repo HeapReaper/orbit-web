@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 async function getArticles() {
-  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*`, {
+  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&sort[]=-date_created`, {
     next: { revalidate: 30 },
   });
 
