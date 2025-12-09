@@ -8,8 +8,6 @@ import JoinsOverTimeChart from "@/app/(dashboard)/dashboard/components/charts/Jo
 import ActiveVsInactiveChart from "@/app/(dashboard)/dashboard/components/charts/ActiveVsInactiveMembers";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { useGuild } from "@/app/context/GuildContext";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
-import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import TotalMessagesChart from "@/app/(dashboard)/dashboard/components/charts/TotalMessagesOverTime";
 
 const TIME_RANGES = ["last_week", "last_month", "last_year", "last_5_years"] as const;
@@ -85,9 +83,12 @@ export default function Page() {
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       {loading && <PageLoader />}
 
-      <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Analytics
-      </h1>
+      <div className="flex items-center gap-2 mb-3">
+        <h2 className="text-2xl font-semibold">
+          Analytics
+        </h2>
+      </div>
+
 
       <div className="flex gap-2 mb-6">
         {TIME_RANGES.map((range) => (

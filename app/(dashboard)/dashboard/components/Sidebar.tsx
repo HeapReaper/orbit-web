@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Lock, Play, Package, Home, SquareChevronRight, ClipboardClock, Bot, Settings, Activity } from "lucide-react";
+import { Lock, Play, Package, Home, SquareChevronRight, ClipboardClock, ChartColumn, Settings, Activity } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import modules from "../data/modules";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
@@ -25,6 +25,7 @@ export default function Sidebar() {
 
   const sortAndFilterModules = modules
     .filter((module) => module.enabled)
+    .filter((module) => module.name !== "Analytics")
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const isActive = (href: string)=> {
@@ -218,13 +219,13 @@ export default function Sidebar() {
           </div>
 
           <Link
-            href="/dashboard/modules/commands"
+            href="/dashboard/modules/analytics"
             className={
-            `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/modules/commands") ? "font-bold text-[var(--hover-color)]" : ""}`
-          }
+              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/modules/analytics") ? "font-bold text-[var(--hover-color)]" : ""}`
+            }
           >
-            <SquareChevronRight className="w-6 h-6 text-[var(--primary-color)]" />
-            Commands
+            <ChartColumn className="w-6 h-6 text-[var(--primary-color)]" />
+            Analytics
           </Link>
 
           <Link
