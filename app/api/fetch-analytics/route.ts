@@ -137,7 +137,7 @@ export async function GET(req: NextRequest) {
     });
     const topChannels = await topChannelsResult.json();
 
-    // Top 4 most active users
+    // Top 5 most active users
     const topUsersQuery = `
         SELECT user_id, count() AS message_count
         FROM discord_messages
@@ -145,7 +145,7 @@ export async function GET(req: NextRequest) {
           AND guild_id = '${guild_id}'
         GROUP BY user_id
         ORDER BY message_count DESC
-        LIMIT 4
+        LIMIT 5
     `;
     const topUsersResult = await clickhouseClient.query({
       query: topUsersQuery,
