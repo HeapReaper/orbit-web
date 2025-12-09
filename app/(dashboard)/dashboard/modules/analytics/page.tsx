@@ -75,7 +75,6 @@ export default function Page() {
     void fetchData();
   }, [selectedGuild, timeRange]);
 
-  console.log(currentGuild?.isPremium)
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       {loading && <PageLoader />}
