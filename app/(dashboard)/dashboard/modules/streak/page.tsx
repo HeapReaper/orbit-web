@@ -130,6 +130,7 @@ export default function StreakSettingsPage() {
         selectedRoles={role ? [role] : []}
         onToggle={(roleId) => setRole(roleId)}
       />
+
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
       </div>

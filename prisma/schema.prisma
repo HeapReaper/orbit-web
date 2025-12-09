@@ -96,15 +96,30 @@ model BotSettings {
 }
 
 model BumpReminderSettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique @map("guild_id") @db.VarChar(22)
-  channel   String   @db.VarChar(22)
-  message   String   @db.Text
-  interval  Int
-  enabled   Int      @default(1)
-  createdAt DateTime @default(now()) @map("created_at")
+  id                      Int      @id @default(autoincrement())
+  guildId                 String   @unique @map("guild_id") @db.VarChar(22)
+  channel                 String   @db.VarChar(22)
+  message                 String   @db.Text
+  interval                Int
+  enabled                 Int      @default(1)
+  createdAt               DateTime @default(now()) @map("created_at")
+  xpBoost                 Int      @default(0) @map("xp_boost")
+  rewardRole              String?  @map("reward_role") @db.VarChar(22)
+  boostLeaderboard        Boolean  @default(false) @map("boost_leaderboard")
+  leaderboardAutoUpdates  Boolean  @default(false) @map("leaderboard_auto_updates")
+  leaderboardChannel      String?  @map("leaderboard_channel") @db.VarChar(22)
+  autoLeaderboardInterval String?  @map("auto_leaderboard_interval") @db.VarChar(32)
 
   @@map("bump_reminder_settings")
+}
+
+model Bumps {
+  id       Int      @id @default(autoincrement())
+  guildId  String   @map("guild_id") @db.VarChar(22)
+  userId   String   @map("user_id") @db.VarChar(22)
+  bumpedAt DateTime @default(now()) @map("bumped_at")
+
+  @@map("bumps")
 }
 
 model ChannelOfFame {
