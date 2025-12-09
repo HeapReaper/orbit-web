@@ -131,7 +131,7 @@ export default function Page() {
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Most active users</h3>
-        <p className="text-gray-400 mb-2">Shows the top 4 users who have send the most messages</p>
+        <p className="text-gray-400 mb-2">Shows the top 5 users who have send the most messages</p>
         <MostActiveUsersChart data={topUsers} />
       </div>
 
