@@ -26,7 +26,7 @@ export default function MessageFlowChart({ data }: Props) {
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hour" />
-          <YAxis />
+          <YAxis width={110} />
           <Tooltip />
           <Line type="monotone" dataKey="messages" stroke="var(--primary-color)" strokeWidth={2} />
         </LineChart>

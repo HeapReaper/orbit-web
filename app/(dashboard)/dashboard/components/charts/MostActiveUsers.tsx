@@ -21,12 +21,12 @@ interface Props {
 
 export default function MostActiveUsersChart({ data }: Props) {
   return (
-    <div className="w-full h-72">
+    <div className="w-full h-72 mx-auto">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="number" />
-          <YAxis dataKey="user_id" type="category" />
+          <YAxis dataKey="name" type="category" width={110}  />
           <Tooltip />
           <Bar dataKey="message_count" fill="var(--primary-color)" />
         </BarChart>

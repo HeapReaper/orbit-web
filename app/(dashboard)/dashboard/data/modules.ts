@@ -23,7 +23,7 @@ const modules: moduleType[] = [
     name: "Analytics",
     url: "analytics",
     description: "View server activity and popular channels at a glance.",
-    tier: "premium",
+    tier: "freemium",
     enabled: true,
     inDevelopment: false,
     category: "Analytics / Tracking"

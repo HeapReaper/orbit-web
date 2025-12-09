@@ -25,8 +25,8 @@ export default function TotalMessagesOverTime({ data }: Props) {
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="period_start" />
-          <YAxis />
+          <XAxis dataKey="period_start"  />
+          <YAxis width={110} />
           <Tooltip />
           <Line type="monotone" dataKey="message_count" stroke="var(--primary-color)" strokeWidth={2} />
         </LineChart>
