@@ -197,7 +197,7 @@ export default function Sidebar() {
           <Link
             href="/dashboard/api"
             className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/bot") ? "font-bold text-[var(--hover-color)]" : ""}`
+              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/api") ? "font-bold text-[var(--hover-color)]" : ""}`
             }
           >
             <Zap className="w-6 h-6 text-[var(--primary-color)]" />
