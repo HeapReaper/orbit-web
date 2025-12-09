@@ -20,7 +20,7 @@ export default function Page() {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [levelRoles, setLevelRoles] = useState<string[]>([]);
-  const [xpRate, setXpRate] = useState<number>(200);
+  const [xpRate, setXpRate] = useState<number>(5);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [xpPerMessage, setXpPerMessage] = useState<number>(10);
@@ -36,7 +36,7 @@ export default function Page() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const DEFAULTS = {
-    xpRate: 200,
+    xpRate: 5,
     xpPerMessage: 10,
     xpPerVoice: 5,
     curveExponent: 2.65,
@@ -113,7 +113,7 @@ export default function Page() {
         const data = await res.json();
         setEnabled(data.enabled ?? false);
         setLevelRoles(data.levelRoles ?? []);
-        setXpRate(data.xpRate ?? 1);
+        setXpRate(data.xpRate ?? 5);
         setSelectedChannel(data.channel ?? "");
         setXpPerMessage(data.xpPerMessage ?? 10);
         setXpPerVoice(data.xpPerVoice ?? 5);
