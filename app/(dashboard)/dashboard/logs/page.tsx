@@ -62,7 +62,7 @@ export default function BotLogs() {
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       <div className="flex items-center gap-2 mb-3">
         <ClipboardClock className="w-6 h-6 text-[var(--primary-color)]" />
-        <h2 className="text-lg font-semibold">Logs</h2>
+        <h2 className="text-2xl font-semibold">Logs</h2>
       </div>
 
       <div className="flex flex-wrap gap-4 items-center">
