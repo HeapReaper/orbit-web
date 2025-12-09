@@ -9,6 +9,7 @@ import ActiveVsInactiveChart from "@/app/(dashboard)/dashboard/components/charts
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { useGuild } from "@/app/context/GuildContext";
 import TotalMessagesChart from "@/app/(dashboard)/dashboard/components/charts/TotalMessagesOverTime";
+import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
 const TIME_RANGES = ["last_week", "last_month", "last_year", "last_5_years"] as const;
 
@@ -20,11 +21,14 @@ export default function Page() {
   const [totalMessages, setTotalMessages] = useState<any[]>([]);
   const [mostPopulairChannels, setMostPopulairChannels] = useState<any[]>([]);
   const [topUsers, setTopUsers] = useState<any[]>([]);
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild, currentGuild } = useGuild();
 
   const [memberCount, setMemberCount] = useState<any[]>([]);
   const [memberChartData, setMemberChartData] = useState<any[]>([]);
   const [activeInactiveMembers, setActiveInactiveMembers] = useState<{ active: number; inactive: number }>({ active: 0, inactive: 0 });
+
+  const allowedTimeRanges: ("last_week" | "last_month" | "last_year" | "last_5_years")[] =
+    isPremium ? [...TIME_RANGES] : ["last_week"];
 
   useEffect(() => {
     document.title = "Analytics";
@@ -71,28 +75,18 @@ export default function Page() {
     void fetchData();
   }, [selectedGuild, timeRange]);
 
-  if (!isPremium) {
-    return (
-      <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6 text-center text-gray-400">
-        <p className="text-lg font-semibold mb-2 text-white">Premium Required</p>
-        <p>This feature is only available for premium guilds.</p>
-      </section>
-    );
-  }
-
+  console.log(currentGuild?.isPremium)
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
       {loading && <PageLoader />}
 
-      <div className="flex items-center gap-2 mb-3">
-        <h2 className="text-2xl font-semibold">
-          Analytics
-        </h2>
-      </div>
-
+      <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
+        Analytics
+        <InfoTooltip text="Display your analytivs like Message flow and most active channels. Premium servers also can select LAST MONTH, LAST YEAR, LAST 5 YEARS" />
+      </h1>
 
       <div className="flex gap-2 mb-6">
-        {TIME_RANGES.map((range) => (
+        {allowedTimeRanges.map((range) => (
           <button
             key={range}
             onClick={() => setTimeRange(range)}
@@ -107,7 +101,7 @@ export default function Page() {
               if (timeRange !== range) e.currentTarget.style.backgroundColor = "";
             }}
           >
-            {range.replace("_", " ").replace(/_/g, " ").toUpperCase()}
+            {range.replace(/_/g, " ").toUpperCase()}
           </button>
         ))}
       </div>
