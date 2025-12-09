@@ -45,7 +45,6 @@ export async function GET(req: NextRequest) {
   const guild_id = searchParams.get("guildId");
   const range = (searchParams.get("range") as keyof typeof TIME_RANGES) || "last_week";
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guild_id);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guild_id) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
@@ -252,7 +251,8 @@ export async function GET(req: NextRequest) {
 
 
     // Cache 5 minutes
-    await redis.set(cacheKey, JSON.stringify(result), "EX", 320);
+    // TODO: Temp 2 seconds cache for debug
+    await redis.set(cacheKey, JSON.stringify(result), "EX", 2);
 
     return NextResponse.json(result);
   } catch (error) {

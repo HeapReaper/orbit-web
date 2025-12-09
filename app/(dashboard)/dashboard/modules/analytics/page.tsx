@@ -20,7 +20,8 @@ export default function Page() {
   const [totalMessages, setTotalMessages] = useState<any[]>([]);
   const [mostPopulairChannels, setMostPopulairChannels] = useState<any[]>([]);
   const [topUsers, setTopUsers] = useState<any[]>([]);
-  const {selectedGuild} = useGuild();
+  const { selectedGuild, channels } = useGuild();
+
   const [memberCount, setMemberCount] = useState<any[]>([]);
   const [memberChartData, setMemberChartData] = useState<any[]>([]);
   const [activeInactiveMembers, setActiveInactiveMembers] = useState<{ active: number; inactive: number }>({ active: 0, inactive: 0 });

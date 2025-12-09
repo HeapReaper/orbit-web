@@ -29,7 +29,7 @@ export default function JoinsOverTimeChart({ data }: Props) {
         >
           <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
           <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis />
+          <YAxis width={110} />
           <Tooltip
             formatter={(value: number) => [`${value}`, "Members"]}
             labelFormatter={(label) => `Date: ${label}`}
