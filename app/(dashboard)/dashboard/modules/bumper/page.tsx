@@ -164,7 +164,7 @@ export default function BumpReminderPage() {
 
       <MessagePreview
         username="Orbit"
-        message={message.replace("{xpBoost}", xpBoost)}
+        message={message.replace("{xpBoost}", xpBoost.toString())}
         channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
       />
 
