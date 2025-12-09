@@ -595,3 +595,14 @@ model ModLinkSettings {
 
   @@map("mod_link_settings")
 }
+
+model GuildApiSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique @db.VarChar(22) @map("guild_id")
+  apiKey    String   @db.Text @map("api_key")
+  enabled   Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("guild_api_settings")
+}
