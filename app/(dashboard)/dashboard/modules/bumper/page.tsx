@@ -12,6 +12,10 @@ import cleanMessage from "@/app/lib/cleanMessage";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
+import RolesInput from "@/app/(dashboard)/dashboard/components/inputs/Role";
+import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 
 export default function BumpReminderPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,23 +24,36 @@ export default function BumpReminderPage() {
   const [intervalHours, setIntervalHours] = useState<number>(2);
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [xpBoost, setXpBoost] = useState<number>(0);
+  const [rewardRole, setRewardRole] = useState<string | null>(null);
+  const [boostLeaderboard, setBoostLeaderboard] = useState<boolean>(false);
+  const [leaderboardAutoUpdates, setLeaderboardAutoUpdates] = useState<boolean>(false);
+  const [leaderboardChannel, setLeaderboardChannel] = useState<string>("");
+  const [autoLeaderboardInterval, setAutoLeaderboardInterval] = useState<string>("");
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild, channels, roles } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    document.title = "Bump reminder settings";
+    document.title = "Bumper settings";
     if (!selectedGuild) return;
 
     const fetchGuildData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/bumpreminders?guildId=${selectedGuild}`);
+        const res = await fetch(`/api/bumper?guildId=${selectedGuild}`);
         const data = await res.json();
+
         setMessage(data.message ?? "");
         setIntervalHours(data.interval ?? 2);
         setSelectedChannel(data.channel ?? "");
+        setXpBoost(data.xpBoost ?? 0);
+        setRewardRole(data.rewardRole ?? "");
+        setBoostLeaderboard(data.boostLeaderboard ?? false);
+        setLeaderboardAutoUpdates(data.leaderboardAutoUpdates ?? false);
+        setLeaderboardChannel(data.leaderboardChannel ?? "");
+        setAutoLeaderboardInterval(data.autoLeaderboardInterval ?? "");
         setEnabled(data.enabled ?? false);
       } catch (err) {
         console.error(err);
@@ -60,14 +77,20 @@ export default function BumpReminderPage() {
     setIsSaving(true);
 
     try {
-      const resp = await fetch("/api/bumpreminders", {
+      const resp = await fetch("/api/bumper", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
           channel: selectedChannel,
           message: cleanMessage(message),
-          interval: intervalHours,
+          interval: 2,
+          xpBoost,
+          rewardRole,
+          boostLeaderboard,
+          leaderboardAutoUpdates,
+          leaderboardChannel,
+          autoLeaderboardInterval,
           enabled: enabled ? 1 : 0,
         }),
       });
@@ -92,11 +115,11 @@ export default function BumpReminderPage() {
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
-      {loading && <PageLoader />}
+      {loading && <PageLoader/>}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Bump Reminder
-        <InfoTooltip text="Automatically remind members to bump your server at regular intervals. Customize the message, choose the notification channel, and set the reminder interval." />
+        Bumper
+        <InfoTooltip text="Receive reminders when it’s time to bump your server and reward members who bump"/>
       </h1>
 
       <div className="flex items-center justify-between mb-4">
@@ -116,6 +139,9 @@ export default function BumpReminderPage() {
         </button>
       </div>
 
+      <h2 className="text-xl font-semibold text-white mt-8">Reminders</h2>
+      <div className="h-px w-full bg-white/10 my-3 mt-2"></div>
+
       <div className="mb-6">
         <label className="block text-gray-400 mb-2">Bump Message</label>
         <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
@@ -125,15 +151,10 @@ export default function BumpReminderPage() {
             placeholder=""
           />
         </div>
+        <p className="text-sm text-gray-500 mb-4 mt-1">
+          You can use <InlineCode text="{xpBoost}" /> to get the (if any) XP users receive {" "}
+        </p>
       </div>
-
-      <NumberInput
-        label="Interval (hours)"
-        value={intervalHours}
-        onChange={setIntervalHours}
-        min={1}
-        max={24}
-      />
 
       <ChannelSelect
         label="Select channel for the bump reminder notification"
@@ -143,15 +164,72 @@ export default function BumpReminderPage() {
 
       <MessagePreview
         username="Orbit"
-        message={message}
+        message={message.replace("{xpBoost}", xpBoost)}
         channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
       />
+
+      <h2 className="text-xl font-semibold text-white mt-8">Rewards</h2>
+      <div className="h-px w-full bg-white/10 my-3 mt-2"></div>
+
+      <NumberInput
+        tooltip="Xp will be added on each bump. For this Leveling needs to be enabled."
+        label="Leveling XP boost"
+        value={xpBoost}
+        onChange={setXpBoost}
+      />
+
+      <RolesInput
+        toolTip="This reward role will be active for 24 hours since the last bump"
+        label="Reward role"
+        roles={roles}
+        selectedRoles={rewardRole ? [rewardRole] : []}
+        onToggle={(roleId) => {
+          (rewardRole === roleId) ? setRewardRole(null) : setRewardRole(roleId);
+        }}
+      />
+
+      <ToggleSwitch
+        label="Enable boost leaderboard"
+        enabled={boostLeaderboard}
+        onChange={() => setBoostLeaderboard(!boostLeaderboard)}
+      />
+
+      <div className="relative">
+        <ToggleSwitch
+          label="Enable automatic leaderboard updates"
+          enabled={leaderboardAutoUpdates}
+          onChange={() => setLeaderboardAutoUpdates(!leaderboardAutoUpdates)}
+        />
+      </div>
+
+      {leaderboardAutoUpdates && (
+        <>
+          <ChannelSelect
+            label="Channel to send the automatic leaderboard"
+            value={leaderboardChannel}
+            onChange={setLeaderboardChannel}
+          />
+
+          <SelectInput
+            label="When to send the automatic leaderboard"
+            value={autoLeaderboardInterval}
+            onChange={(v) => setAutoLeaderboardInterval(v as string)}
+            options={[
+              { value: "each_monday", label: "Each Monday" },
+              { value: "each_wednesday", label: "Each Wednesday" },
+              { value: "each_sunday", label: "Each Sunday" },
+              { value: "first_day_month", label: "First day of each month" },
+              { value: "last_day_month", label: "Last day of each month" },
+            ]}
+          />
+        </>
+      )}
 
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
       </div>
 
-      <SaveButton onClick={() => handleSave(false)} />
+      <SaveButton onClick={() => handleSave(false)}/>
     </section>
   );
 }

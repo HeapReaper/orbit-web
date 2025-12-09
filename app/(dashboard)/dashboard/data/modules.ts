@@ -2,9 +2,9 @@ import { moduleType } from "@/app/types/modules";
 
 const modules: moduleType[] = [
   {
-    name: "Bump Reminder",
-    url: "bump-reminder",
-    description: "Receive reminders when it’s time to bump your server.",
+    name: "Bumper",
+    url: "bumper",
+    description: "Receive reminders when it’s time to bump your server and reward members who bump!",
     tier: "free",
     enabled: true,
     inDevelopment: false,
