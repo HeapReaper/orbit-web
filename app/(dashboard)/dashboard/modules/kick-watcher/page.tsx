@@ -147,14 +147,14 @@ export default function Page() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Kick Users / Channels</label>
+        <label className="block text-sm text-gray-400 mb-2">Kick Usernames</label>
         {kickUsers.map((user, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <input
               type="text"
               value={user}
               onChange={(e) => handleUserChange(index, e.target.value)}
-              placeholder="kick_username_or_channel"
+              placeholder="kick_username"
               className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
             {kickUsers.length > 1 && (

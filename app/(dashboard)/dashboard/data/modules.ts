@@ -115,7 +115,7 @@ const modules: moduleType[] = [
     description: "Get notifications when favorite Kick streamers start streaming.",
     tier: "premium",
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Streaming / Media"
   },
   {
