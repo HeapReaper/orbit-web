@@ -35,6 +35,24 @@ export default function Page() {
         <section className="mb-12">
           <h2 className="text-2xl font-semibold text-white mb-4">Screenshot Previews</h2>
 
+          <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="space-y-4">
+              <h3 className="text-2xl font-semibold">API Config</h3>
+              <p className="text-gray-400">
+                Enable the API to be able to interact with the bot on a API level.
+              </p>
+            </div>
+            <div className="rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src="/screenshots/api-screenshot.png"
+                alt="API config Screenshot"
+                width={600}
+                height={350}
+                className="rounded-lg border border-[var(--primary-color)]"
+              />
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-10 items-center mt-16">
             <div className="order-2 md:order-1 rounded-lg overflow-hidden shadow-lg">
               <Image
