@@ -164,6 +164,9 @@ export default function ApiSettingsPage() {
               <code className="bg-gray-700 px-1 rounded text-white">
                 Authorization: Bearer API_KEY_HERE
               </code>
+              <code className="bg-gray-700 px-1 rounded text-white ms-2">
+                X-Guild-ID: 123456789012345678
+              </code>
             </p>
           )}
         </div>
@@ -201,8 +204,9 @@ export default function ApiSettingsPage() {
             </div>
 
             <pre className="bg-gray-800 text-xs text-white p-2 rounded mb-2 overflow-x-auto">
-{`curl -X ${ep.method} "${API_URL}${ep.path}" \\
-  -H "Authorization: Bearer ${"API_KEY_HERE"}"`}</pre>
+{`curl -X GET "https://bot.botinorbit.com/api/bumper" \\
+  -H "Authorization: Bearer API_KEY_HERE" \\
+  -H "X-Guild-ID: 123456789012345678"`}</pre>
 
             <div className="text-gray-300 text-sm whitespace-pre-wrap">{`${ep.description}\n\nResponse:\n${ep.response}`}</div>
           </div>
