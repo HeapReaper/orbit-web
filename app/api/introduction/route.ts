@@ -21,7 +21,17 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete } = data;
+  const {
+    guildId,
+    channel,
+    enabled,
+    maxMessages,
+    messageType,
+    autoReply,
+    embed,
+    autoEmoji,
+    autoDelete
+  } = data;
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
@@ -30,8 +40,26 @@ export async function POST(req: NextRequest) {
   try {
     const updated = await prisma.introductionSettings.upsert({
       where: { guildId },
-      update: { channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete },
-      create: { guildId, channel, enabled, maxMessages, autoReply, autoEmoji, autoDelete },
+      update: {
+        channel,
+        enabled,
+        maxMessages,
+        messageType,
+        autoReply,
+        embed,
+        autoEmoji,
+        autoDelete },
+      create: {
+        guildId,
+        channel,
+        enabled,
+        maxMessages,
+        messageType,
+        autoReply,
+        embed,
+        autoEmoji,
+        autoDelete
+      },
     });
 
     return NextResponse.json(updated);
