@@ -7,8 +7,11 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const autoMessages = await prisma.autoMessage.findMany({
     where: { guildId },
@@ -24,22 +27,28 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const validation = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof validation === "string") return NextResponse.json({ error: validation }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof validation === "string")
+    return NextResponse.json({ error: validation }, { status: 403 });
+
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     // Delete all old auto messages
     await prisma.autoMessage.deleteMany({ where: { guildId } });
-    // Insert new auto messages
+
+    // Insert new auto messages with messageType and embed support
     const createData = autoMessages.map((msg: any) => ({
       guildId,
+      messageType: msg.messageType ?? "text", // default text
       message: msg.message,
+      embed: msg.messageType === "embed" ? msg.embed : null,
       channel: msg.channel,
       time: msg.time,
       days: msg.days ?? [],
       enabled: msg.enabled,
     }));
-    
+
     await prisma.autoMessage.createMany({ data: createData });
 
     return NextResponse.json({ success: true });
