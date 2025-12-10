@@ -99,7 +99,7 @@ model BumpReminderSettings {
   id                      Int      @id @default(autoincrement())
   guildId                 String   @unique @map("guild_id") @db.VarChar(22)
   channel                 String   @db.VarChar(22)
-  messageType             String   @default("") @map("message_type")
+  messageType             String   @default("") @map("message_type") @db.VarChar(7)
   message                 String   @default("") @db.Text
   embed                   Json?    @default("{}") @db.Json
   interval                Int
@@ -183,6 +183,8 @@ model IntroductionSettings {
   enabled     Boolean  @default(false)
   channel     String?
   maxMessages Int      @default(1) @map("max_messages")
+  messageType String   @default("") @map("message_type") @db.VarChar(7)
+  embed       Json?    @default("{}") @db.Json
   autoReply   String?  @map("auto_reply")
   autoEmoji   String?  @map("auto_emoji")
   createdAt   DateTime @default(now()) @map("created_at")
