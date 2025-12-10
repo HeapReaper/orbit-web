@@ -73,7 +73,7 @@ export default function EmbedPreview({ embed }: EmbedPreviewProps) {
                         <img
                           src={embed.author.icon}
                           alt="Author icon"
-                          className="w-6 h-6 object-cover rounded-full border border-gray-600"
+                          className="w-7 h-7 object-cover rounded-full border border-gray-600"
                         />
                       )}
                       <span className="text-white font-semibold text-sm">{embed.author.name}</span>

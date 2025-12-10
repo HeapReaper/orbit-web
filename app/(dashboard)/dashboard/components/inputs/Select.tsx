@@ -4,7 +4,7 @@ import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
 interface Props {
   label: string;
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
   options: { value: string; label: string }[];
   tooltip?: string;

@@ -24,10 +24,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+
   const {
     guildId,
     channel,
+    messageType,
     message,
+    embed,
     interval,
     xpBoost,
     rewardRole,
@@ -45,7 +48,9 @@ export async function POST(req: NextRequest) {
     where: { guildId },
     update: {
       channel,
+      messageType,
       message,
+      embed,
       interval,
       xpBoost,
       rewardRole,
@@ -57,7 +62,9 @@ export async function POST(req: NextRequest) {
     create: {
       guildId,
       channel,
+      messageType,
       message,
+      embed,
       interval,
       xpBoost,
       rewardRole,

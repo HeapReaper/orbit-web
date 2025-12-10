@@ -99,7 +99,9 @@ model BumpReminderSettings {
   id                      Int      @id @default(autoincrement())
   guildId                 String   @unique @map("guild_id") @db.VarChar(22)
   channel                 String   @db.VarChar(22)
-  message                 String   @db.Text
+  messageType             String   @default("") @map("message_type")
+  message                 String   @default("") @db.Text
+  embed                   Json?    @default("{}") @db.Json
   interval                Int
   enabled                 Int      @default(1)
   createdAt               DateTime @default(now()) @map("created_at")
@@ -598,8 +600,8 @@ model ModLinkSettings {
 
 model GuildApiSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique @db.VarChar(22) @map("guild_id")
-  apiKey    String   @db.Text @map("api_key")
+  guildId   String   @unique @map("guild_id") @db.VarChar(22)
+  apiKey    String   @map("api_key") @db.Text
   enabled   Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

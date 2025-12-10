@@ -18,11 +18,24 @@ import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
 import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
+import {EmbedData} from "@/app/types/embed";
 
 export default function BumpReminderPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState(false);
+
+  const [messageType, setMessageType] = useState<string>("text");
   const [message, setMessage] = useState<string>("");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
+
   const [intervalHours, setIntervalHours] = useState<number>(2);
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -32,9 +45,6 @@ export default function BumpReminderPage() {
   const [leaderboardAutoUpdates, setLeaderboardAutoUpdates] = useState<boolean>(false);
   const [leaderboardChannel, setLeaderboardChannel] = useState<string>("");
   const [autoLeaderboardInterval, setAutoLeaderboardInterval] = useState<string>("");
-  const [messageType, setMessageType] = useState<string>("text");
-
-  const [embed, setEmbed] = useState({});
 
   const { selectedGuild, channels, roles } = useGuild();
   const { notify } = useNotification();
@@ -50,7 +60,10 @@ export default function BumpReminderPage() {
         const res = await fetch(`/api/bumper?guildId=${selectedGuild}`);
         const data = await res.json();
 
+        setMessageType(data.messageType);
+        setEmbed(data.embed);
         setMessage(data.message ?? "");
+
         setIntervalHours(data.interval ?? 2);
         setSelectedChannel(data.channel ?? "");
         setXpBoost(data.xpBoost ?? 0);
@@ -89,6 +102,8 @@ export default function BumpReminderPage() {
           guildId: selectedGuild,
           channel: selectedChannel,
           message: cleanMessage(message),
+          messageType,
+          embed,
           interval: 2,
           xpBoost,
           rewardRole,
@@ -116,7 +131,7 @@ export default function BumpReminderPage() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [message, intervalHours, enabled, selectedChannel]);
+  }, [message, intervalHours, enabled, selectedChannel, messageType, embed]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
