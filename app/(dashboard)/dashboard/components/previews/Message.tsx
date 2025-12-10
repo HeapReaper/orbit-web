@@ -11,7 +11,6 @@ interface Props {
 }
 
 export default function MessagePreview({ username, message, channels = {} }: Props) {
-  // Function to replace <#> with channel name
   const renderMessage = (text: unknown) => {
     if (typeof text !== "string") return text;
 
@@ -50,6 +49,7 @@ export default function MessagePreview({ username, message, channels = {} }: Pro
             <span className="font-semibold text-white">{username}</span>
             <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">APP</span>
             <span className="text-xs text-gray-400">
+              {/* TODO: Make it use locale settings */}
               {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
             </span>
           </div>
