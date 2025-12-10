@@ -91,9 +91,9 @@ export default function BotLogs() {
           <IconButton
             icon={RefreshCw}
             label="Refresh"
-            size={20}
+            size={8}
             onClick={fetchLogs}
-            className="mt-3"
+            className="mt-3 cursor-pointer"
           />
         </div>
       </div>
