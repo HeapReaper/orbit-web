@@ -18,7 +18,7 @@ import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
 import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
-import {EmbedData} from "@/app/types/embed";
+import { EmbedData } from "@/app/types/embed";
 
 export default function BumpReminderPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -94,6 +94,7 @@ export default function BumpReminderPage() {
     if (!selectedGuild) return;
     setIsSaving(true);
 
+    console.log(messageType);
     try {
       const resp = await fetch("/api/bumper", {
         method: "POST",
