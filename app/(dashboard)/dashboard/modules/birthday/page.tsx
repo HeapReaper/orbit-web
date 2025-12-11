@@ -12,11 +12,24 @@ import cleanMessage from "@/app/lib/cleanMessage";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import { EmbedData } from "@/app/types/embed";
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(true);
+
+  const [messageType, setMessageType] = useState<string>("text");
   const [message, setMessage] = useState<string>("");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
+
   const [time, setTime] = useState<string>("");
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -34,6 +47,16 @@ export default function Page() {
       try {
         const res = await fetch(`/api/birthday?guildId=${selectedGuild}`);
         const data = await res.json();
+        setMessageType(data.messageType ?? "text");
+        setEmbed(data.embed ?? {
+          color: "#5865F2",
+          title: "",
+          titleUrl: "",
+          description: "",
+          author: { name: "", icon: "" },
+          thumbnail: "",
+          fields: [],
+        });
         setMessage(data.message ?? "");
         setTime(data.time ?? "");
         setSelectedChannel(data.channel ?? "");
