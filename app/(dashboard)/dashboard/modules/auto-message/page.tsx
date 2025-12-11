@@ -12,40 +12,69 @@ import cleanMessage from "@/app/lib/cleanMessage";
 import {addDashboardLog} from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
+import { EmbedData } from "@/app/types/embed";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 
-type AutoMessage = {
+interface AutoMessage {
   id: string;
+  messageType: "text" | "embed";
   message: string;
   channel: string;
   time: string;
   days: string[];
   enabled: boolean;
-};
+}
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
-
   const { selectedGuild, channels } = useGuild();
   const { notify } = useNotification();
+
   const [autoMessages, setAutoMessages] = useState<AutoMessage[]>([]);
+  const [embeds, setEmbeds] = useState<EmbedData[]>([]);
 
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     document.title = "Auto message settings";
-
     if (!selectedGuild) return;
 
     const fetchAutoMessages = async () => {
       setLoading(true);
-
       try {
         const res = await fetch(`/api/auto-message?guildId=${selectedGuild}`);
-        const data: AutoMessage[] = await res.json();
-
+        const data = await res.json();
         setLoading(false);
-        setAutoMessages(data);
+
+        setAutoMessages(
+          data.map((msg: any) => ({
+            id: msg.id,
+            messageType: msg.messageType || "text",
+            message: msg.message,
+            channel: msg.channel,
+            time: msg.time,
+            days: msg.days ?? [],
+            enabled: msg.enabled
+          }))
+        );
+
+        setEmbeds(
+          data.map((msg: any) =>
+              msg.embed ?? {
+                color: "#5865F2",
+                title: "",
+                titleUrl: "",
+                description: "",
+                author: { name: "", icon: "" },
+                thumbnail: "",
+                fields: [],
+              }
+          )
+        );
+
       } catch (err) {
         console.error(err);
       }
@@ -57,18 +86,50 @@ export default function Page() {
   const addAutoMessage = () => {
     setAutoMessages(prev => [
       ...prev,
-      { id: crypto.randomUUID(), message: "", channel: "", time: "", days: [], enabled: true },
+      {
+        id: crypto.randomUUID(),
+        messageType: "text",
+        message: "",
+        channel: "",
+        time: "",
+        days: [],
+        enabled: true
+      },
+    ]);
+
+    setEmbeds(prev => [
+      ...prev,
+      {
+        color: "#5865F2",
+        title: "",
+        titleUrl: "",
+        description: "",
+        author: { name: "", icon: "" },
+        thumbnail: "",
+        fields: [],
+      }
     ]);
   };
 
-  const updateAutoMessage = (id: string, field: keyof AutoMessage, value: any) => {
-    setAutoMessages(prev =>
-      prev.map(msg => (msg.id === id ? { ...msg, [field]: value } : msg))
-    );
+  const updateAutoMessage = (index: number, field: keyof AutoMessage, value: any) => {
+    setAutoMessages(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   };
 
-  const removeAutoMessage = (id: string) => {
-    setAutoMessages(prev => prev.filter(msg => msg.id !== id));
+  const updateEmbed = (index: number, value: EmbedData) => {
+    setEmbeds(prev => {
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
+    });
+  };
+
+  const removeAutoMessage = (index: number) => {
+    setAutoMessages(prev => prev.filter((_, i) => i !== index));
+    setEmbeds(prev => prev.filter((_, i) => i !== index));
   };
 
   const triggerAutoSave = () => {
@@ -81,17 +142,20 @@ export default function Page() {
   const handleSave = async (auto = false) => {
     if (!selectedGuild) return;
     setIsSaving(true);
-
     try {
-      const cleanedAutoMessages = autoMessages.map(msg => ({
+      const cleanedAutoMessages = autoMessages.map((msg, i) => ({
         ...msg,
-        message: cleanMessage(msg.message)
+        message: cleanMessage(msg.message),
+        embed: embeds[i]
       }));
 
       const resp = await fetch(`/api/auto-message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guildId: selectedGuild, autoMessages: cleanedAutoMessages }),
+        body: JSON.stringify({
+          guildId: selectedGuild,
+          autoMessages: cleanedAutoMessages
+        }),
       });
 
       if (!resp.ok) throw new Error(resp.statusText);
@@ -109,7 +173,7 @@ export default function Page() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [autoMessages, selectedGuild]);
+  }, [autoMessages, embeds, selectedGuild]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -117,32 +181,55 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Auto Messages
-        <InfoTooltip text="Create automated scheduled messages for your server: customize content, channels, timing, days, and enable or disable each message individually." />
+        <InfoTooltip text="Create automated scheduled messages for your server." />
       </h1>
 
       {autoMessages.map((msg, i) => (
         <div key={msg.id} className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]">
+          <span className="text-gray-400">Auto Message {i + 1}</span>
+
+          <SelectInput
+            label="Message type"
+            value={msg.messageType}
+            onChange={(v) => updateAutoMessage(i, "messageType", v as "text" | "embed")}
+            options={[
+              { value: "text", label: "Text" },
+              { value: "embed", label: "Embed" }
+            ]}
+          />
+
           <div className="flex justify-between mb-2">
-            <span className="text-gray-400">Auto Message {i + 1}</span>
             {autoMessages.length > 1 && (
-              <DeleteButton
-                onClick={() => removeAutoMessage(msg.id)}
-              />
+              <DeleteButton onClick={() => removeAutoMessage(i)} />
             )}
           </div>
 
-          <div className="mb-2">
-            <label className="block text-gray-400 mb-1">Message</label>
-            <MarkdownEditor
-              value={msg.message}
-              onChange={(v) => updateAutoMessage(msg.id, "message", v)}
-            />
-          </div>
+          {msg.messageType === "text" ? (
+            <>
+              <MarkdownEditor
+                value={msg.message}
+                onChange={(v) => updateAutoMessage(i, "message", v)}
+              />
+              <MessagePreview
+                username="Orbit"
+                message={msg.message}
+                channels={Object.fromEntries(channels.map(c => [c.id, c.name]))}
+              />
+            </>
+          ) : (
+            <>
+              <EmbedBuilder
+                value={embeds[i]}
+                onChange={(v) => updateEmbed(i, v)}
+              />
+              <EmbedPreview embed={embeds[i]} />
+            </>
+          )}
 
           <ChannelSelect
-            label="Select channel for the automatic message"
+            label="Channel"
             value={msg.channel ?? ""}
-            onChange={(value) => updateAutoMessage(msg.id, "channel", value)}
+            onChange={(value) => updateAutoMessage(i, "channel", value)}
           />
 
           <div className="mb-2">
@@ -150,7 +237,7 @@ export default function Page() {
             <input
               type="time"
               value={msg.time}
-              onChange={(e) => updateAutoMessage(msg.id, "time", e.target.value)}
+              onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
               className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
           </div>
@@ -174,7 +261,7 @@ export default function Page() {
                       const newDays = e.target.checked
                         ? [...(msg.days || []), day]
                         : (msg.days || []).filter(d => d !== day);
-                      updateAutoMessage(msg.id, "days", newDays);
+                      updateAutoMessage(i, "days", newDays);
                     }}
                     className="hidden"
                   />
@@ -188,8 +275,8 @@ export default function Page() {
             <span className="text-gray-400 mr-2">Enabled</span>
             <button
               type="button"
-              onClick={() => updateAutoMessage(msg.id, "enabled", !msg.enabled)}
-              className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 focus:outline-none ${
+              onClick={() => updateAutoMessage(i, "enabled", !msg.enabled)}
+              className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 ${
                 msg.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
               }`}
             >
@@ -200,16 +287,9 @@ export default function Page() {
               />
             </button>
           </div>
-
-          <MessagePreview
-            username="Orbit"
-            message={msg.message}
-            channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
-          />
         </div>
       ))}
 
-      {/* @ts-ignore */}
       <button
         onClick={addAutoMessage}
         className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg"

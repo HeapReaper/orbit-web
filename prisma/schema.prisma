@@ -26,15 +26,17 @@ model AntiBotSettings {
 }
 
 model AutoMessage {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @map("guild_id") @db.VarChar(22)
-  message   String   @db.Text
-  channel   String   @db.VarChar(22)
-  time      String   @db.VarChar(5)
-  days      Json
-  enabled   Boolean  @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  guildId     String   @map("guild_id") @db.VarChar(22)
+  messageType String   @default("") @map("message_type") @db.VarChar(7)
+  message     String   @db.Text
+  embed       Json?    @default("{}") @db.Json
+  channel     String   @db.VarChar(22)
+  time        String   @db.VarChar(5)
+  days        Json
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @map("updated_at")
 
   @@map("auto_message")
 }
@@ -99,7 +101,9 @@ model BumpReminderSettings {
   id                      Int      @id @default(autoincrement())
   guildId                 String   @unique @map("guild_id") @db.VarChar(22)
   channel                 String   @db.VarChar(22)
-  message                 String   @db.Text
+  messageType             String   @default("") @map("message_type") @db.VarChar(7)
+  message                 String   @default("") @db.Text
+  embed                   Json?    @default("{}") @db.Json
   interval                Int
   enabled                 Int      @default(1)
   createdAt               DateTime @default(now()) @map("created_at")
@@ -181,6 +185,8 @@ model IntroductionSettings {
   enabled     Boolean  @default(false)
   channel     String?
   maxMessages Int      @default(1) @map("max_messages")
+  messageType String   @default("") @map("message_type") @db.VarChar(7)
+  embed       Json?    @default("{}") @db.Json
   autoReply   String?  @map("auto_reply")
   autoEmoji   String?  @map("auto_emoji")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -512,14 +518,16 @@ model TimeKeeperSettings {
 }
 
 model ServerAnniversarySettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "server_anniversary_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  enabled   Boolean
-  randomize Boolean  @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  time      String   @db.VarChar(5)
+  id          Int      @id @default(autoincrement())
+  guildId     String   @unique(map: "server_anniversary_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  messageType String   @default("") @map("message_type") @db.VarChar(7)
+  message     String   @db.Text
+  embed       Json?    @default("{}") @db.Json
+  channel     String?  @db.VarChar(22)
+  enabled     Boolean
+  randomize   Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  time        String   @db.VarChar(5)
 
   @@map("server_anniversary_settings")
 }
@@ -598,8 +606,8 @@ model ModLinkSettings {
 
 model GuildApiSettings {
   id        Int      @id @default(autoincrement())
-  guildId   String   @unique @db.VarChar(22) @map("guild_id")
-  apiKey    String   @db.Text @map("api_key")
+  guildId   String   @unique @map("guild_id") @db.VarChar(22)
+  apiKey    String   @map("api_key") @db.Text
   enabled   Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

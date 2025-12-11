@@ -12,6 +12,10 @@ import MessagePreview from "@/app/(dashboard)/dashboard/components/previews/Mess
 import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
+import {EmbedData} from "@/app/types/embed";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,6 +23,16 @@ export default function Page() {
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [maxMessages, setMaxMessages] = useState<number>(1);
   const [autoReply, setAutoReply] = useState<string>("");
+  const [messageType, setMessageType] = useState<string>("text");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
   const [autoEmoji, setAutoEmoji] = useState<string>("");
   const [autoDelete, setAutoDelete] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -41,7 +55,9 @@ export default function Page() {
         setEnabled(data.enabled ?? false);
         setSelectedChannel(data.channel ?? "");
         setMaxMessages(data.maxMessages ?? 1);
+        setMessageType(data.messageType ?? "text");
         setAutoReply(data.autoReply ?? "");
+        setEmbed(data.embed);
         setAutoEmoji(data.autoEmoji ?? "");
         setAutoDelete(data.autoDelete ?? false);
       } catch (err) {
@@ -75,6 +91,8 @@ export default function Page() {
           enabled,
           maxMessages,
           autoReply,
+          messageType,
+          embed,
           autoEmoji,
           autoDelete,
         }),
@@ -148,23 +166,42 @@ export default function Page() {
         onChange={(value) => setAutoDelete(value)}
       />
 
+      <SelectInput
+        label="Message type"
+        value={messageType}
+        onChange={setMessageType}
+        options={[
+          { value: "text", label: "Text"},
+          { value: "embed", label: "Embed"}
+        ]}
+      />
+
       <div className="mb-6">
         <label className="block text-gray-400 mb-2">Auto reply (optional)</label>
-        <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
-          <MarkdownEditor
-            value={autoReply}
-            onChange={setAutoReply}
-            placeholder=""
-          />
-        </div>
-        <p className="text-sm text-gray-500 mb-4 mt-1">
-          You can use <InlineCode text="{user}" /> to mention the user.
-        </p>
+        {messageType === "text" ? (
+          <>
+            <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
+              <MarkdownEditor
+                value={autoReply}
+                onChange={setAutoReply}
+                placeholder=""
+              />
+            </div>
+            <p className="text-sm text-gray-500 mb-4 mt-1">
+              You can use <InlineCode text="{user}" /> to mention the user.
+            </p>
 
-        <MessagePreview
-          username="Orbit"
-          message={autoReply.replace("{user}", "@HeapReaper")}
-        />
+            <MessagePreview
+              username="Orbit"
+              message={autoReply.replace("{user}", "@HeapReaper")}
+            />
+          </>
+        ) : (
+          <>
+            <EmbedBuilder value={embed} onChange={setEmbed} />
+            <EmbedPreview embed={embed} />
+          </>
+        )}
       </div>
 
       <div className="mb-4">

@@ -9,7 +9,7 @@ const redis = getRedisClient();
 const DISCORD_API = "https://discord.com/api";
 const ADMINISTRATOR = 0x00000008;
 
-const CACHE_TTL: number = 60 * 10; // 10 minutes
+const CACHE_TTL: number = 60;
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -44,7 +44,7 @@ export async function GET() {
         headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` },
       });
       botGuilds = botRes.ok ? JSON.stringify(await botRes.json()) : "[]";
-      await redis.set("bot:guilds", botGuilds, "EX", CACHE_TTL); // 10 min cache
+      await redis.set("bot:guilds", botGuilds, "EX", CACHE_TTL);
     }
     const botGuildIds = new Set(JSON.parse(botGuilds).map((g: any) => g.id));
 

@@ -16,11 +16,26 @@ import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
 import RolesInput from "@/app/(dashboard)/dashboard/components/inputs/Role";
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
+import { EmbedData } from "@/app/types/embed";
 
 export default function BumpReminderPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState(false);
+
+  const [messageType, setMessageType] = useState<string>("text");
   const [message, setMessage] = useState<string>("");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
+
   const [intervalHours, setIntervalHours] = useState<number>(2);
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -45,7 +60,10 @@ export default function BumpReminderPage() {
         const res = await fetch(`/api/bumper?guildId=${selectedGuild}`);
         const data = await res.json();
 
+        setMessageType(data.messageType);
+        setEmbed(data.embed);
         setMessage(data.message ?? "");
+
         setIntervalHours(data.interval ?? 2);
         setSelectedChannel(data.channel ?? "");
         setXpBoost(data.xpBoost ?? 0);
@@ -76,6 +94,7 @@ export default function BumpReminderPage() {
     if (!selectedGuild) return;
     setIsSaving(true);
 
+    console.log(messageType);
     try {
       const resp = await fetch("/api/bumper", {
         method: "POST",
@@ -84,6 +103,8 @@ export default function BumpReminderPage() {
           guildId: selectedGuild,
           channel: selectedChannel,
           message: cleanMessage(message),
+          messageType,
+          embed,
           interval: 2,
           xpBoost,
           rewardRole,
@@ -111,7 +132,7 @@ export default function BumpReminderPage() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [message, intervalHours, enabled, selectedChannel]);
+  }, [message, intervalHours, enabled, selectedChannel, messageType, embed]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -144,28 +165,45 @@ export default function BumpReminderPage() {
 
       <div className="mb-6">
         <label className="block text-gray-400 mb-2">Bump Message</label>
-        <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
-          <MarkdownEditor
-            value={message}
-            onChange={setMessage}
-            placeholder=""
+
+        <SelectInput
+          label="Message type"
+          value={messageType}
+          onChange={setMessageType}
+          options={[
+            { value: "text", label: "Text"},
+            { value: "embed", label: "Embed"}
+          ]}
           />
-        </div>
-        <p className="text-sm text-gray-500 mb-4 mt-1">
-          You can use <InlineCode text="{xpBoost}" /> to get the (if any) XP users receive {" "}
-        </p>
+
+        {messageType === "text" ? (
+          <>
+            <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
+              <MarkdownEditor
+                value={message}
+                onChange={setMessage}
+                placeholder=""
+              />
+            </div>
+
+            <MessagePreview
+              username="Orbit"
+              message={message.replace("{xpBoost}", xpBoost.toString())}
+              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+            />
+          </>
+        ) : (
+          <>
+            <EmbedBuilder value={embed} onChange={setEmbed} />
+            <EmbedPreview embed={embed} />
+          </>
+        )}
       </div>
 
       <ChannelSelect
         label="Select channel for the bump reminder notification"
         value={selectedChannel ?? ""}
         onChange={(value) => setSelectedChannel(value)}
-      />
-
-      <MessagePreview
-        username="Orbit"
-        message={message.replace("{xpBoost}", xpBoost.toString())}
-        channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
       />
 
       <h2 className="text-xl font-semibold text-white mt-8">Rewards</h2>

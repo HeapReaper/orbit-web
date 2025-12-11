@@ -223,13 +223,13 @@ export default function Sidebar() {
             </button>
 
             {modulesOpen && (
-              <div className="flex flex-col ml-4 mt-1 space-y-1 text-gray-300">
+              <div className="flex flex-col ml-4 mt-1 space-y-1 text-gray-300 cursor-pointer">
                 {sortAndFilterModules.map((module, index: number) => (
                   <Link
                     key={index}
                     href={`/dashboard/modules/${module.url}`}
                     className={
-                      `hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive(`/dashboard/modules/${module.url}`) ? "font-bold text-[var(--hover-color)]" : ""}`
+                      `hover:text-[var(--hover-color)]  px-2 py-1 rounded-md ${isActive(`/dashboard/modules/${module.url}`) ? "font-bold text-[var(--hover-color)]" : ""}`
                     }
                   >
                     {module.name}

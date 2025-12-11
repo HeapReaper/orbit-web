@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getRedisClient } from "@/app/lib/redis";
 
 const redis = getRedisClient();
-const CACHE_TTL: number = 60 * 10; // 10 minutes
+const CACHE_TTL: number = 60 // 1 minute
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

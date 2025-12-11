@@ -8,17 +8,31 @@ import { useGuild } from "@/app/context/GuildContext";
 import MarkdownEditor from "@/app/(dashboard)/dashboard/components/MarkdownEditor";
 import MessagePreview from "@/app/(dashboard)/dashboard/components/previews/Message";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
-import cleanMessage from "@/app/lib/cleanMessage";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
-import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 import TimeInput from "@/app/(dashboard)/dashboard/components/inputs/Time";
+import { EmbedData } from "@/app/types/embed";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
 
 export default function ServerAnniversaryPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [messages, setMessages] = useState<string[]>([""]);
+
+  const [messageType, setMessageType] = useState<string>("text");
+  const [message, setMessage] = useState<string>("");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
+
   const [channel, setChannel] = useState<string>("");
   const [randomize, setRandomize] = useState<boolean>(false);
   const [time, setTime] = useState<string>("09:00");
@@ -37,7 +51,17 @@ export default function ServerAnniversaryPage() {
       try {
         const res = await fetch(`/api/server-anniversary?guildId=${selectedGuild}`);
         const data = await res.json();
-        setMessages(data.messages?.length ? data.messages : [""]);
+        setMessageType(data.messageType ?? "text");
+        setMessage(data.message ?? "");
+        setEmbed(data.embed ?? {
+          color: "#5865F2",
+          title: "",
+          titleUrl: "",
+          description: "",
+          author: { name: "", icon: "" },
+          thumbnail: "",
+          fields: [],
+        });
         setChannel(data.channel ?? "");
         setTime(data.time ?? "");
         setEnabled(data.enabled ?? false);
@@ -69,10 +93,12 @@ export default function ServerAnniversaryPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          messages: messages.map((m) => cleanMessage(m)).filter((m) => m.trim() !== ""),
+          messageType,
+          message,
+          embed,
           channel: channel || null,
           time,
-          enabled: enabled,
+          enabled,
           randomize,
         }),
       });
@@ -93,16 +119,7 @@ export default function ServerAnniversaryPage() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [messages, channel, enabled, randomize]);
-
-  const handleMessageChange = (index: number, value: string) => {
-    const newMessages = [...messages];
-    newMessages[index] = value;
-    setMessages(newMessages);
-  };
-
-  const addMessage = () => setMessages([...messages, ""]);
-  const removeMessage = (index: number) => setMessages(messages.filter((_, i) => i !== index));
+  }, [messageType, message, embed, channel, enabled, randomize]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -142,48 +159,48 @@ export default function ServerAnniversaryPage() {
         onChange={setTime}
       />
 
-      <div className="mb-4">
-        <p className="text-sm text-gray-500 italic">
-          Messages are randomly picked
-        </p>
-      </div>
-
       <div className="mb-6">
-        {messages.map((msg, index) => (
-          <div key={index} className="mb-6">
-            <div className="flex justify-between mb-2">
-              <label className="block text-gray-400 mb-1">Message {index + 1}</label>
-              {messages.length > 1 && (
-                <DeleteButton onClick={() => removeMessage(index)} />
-              )}
-            </div>
-            <div className="flex gap-2">
-              <div className="flex-1 rounded-lg border border-gray-700 bg-[#1f2330]">
-                <MarkdownEditor
-                  value={msg}
-                  onChange={(val) => handleMessageChange(index, val)}
-                  placeholder=""
-                />
-              </div>
-            </div>
+        <div className="mb-6">
+          <SelectInput
+            label="Message type"
+            value={messageType}
+            onChange={setMessageType}
+            options={[
+              { value: "text", label: "Text"},
+              { value: "embed", label: "Embed"}
+            ]}
+          />
+
+          <div className="mb-2">
+            <label className="block text-gray-400 mb-1">Message</label>
             <p className="text-sm text-gray-500 mb-2 mt-1">
               You can use <InlineCode text="{guildAge}" /> to get the current server age in years (like 2).
             </p>
-
-            <MessagePreview
-              username="Orbit"
-              message={msg.replace("{guildAge}", "3")}
-              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
-            />
           </div>
-        ))}
-        <button
-          type="button"
-          onClick={addMessage}
-          className="bg-[var(--primary-color)] hover:brightness-90 text-white px-3 py-1 rounded"
-        >
-          Add Message
-        </button>
+
+          {messageType === "text" ? (
+            <>
+              <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
+                <MarkdownEditor
+                  value={message}
+                  onChange={setMessage}
+                  placeholder=""
+                />
+              </div>
+
+              <MessagePreview
+                username="Orbit"
+                message={message.replace("{guildAge}", "2")}
+                channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+              />
+            </>
+          ) : (
+            <>
+              <EmbedBuilder value={embed} onChange={setEmbed} />
+              <EmbedPreview embed={embed} replaceKey="{guildAge}" replaceValue="2" />
+            </>
+          )}
+        </div>
       </div>
 
       <div className="text-right text-gray-400 text-sm mt-3">
