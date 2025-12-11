@@ -32,9 +32,40 @@ export interface EmbedData {
 
 interface EmbedPreviewProps {
   embed: EmbedData;
+  replaceKey?: string;
+  replaceValue?: string;
 }
 
-export default function EmbedPreview({ embed }: EmbedPreviewProps) {
+/**
+ * Recursively replaces occurrences of replaceKey with replaceValue in all string fields of an embed
+ */
+function replaceInEmbed(obj: any, replaceKey?: string, replaceValue?: string): any {
+  if (!replaceKey || replaceValue === undefined) return obj;
+
+  if (typeof obj === "string") {
+    return obj.replaceAll(replaceKey, replaceValue);
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => replaceInEmbed(item, replaceKey, replaceValue));
+  }
+
+  if (typeof obj === "object" && obj !== null) {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        newObj[key] = replaceInEmbed(obj[key], replaceKey, replaceValue);
+      }
+    }
+    return newObj;
+  }
+
+  return obj;
+}
+
+export default function EmbedPreview({ embed, replaceKey, replaceValue }: EmbedPreviewProps) {
+  const renderedEmbed = replaceInEmbed(embed, replaceKey, replaceValue);
+
   return (
     <div className="bg-[#2b2d31] p-5 rounded-lg border border-[#202225] max-w-lg mt-3 mb-3">
       <div className="flex items-start gap-3">
@@ -61,54 +92,54 @@ export default function EmbedPreview({ embed }: EmbedPreviewProps) {
           <div className="mt-1 break-words">
             <div
               className="flex-1 bg-[#393A41] rounded border-l-4 p-3 mt-2"
-              style={{ borderColor: embed.color || "#5865F2" }}
+              style={{ borderColor: renderedEmbed.color || "#5865F2" }}
             >
-              <div className={`flex ${embed.thumbnail ? 'gap-4' : ''}`}>
+              <div className={`flex ${renderedEmbed.thumbnail ? 'gap-4' : ''}`}>
                 {/* Left column: Text content */}
                 <div className="flex-1">
                   {/* Author */}
-                  {embed.author?.name && (
+                  {renderedEmbed.author?.name && (
                     <div className="flex items-center gap-2 mb-1">
-                      {embed.author.icon && (
+                      {renderedEmbed.author.icon && (
                         <img
-                          src={embed.author.icon}
+                          src={renderedEmbed.author.icon}
                           alt="Author icon"
                           className="w-7 h-7 object-cover rounded-full border border-gray-600"
                         />
                       )}
-                      <span className="text-white font-semibold text-sm">{embed.author.name}</span>
+                      <span className="text-white font-semibold text-sm">{renderedEmbed.author.name}</span>
                     </div>
                   )}
 
                   {/* Title */}
-                  {embed.title && (
-                    embed.titleUrl ? (
+                  {renderedEmbed.title && (
+                    renderedEmbed.titleUrl ? (
                       <a
-                        href={embed.titleUrl}
+                        href={renderedEmbed.titleUrl}
                         className="font-bold text-sm text-[#7BB0F5] block mb-1 no-underline hover:underline underline-offset-2"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ReactMarkdown>{embed.title}</ReactMarkdown>
+                        <ReactMarkdown>{renderedEmbed.title}</ReactMarkdown>
                       </a>
                     ) : (
                       <h5 className="font-bold text-sm text-white mb-1">
-                        <ReactMarkdown>{embed.title}</ReactMarkdown>
+                        <ReactMarkdown>{renderedEmbed.title}</ReactMarkdown>
                       </h5>
                     )
                   )}
 
                   {/* Description */}
-                  {embed.description && (
+                  {renderedEmbed.description && (
                     <p className="text-gray-300 text-sm whitespace-pre-line mb-1">
-                      <ReactMarkdown>{embed.description}</ReactMarkdown>
+                      <ReactMarkdown>{renderedEmbed.description}</ReactMarkdown>
                     </p>
                   )}
 
                   {/* Fields */}
-                  {(embed.fields?.length ?? 0) > 0 && (
+                  {(renderedEmbed.fields?.length ?? 0) > 0 && (
                     <div className="mt-1 grid grid-cols-1 gap-1">
-                      {(embed.fields || []).map((f, i) => (
+                      {(renderedEmbed.fields || []).map((f: { inline: any; name: string | null | undefined; value: string | null | undefined; }, i: React.Key | null | undefined) => (
                         <div key={i} className={f.inline ? "inline-block w-[45%] mr-2" : "block"}>
                           <div className="text-white font-semibold text-xs">
                             <ReactMarkdown>{f.name}</ReactMarkdown>
@@ -122,20 +153,20 @@ export default function EmbedPreview({ embed }: EmbedPreviewProps) {
                   )}
 
                   {/* Footer */}
-                  {(embed.footer?.text || embed.footer?.icon) && (
+                  {(renderedEmbed.footer?.text || renderedEmbed.footer?.icon) && (
                     <div className="flex items-center gap-1 mt-2 text-gray-400 text-xs">
-                      {embed.footer.icon && (
-                        <img src={embed.footer.icon} className="w-3 h-3 rounded" alt="" />
+                      {renderedEmbed.footer.icon && (
+                        <img src={renderedEmbed.footer.icon} className="w-3 h-3 rounded" alt="" />
                       )}
-                      <ReactMarkdown>{embed.footer?.text || ""}</ReactMarkdown>
+                      <ReactMarkdown>{renderedEmbed.footer?.text || ""}</ReactMarkdown>
                     </div>
                   )}
                 </div>
 
-                {embed.thumbnail && (
+                {renderedEmbed.thumbnail && (
                   <div className="flex-shrink-0">
                     <img
-                      src={embed.thumbnail}
+                      src={renderedEmbed.thumbnail}
                       alt="Thumbnail"
                       className="w-20 h-20 object-cover rounded"
                     />
@@ -143,9 +174,9 @@ export default function EmbedPreview({ embed }: EmbedPreviewProps) {
                 )}
               </div>
 
-              {embed.image && (
+              {renderedEmbed.image && (
                 <img
-                  src={embed.image}
+                  src={renderedEmbed.image}
                   alt="Embed image"
                   className="rounded mt-2 w-full"
                 />
