@@ -15,6 +15,9 @@ export const authOptions: NextAuthOptions = {
           scope: "identify guilds",
         },
       },
+      httpOptions: {
+        timeout: 10000, // 10 seconds timeout
+      }
     }),
   ],
 
