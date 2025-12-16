@@ -15,7 +15,7 @@ import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/Channel
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [enabled, setEnabled] = useState<boolean>(true);
+  const [enabled, setEnabled] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [selectedChannel, setSelectedChannel] = useState<string>("");
@@ -28,6 +28,12 @@ export default function Page() {
   useEffect(() => {
     document.title = "Birthday settings";
     if (!selectedGuild) return;
+
+    // Reset state
+    setMessage("");
+    setTime("");
+    setSelectedChannel("");
+    setEnabled(false);
 
     const fetchGuildData = async () => {
       setLoading(true);
