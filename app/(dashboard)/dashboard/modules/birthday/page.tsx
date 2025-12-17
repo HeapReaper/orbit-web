@@ -153,7 +153,7 @@ export default function Page() {
 
 
       <div className="mb-6">
-        <label className="block text-gray-400 mb-2">Bump Message</label>
+        <label className="block text-gray-400 mb-2">Birthday message</label>
 
         <SelectInput
           label="Message type"
