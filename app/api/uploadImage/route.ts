@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/options";
 
-// Use Hetzner S3 endpoint
 const s3 = new S3Client({
   region: process.env.S3_REGION || "us-east-1",
   endpoint: process.env.S3_ENDPOINT,
