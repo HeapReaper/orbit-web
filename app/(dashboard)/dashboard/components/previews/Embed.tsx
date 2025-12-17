@@ -32,29 +32,29 @@ export interface EmbedData {
 
 interface EmbedPreviewProps {
   embed: EmbedData;
-  replaceKey?: string;
-  replaceValue?: string;
+  replace?: Array<[string, string]>;
 }
 
-/**
- * Recursively replaces occurrences of replaceKey with replaceValue in all string fields of an embed
- */
-function replaceInEmbed(obj: any, replaceKey?: string, replaceValue?: string): any {
-  if (!replaceKey || replaceValue === undefined) return obj;
+function replaceInEmbed(obj: any, replace?: Array<[string, string]>): any {
+  if (!replace) return obj;
 
   if (typeof obj === "string") {
-    return obj.replaceAll(replaceKey, replaceValue);
+    let str = obj;
+    for (const [key, value] of replace) {
+      str = str.replaceAll(key, value);
+    }
+    return str;
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(item => replaceInEmbed(item, replaceKey, replaceValue));
+    return obj.map(item => replaceInEmbed(item, replace));
   }
 
   if (typeof obj === "object" && obj !== null) {
     const newObj: any = {};
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
-        newObj[key] = replaceInEmbed(obj[key], replaceKey, replaceValue);
+        newObj[key] = replaceInEmbed(obj[key], replace);
       }
     }
     return newObj;
@@ -63,8 +63,8 @@ function replaceInEmbed(obj: any, replaceKey?: string, replaceValue?: string): a
   return obj;
 }
 
-export default function EmbedPreview({ embed, replaceKey, replaceValue }: EmbedPreviewProps) {
-  const renderedEmbed = replaceInEmbed(embed, replaceKey, replaceValue);
+export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
+  const renderedEmbed = replaceInEmbed(embed, replace);
 
   return (
     <div className="bg-[#2b2d31] p-5 rounded-lg border border-[#202225] max-w-lg mt-3 mb-3">

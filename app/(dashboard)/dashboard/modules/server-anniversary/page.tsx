@@ -197,7 +197,11 @@ export default function ServerAnniversaryPage() {
           ) : (
             <>
               <EmbedBuilder value={embed} onChange={setEmbed} />
-              <EmbedPreview embed={embed} replaceKey="{guildAge}" replaceValue="2" />
+              <EmbedPreview
+                embed={embed}
+                replace={[
+                ["{guildAge}", "2"]
+              ]} />
             </>
           )}
         </div>
