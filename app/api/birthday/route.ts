@@ -7,12 +7,10 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guildId = searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
-  // Rate limit
   const rateLimitResp = await rateLimitApi(`${session.user.id}:getRequest`, guildId, 10, 60);
   if (rateLimitResp) return rateLimitResp;
 
@@ -29,22 +27,42 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const { guildId, channel, message, time, enabled } = data;
+  const {
+    guildId,
+    channel,
+    messageType,
+    message,
+    embed,
+    time,
+    enabled
+  } = await req.json();
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
 
-  // Rate limit
   const rateLimitResp = await rateLimitApi(`${session.user.id}:postRequest`, guildId, 10, 60);
   if (rateLimitResp) return rateLimitResp;
 
   try {
     const updated = await prisma.birthdaySettings.upsert({
       where: { guildId },
-      update: { channel, message, time, enabled },
-      create: { guildId, channel, message, time, enabled },
+      update: {
+        channel,
+        messageType,
+        message,
+        embed,
+        time,
+        enabled },
+      create: {
+        guildId,
+        channel,
+        messageType,
+        message,
+        embed,
+        time,
+        enabled
+      },
     });
 
     return NextResponse.json(updated);

@@ -94,7 +94,6 @@ export default function BumpReminderPage() {
     if (!selectedGuild) return;
     setIsSaving(true);
 
-    console.log(messageType);
     try {
       const resp = await fetch("/api/bumper", {
         method: "POST",

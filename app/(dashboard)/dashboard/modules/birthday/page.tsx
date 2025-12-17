@@ -12,11 +12,25 @@ import cleanMessage from "@/app/lib/cleanMessage";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import { EmbedData } from "@/app/types/embed";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
+  const [messageType, setMessageType] = useState<string>("text");
   const [message, setMessage] = useState<string>("");
+  const [embed, setEmbed] = useState<EmbedData>({
+    color: "#5865F2",
+    title: "",
+    titleUrl: "",
+    description: "",
+    author: { name: "", icon: "" },
+    thumbnail: "",
+    fields: [],
+  });
   const [time, setTime] = useState<string>("");
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -40,7 +54,19 @@ export default function Page() {
       try {
         const res = await fetch(`/api/birthday?guildId=${selectedGuild}`);
         const data = await res.json();
+
+        setMessageType(data.messageType ?? "text");
+        setEmbed(data.embed ?? {
+          color: "#5865F2",
+          title: "",
+          titleUrl: "",
+          description: "",
+          author: { name: "", icon: "" },
+          thumbnail: "",
+          fields: [],
+        });
         setMessage(data.message ?? "");
+
         setTime(data.time ?? "");
         setSelectedChannel(data.channel ?? "");
         setEnabled(data.enabled ?? false);
@@ -72,7 +98,9 @@ export default function Page() {
         body: JSON.stringify({
           guildId: selectedGuild,
           channel: selectedChannel,
+          messageType,
           message: cleanMessage(message),
+          embed,
           time,
           enabled,
         }),
@@ -95,7 +123,7 @@ export default function Page() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [message, time, enabled, selectedChannel]);
+  }, [messageType, message, embed, time, enabled, selectedChannel]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -123,15 +151,48 @@ export default function Page() {
         </button>
       </div>
 
+
       <div className="mb-6">
-        <label className="block text-gray-400 mb-2">Birthday Message</label>
-        <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
-          <MarkdownEditor
-            value={message}
-            onChange={(v) => setMessage(v)}
-            placeholder=""
-          />
-        </div>
+        <label className="block text-gray-400 mb-2">Bump Message</label>
+
+        <SelectInput
+          label="Message type"
+          value={messageType}
+          onChange={setMessageType}
+          options={[
+            { value: "text", label: "Text"},
+            { value: "embed", label: "Embed"}
+          ]}
+        />
+
+        {messageType === "text" ? (
+          <>
+            <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
+              <MarkdownEditor
+                value={message}
+                onChange={setMessage}
+                placeholder=""
+              />
+            </div>
+
+            <MessagePreview
+              username="Orbit"
+              message={message.replace("{user}", "@HeapReaper").replace("{age}", "3")}
+              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+            />
+          </>
+        ) : (
+          <>
+            <EmbedBuilder value={embed} onChange={setEmbed} />
+            <EmbedPreview
+              embed={embed}
+              replace={[
+                ["{user}", "HeapReaper"],
+                ["{age}", "3"]
+              ]}
+            />
+          </>
+        )}
         <p className="text-sm text-gray-500 mb-4 mt-1">
           You can use <InlineCode text="{user}" /> to mention the user and{" "}
           <InlineCode text="{age}" /> to display their age.
@@ -152,12 +213,6 @@ export default function Page() {
         label="Select channel for Birthday Notifications"
         value={selectedChannel ?? ""}
         onChange={(value) => setSelectedChannel(value)}
-      />
-
-      <MessagePreview
-        username="Orbit"
-        message={message.replace("{age}", "24").replace("{user}", "@HeapReaper")}
-        channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
       />
 
       <div className="text-right text-gray-400 text-sm mt-3">
