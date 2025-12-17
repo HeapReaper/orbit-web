@@ -92,13 +92,16 @@ export default function EmbedBuilder({ value, onChange }: EmbedBuilderProps) {
             const file = e.target.files?.[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = () => {
-              if (typeof reader.result === "string") {
-                update({ author: { ...value.author, icon: reader.result } });
-              }
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch("/api/uploadImage", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await res.json();
+            update({ author: { ...value.author, icon: data.url } });
           }}
         />
 
@@ -135,13 +138,16 @@ export default function EmbedBuilder({ value, onChange }: EmbedBuilderProps) {
             const file = e.target.files?.[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = () => {
-              if (typeof reader.result === "string") {
-                update({ thumbnail: reader.result });
-              }
-            };
-            reader.readAsDataURL(file);
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch("/api/uploadImage", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await res.json();
+            update({ thumbnail: data.url });
           }}
         />
 
