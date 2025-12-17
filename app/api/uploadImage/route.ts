@@ -1,18 +1,24 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/options";
 
 // Use Hetzner S3 endpoint
 const s3 = new S3Client({
-  region: process.env.S3_REGION || "us-east-1", // placeholder if empty
-  endpoint: process.env.S3_ENDPOINT,           // Hetzner S3 endpoint
+  region: process.env.S3_REGION || "us-east-1",
+  endpoint: process.env.S3_ENDPOINT,
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY!,
     secretAccessKey: process.env.S3_SECRET_KEY!,
   },
-  forcePathStyle: true, // Required for Hetzner S3
+  forcePathStyle: true,
 });
 
 export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) return new Response("Unauthorized", { status: 401 });
+
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
