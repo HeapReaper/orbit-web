@@ -191,15 +191,6 @@ const modules: moduleType[] = [
     category: "Moderation"
   },
   {
-    name: "Message Glue",
-    url: "message-glue",
-    description: "Keep a specific message pinned as the last message.",
-    tier: "free",
-    enabled: false,
-    inDevelopment: true,
-    category: "Fun / Engagement"
-  },
-  {
     name: "Streak",
     url: "streak",
     description: "Reward members for daily activity and maintain streaks.",
