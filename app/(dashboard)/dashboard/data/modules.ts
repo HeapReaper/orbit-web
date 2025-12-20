@@ -56,6 +56,15 @@ const modules: moduleType[] = [
     category: "Events / Server Management"
   },
   {
+    name: "Donations",
+    url: "donations",
+    description: "Track and manage server donations with customizable goals and progress tracking.",
+    tier: "freemium",
+    enabled: true,
+    inDevelopment: false,
+    category: "Events / Server Management"
+  },
+  {
     name: "Logging",
     url: "logging",
     description: "Track server events like messages and voice activity.",
