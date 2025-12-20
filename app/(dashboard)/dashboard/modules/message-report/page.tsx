@@ -20,7 +20,7 @@ export default function Page() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    document.title = "Birthday settings";
+    document.title = "Message Report settings";
     if (!selectedGuild) return;
 
     const fetchGuildData = async () => {

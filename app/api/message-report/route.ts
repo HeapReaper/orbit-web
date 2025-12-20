@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(data);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch reminders" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch message reports" }, { status: 500 });
   }
 }
 
@@ -47,6 +47,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(updated);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update birthday settings" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update message report settings" }, { status: 500 });
   }
 }
