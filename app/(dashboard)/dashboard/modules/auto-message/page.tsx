@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import { useNotification } from "@/app/context/NotificationContext";
@@ -9,7 +9,7 @@ import MarkdownEditor from "@/app/(dashboard)/dashboard/components/MarkdownEdito
 import MessagePreview from "@/app/(dashboard)/dashboard/components/previews/Message";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import cleanMessage from "@/app/lib/cleanMessage";
-import {addDashboardLog} from "@/app/lib/addDashboardLog";
+import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
@@ -24,6 +24,8 @@ interface AutoMessage {
   channel: string;
   time: string;
   days: string[];
+  scheduleType: "daily" | "weekly" | "biweekly" | "monthly";
+  monthlyDate?: number;
   enabled: boolean;
 }
 
@@ -57,6 +59,8 @@ export default function Page() {
             channel: msg.channel,
             time: msg.time,
             days: msg.days ?? [],
+            scheduleType: msg.scheduleType || "daily",
+            monthlyDate: msg.monthlyDate,
             enabled: msg.enabled
           }))
         );
@@ -93,6 +97,8 @@ export default function Page() {
         channel: "",
         time: "",
         days: [],
+        scheduleType: "daily",
+        monthlyDate: undefined,
         enabled: true
       },
     ]);
@@ -198,6 +204,65 @@ export default function Page() {
             ]}
           />
 
+          <div className="mb-3 mt-3">
+            <SelectInput
+              label="Schedule type"
+              value={msg.scheduleType}
+              onChange={(v) => updateAutoMessage(i, "scheduleType", v)}
+              options={[
+                { value: "daily", label: "Daily" },
+                { value: "weekly", label: "Weekly" },
+                { value: "biweekly", label: "Every 2 Weeks" },
+                { value: "monthly", label: "Monthly" },
+              ]}
+            />
+          </div>
+
+          {["daily", "weekly", "biweekly"].includes(msg.scheduleType) && (
+            <div className="mb-3 mt-3">
+              <label className="block text-gray-400 mb-1">Days</label>
+              <div className="flex flex-wrap gap-2">
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
+                  <label
+                    key={day}
+                    className={`cursor-pointer px-2 py-1 rounded border text-sm ${
+                      msg.days?.includes(day)
+                        ? "bg-[var(--primary-color)] border-[var(--primary-color)] text-white"
+                        : "bg-[#0f1117] border-gray-700 text-gray-300"
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={msg.days?.includes(day)}
+                      onChange={(e) => {
+                        const newDays = e.target.checked
+                          ? [...(msg.days || []), day]
+                          : (msg.days || []).filter(d => d !== day);
+                        updateAutoMessage(i, "days", newDays);
+                      }}
+                      className="hidden"
+                    />
+                    {day}
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {msg.scheduleType === "monthly" && (
+            <div className="mb-3">
+              <label className="block text-gray-400 mb-1">Day of the month</label>
+              <input
+                type="number"
+                min={1}
+                max={31}
+                value={msg.monthlyDate ?? ""}
+                onChange={(e) => updateAutoMessage(i, "monthlyDate", parseInt(e.target.value))}
+                className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
+              />
+            </div>
+          )}
+
           <div className="flex justify-between mb-2">
             {autoMessages.length > 1 && (
               <DeleteButton onClick={() => removeAutoMessage(i)} />
@@ -240,35 +305,6 @@ export default function Page() {
               onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
               className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
-          </div>
-
-          <div className="mb-3 mt-3">
-            <label className="block text-gray-400 mb-1">Days</label>
-            <div className="flex flex-wrap gap-2">
-              {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
-                <label
-                  key={day}
-                  className={`cursor-pointer px-2 py-1 rounded border text-sm ${
-                    msg.days?.includes(day)
-                      ? "bg-[var(--primary-color)] border-[var(--primary-color)] text-white"
-                      : "bg-[#0f1117] border-gray-700 text-gray-300"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={msg.days?.includes(day)}
-                    onChange={(e) => {
-                      const newDays = e.target.checked
-                        ? [...(msg.days || []), day]
-                        : (msg.days || []).filter(d => d !== day);
-                      updateAutoMessage(i, "days", newDays);
-                    }}
-                    className="hidden"
-                  />
-                  {day}
-                </label>
-              ))}
-            </div>
           </div>
 
           <div className="flex items-center">

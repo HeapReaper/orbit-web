@@ -5,7 +5,6 @@ import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAnd
 export async function GET(req: NextRequest) {
   const guildId = req.nextUrl.searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
@@ -25,7 +24,6 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { guildId, autoMessages } = body;
 
-  // Validate authentication by session and if user is guild admin
   const validation = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof validation === "string")
     return NextResponse.json({ error: validation }, { status: 403 });
@@ -41,6 +39,7 @@ export async function POST(req: NextRequest) {
     const createData = autoMessages.map((msg: any) => ({
       guildId,
       messageType: msg.messageType ?? "text", // default text
+      scheduleType: msg.scheduleType ?? "daily",
       message: msg.message,
       embed: msg.messageType === "embed" ? msg.embed : null,
       channel: msg.channel,
