@@ -630,17 +630,18 @@ model DonationsSettings {
 }
 
 model DonationGoals {
-  id            Int     @id @default(autoincrement())
-  guildId       String  @map("guild_id") @db.VarChar(22)
-  authorId      String  @map("author_id") @db.VarChar(22)
-  title         String  @db.VarChar(30)
-  description   String  @db.VarChar(120)
-  goalAmount    Int     @map("goal_amount")
-  stopOnGoal    Boolean @default(true) @map("stop_on_goal")
-  notifyChannel String  @map("notify_channel") @db.VarChar(22)
-  mentionRole   String? @map("mention_role") @db.VarChar(22)
-
-  donations Donations[] @relation("GoalDonations") // one-to-many
+  id            Int         @id @default(autoincrement())
+  guildId       String      @map("guild_id") @db.VarChar(22)
+  messageId     String      @map("message_id") @db.VarChar(22)
+  authorId      String      @map("author_id") @db.VarChar(22)
+  channelId     String      @map("channel_id") @db.VarChar(22)
+  title         String      @db.VarChar(30)
+  description   String      @db.VarChar(120)
+  goalAmount    Int         @map("goal_amount")
+  stopOnGoal    Boolean     @default(true) @map("stop_on_goal")
+  notifyChannel String      @map("notify_channel") @db.VarChar(22)
+  mentionRole   String?     @map("mention_role") @db.VarChar(22)
+  donations     Donations[] @relation("GoalDonations") // one-to-many
 
   @@map("donations_goals")
 }
