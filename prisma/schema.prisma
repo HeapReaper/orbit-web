@@ -26,17 +26,18 @@ model AntiBotSettings {
 }
 
 model AutoMessage {
-  id          Int      @id @default(autoincrement())
-  guildId     String   @map("guild_id") @db.VarChar(22)
-  messageType String   @default("") @map("message_type") @db.VarChar(7)
-  message     String   @db.Text
-  embed       Json?    @default("{}") @db.Json
-  channel     String   @db.VarChar(22)
-  time        String   @db.VarChar(5)
-  days        Json
-  enabled     Boolean  @default(true)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @map("updated_at")
+  id           Int      @id @default(autoincrement())
+  guildId      String   @map("guild_id") @db.VarChar(22)
+  messageType  String   @default("") @map("message_type") @db.VarChar(7)
+  scheduleType String   @default("daily") @map("schedule_type") @db.VarChar(10)
+  message      String   @db.Text
+  embed        Json?    @default("{}") @db.Json
+  channel      String   @db.VarChar(22)
+  time         String   @db.VarChar(5)
+  days         Json
+  enabled      Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @map("updated_at")
 
   @@map("auto_message")
 }
