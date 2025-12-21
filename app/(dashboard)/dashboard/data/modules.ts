@@ -173,6 +173,15 @@ const modules: moduleType[] = [
     category: "Fun / Engagement"
   },
   {
+    name: "Server Stats",
+    url: "server-stats",
+    description: "Display stats like Member count and boosts count with channels",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement"
+  },
+  {
     name: "Giveaway",
     url: "giveaway",
     description: "Host giveaways and let members win prizes easily.",

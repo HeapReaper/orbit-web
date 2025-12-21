@@ -658,3 +658,25 @@ model Donations {
 
   @@map("donations")
 }
+
+model ServerStatsSettings {
+  id      Int     @id @default(autoincrement())
+  guildId String  @unique @map("guild_id")
+  enabled Boolean @default(false)
+
+  @@map("server_stats_settings")
+}
+
+model ServerStats {
+  id      Int    @id @default(autoincrement())
+  guildId String @unique @map("guild_id")
+
+  memberCountChannelId       String? @map("member_count_channel_id") @db.VarChar(22)
+  boostCountChannelId        String? @map("boost_count_channel_id") @db.VarChar(22)
+  botCountChannelId          String? @map("bot_count_channel_id") @db.VarChar(22)
+  onlineMemberCountChannelId String? @map("online_member_count_channel_id") @db.VarChar(22)
+  channelCountChannelId      String? @map("channel_count_channel_id") @db.VarChar(22)
+  rolesCountChannelId        String? @map("roles_count_channel_id") @db.VarChar(22)
+
+  @@map("server_stats")
+}
