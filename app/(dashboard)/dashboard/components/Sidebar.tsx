@@ -297,8 +297,17 @@ export default function Sidebar() {
             <JoinOurDiscord />
           </div>
 
-          <p className=" text-gray-300">
-            By <span className="underline decoration-purple-700 hover:text-white"><a href="https://klikbit.nl" target="_blank">KlikBit</a></span>
+          <p className="text-gray-300">
+            A product by{" "}
+            <span className="underline decoration-purple-700 hover:text-white">
+              <a
+                href="https://klikbit.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                KlikBit
+              </a>
+            </span>
           </p>
         </div>
       </aside>
