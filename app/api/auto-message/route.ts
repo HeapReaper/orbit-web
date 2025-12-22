@@ -32,23 +32,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
-    // Delete all old auto messages
-    await prisma.autoMessage.deleteMany({ where: { guildId } });
-
-    // Insert new auto messages with messageType and embed support
-    const createData = autoMessages.map((msg: any) => ({
-      guildId,
-      messageType: msg.messageType ?? "text", // default text
-      scheduleType: msg.scheduleType ?? "daily",
-      message: msg.message,
-      embed: msg.messageType === "embed" ? msg.embed : null,
-      channel: msg.channel,
-      time: msg.time,
-      days: msg.days ?? [],
-      enabled: msg.enabled,
-    }));
-
-    await prisma.autoMessage.createMany({ data: createData });
+    await Promise.all(
+      autoMessages.map((msg: { id: any; messageType: string; message: any; embed: any; channel: any; time: any; days: any; scheduleType: any; enabled: any; }) => prisma.autoMessage.upsert({
+        where: { id: msg.id },
+        update: {
+          messageType: msg.messageType,
+          message: msg.message,
+          embed: msg.messageType === "embed" ? msg.embed : null,
+          channel: msg.channel,
+          time: msg.time,
+          days: msg.days ?? [],
+          scheduleType: msg.scheduleType,
+          enabled: msg.enabled
+        },
+        create: {
+          guildId,
+          messageType: msg.messageType,
+          message: msg.message,
+          embed: msg.messageType === "embed" ? msg.embed : null,
+          channel: msg.channel,
+          time: msg.time,
+          days: msg.days ?? [],
+          scheduleType: msg.scheduleType,
+          enabled: msg.enabled
+        }
+      }))
+    );
 
     return NextResponse.json({ success: true });
   } catch (err) {
