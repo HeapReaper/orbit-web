@@ -680,3 +680,13 @@ model ServerStats {
 
   @@map("server_stats")
 }
+
+model RoleKickSettings {
+  id      Int     @id @default(autoincrement())
+  enabled Boolean
+  guildId String  @unique @map("guild_id")
+  channel String  @db.VarChar(22)
+  role    String  @db.VarChar(22)
+
+  @@map("role_kick_settings")
+}
