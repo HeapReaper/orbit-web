@@ -4,7 +4,7 @@ import React from "react";
 import { Calendar, User } from "lucide-react";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 async function getArticle(slug: string) {
@@ -13,12 +13,14 @@ async function getArticle(slug: string) {
     { next: { revalidate: 30 } }
   );
 
+  console.log(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&filter[slug][_eq]=${slug}`)
+
   const data = await res.json();
   return data.data?.[0] || null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await getArticle(slug);
 
   if (!article) {
@@ -55,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await getArticle(slug);
 
   if (!article) {
