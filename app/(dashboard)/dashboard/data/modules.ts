@@ -20,6 +20,15 @@ const modules: moduleType[] = [
     category: "Moderation"
   },
   {
+    name: "Role Kick",
+    url: "role-kick",
+    description: "Kick someone from your server who selected a role",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Moderation"
+  },
+  {
     name: "Analytics",
     url: "analytics",
     description: "View server activity and popular channels at a glance.",
