@@ -8,7 +8,7 @@ export async function rateLimitApi(
   userId: string,
   guildId: string,
   limit = 10,
-  windowSeconds = 60
+  windowSeconds = 60,
 ) {
   const key = `rl:${userId}:${guildId}`;
   const current = await redis.incr(key);

@@ -8,8 +8,10 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     let data = await prisma.pictureContestSettings.findUnique({
@@ -30,7 +32,7 @@ export async function GET(req: NextRequest) {
     console.error("Failed to fetch picture contest data:", err);
     return NextResponse.json(
       { error: "Failed to fetch picture contest data" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -41,8 +43,10 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     // Ensure the settings entry exists
@@ -85,7 +89,7 @@ export async function POST(req: NextRequest) {
     console.error("Failed to save picture contest settings:", err);
     return NextResponse.json(
       { error: "Failed to save picture contest settings" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

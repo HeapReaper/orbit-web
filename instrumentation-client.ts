@@ -8,9 +8,7 @@ Sentry.init({
   dsn: "https://a1d28cca0d324904b1c2b994c4423ae7@glitchtip.klikbit.nl/2",
 
   // Add optional integrations for additional features
-  integrations: [
-    Sentry.replayIntegration(),
-  ],
+  integrations: [Sentry.replayIntegration()],
 
   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
   tracesSampleRate: 1,

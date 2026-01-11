@@ -7,8 +7,10 @@ export async function GET(req: NextRequest) {
   const guildId = searchParams.get("guildId");
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const data = await prisma.streakSettings.findFirst({
@@ -28,16 +30,18 @@ export async function POST(req: NextRequest) {
   const { guildId, channel, role, enabled } = data;
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const updated = await prisma.streakSettings.upsert({
     where: {
-      guildId: guildId
+      guildId: guildId,
     },
     update: { channel, role, enabled },
-    create: { guildId, channel, role, enabled }
-  })
+    create: { guildId, channel, role, enabled },
+  });
 
   return NextResponse.json(updated);
 }

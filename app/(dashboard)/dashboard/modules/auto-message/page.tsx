@@ -61,12 +61,13 @@ export default function Page() {
             days: msg.days ?? [],
             scheduleType: msg.scheduleType || "daily",
             monthlyDate: msg.monthlyDate,
-            enabled: msg.enabled
-          }))
+            enabled: msg.enabled,
+          })),
         );
 
         setEmbeds(
-          data.map((msg: any) =>
+          data.map(
+            (msg: any) =>
               msg.embed ?? {
                 color: "#5865F2",
                 title: "",
@@ -75,10 +76,9 @@ export default function Page() {
                 author: { name: "", icon: "" },
                 thumbnail: "",
                 fields: [],
-              }
-          )
+              },
+          ),
         );
-
       } catch (err) {
         console.error(err);
       }
@@ -88,7 +88,7 @@ export default function Page() {
   }, [selectedGuild]);
 
   const addAutoMessage = () => {
-    setAutoMessages(prev => [
+    setAutoMessages((prev) => [
       ...prev,
       {
         id: crypto.randomUUID(),
@@ -99,11 +99,11 @@ export default function Page() {
         days: [],
         scheduleType: "daily",
         monthlyDate: undefined,
-        enabled: true
+        enabled: true,
       },
     ]);
 
-    setEmbeds(prev => [
+    setEmbeds((prev) => [
       ...prev,
       {
         color: "#5865F2",
@@ -113,12 +113,16 @@ export default function Page() {
         author: { name: "", icon: "" },
         thumbnail: "",
         fields: [],
-      }
+      },
     ]);
   };
 
-  const updateAutoMessage = (index: number, field: keyof AutoMessage, value: any) => {
-    setAutoMessages(prev => {
+  const updateAutoMessage = (
+    index: number,
+    field: keyof AutoMessage,
+    value: any,
+  ) => {
+    setAutoMessages((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
       return updated;
@@ -126,7 +130,7 @@ export default function Page() {
   };
 
   const updateEmbed = (index: number, value: EmbedData) => {
-    setEmbeds(prev => {
+    setEmbeds((prev) => {
       const updated = [...prev];
       updated[index] = value;
       return updated;
@@ -134,8 +138,8 @@ export default function Page() {
   };
 
   const removeAutoMessage = (index: number) => {
-    setAutoMessages(prev => prev.filter((_, i) => i !== index));
-    setEmbeds(prev => prev.filter((_, i) => i !== index));
+    setAutoMessages((prev) => prev.filter((_, i) => i !== index));
+    setEmbeds((prev) => prev.filter((_, i) => i !== index));
   };
 
   const triggerAutoSave = () => {
@@ -152,7 +156,7 @@ export default function Page() {
       const cleanedAutoMessages = autoMessages.map((msg, i) => ({
         ...msg,
         message: cleanMessage(msg.message),
-        embed: embeds[i]
+        embed: embeds[i],
       }));
 
       const resp = await fetch(`/api/auto-message`, {
@@ -160,13 +164,17 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          autoMessages: cleanedAutoMessages
+          autoMessages: cleanedAutoMessages,
         }),
       });
 
       if (!resp.ok) throw new Error(resp.statusText);
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated the auto messages module");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated the auto messages module",
+      );
 
       if (!auto) notify("Saved!", "", "success");
     } catch (err) {
@@ -191,16 +199,21 @@ export default function Page() {
       </h1>
 
       {autoMessages.map((msg, i) => (
-        <div key={msg.id} className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]">
+        <div
+          key={msg.id}
+          className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]"
+        >
           <span className="text-gray-400">Auto Message {i + 1}</span>
 
           <SelectInput
             label="Message type"
             value={msg.messageType}
-            onChange={(v) => updateAutoMessage(i, "messageType", v as "text" | "embed")}
+            onChange={(v) =>
+              updateAutoMessage(i, "messageType", v as "text" | "embed")
+            }
             options={[
               { value: "text", label: "Text" },
-              { value: "embed", label: "Embed" }
+              { value: "embed", label: "Embed" },
             ]}
           />
 
@@ -222,42 +235,48 @@ export default function Page() {
             <div className="mb-3 mt-3">
               <label className="block text-gray-400 mb-1">Days</label>
               <div className="flex flex-wrap gap-2">
-                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => (
-                  <label
-                    key={day}
-                    className={`cursor-pointer px-2 py-1 rounded border text-sm ${
-                      msg.days?.includes(day)
-                        ? "bg-[var(--primary-color)] border-[var(--primary-color)] text-white"
-                        : "bg-[#0f1117] border-gray-700 text-gray-300"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={msg.days?.includes(day)}
-                      onChange={(e) => {
-                        const newDays = e.target.checked
-                          ? [...(msg.days || []), day]
-                          : (msg.days || []).filter(d => d !== day);
-                        updateAutoMessage(i, "days", newDays);
-                      }}
-                      className="hidden"
-                    />
-                    {day}
-                  </label>
-                ))}
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                  (day) => (
+                    <label
+                      key={day}
+                      className={`cursor-pointer px-2 py-1 rounded border text-sm ${
+                        msg.days?.includes(day)
+                          ? "bg-[var(--primary-color)] border-[var(--primary-color)] text-white"
+                          : "bg-[#0f1117] border-gray-700 text-gray-300"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={msg.days?.includes(day)}
+                        onChange={(e) => {
+                          const newDays = e.target.checked
+                            ? [...(msg.days || []), day]
+                            : (msg.days || []).filter((d) => d !== day);
+                          updateAutoMessage(i, "days", newDays);
+                        }}
+                        className="hidden"
+                      />
+                      {day}
+                    </label>
+                  ),
+                )}
               </div>
             </div>
           )}
 
           {msg.scheduleType === "monthly" && (
             <div className="mb-3">
-              <label className="block text-gray-400 mb-1">Day of the month</label>
+              <label className="block text-gray-400 mb-1">
+                Day of the month
+              </label>
               <input
                 type="number"
                 min={1}
                 max={31}
                 value={msg.monthlyDate ?? ""}
-                onChange={(e) => updateAutoMessage(i, "monthlyDate", parseInt(e.target.value))}
+                onChange={(e) =>
+                  updateAutoMessage(i, "monthlyDate", parseInt(e.target.value))
+                }
                 className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
               />
             </div>
@@ -278,7 +297,9 @@ export default function Page() {
               <MessagePreview
                 username="Orbit"
                 message={msg.message}
-                channels={Object.fromEntries(channels.map(c => [c.id, c.name]))}
+                channels={Object.fromEntries(
+                  channels.map((c) => [c.id, c.name]),
+                )}
               />
             </>
           ) : (

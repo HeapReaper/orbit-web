@@ -4,16 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Error({
-                                error,
-                                reset,
-                              }: {
+  error,
+  reset,
+}: {
   error: Error;
   reset: () => void;
 }) {
   return (
     <main className="flex flex-col min-h-screen bg-[#0d0f13] text-white items-center justify-center px-6 py-20">
       <div className="flex flex-col items-center text-center space-y-6 max-w-xl">
-
         <Image
           src="/logo.png"
           alt="Orbit Logo"
@@ -27,9 +26,8 @@ export default function Error({
         </h1>
 
         <p className="text-gray-400 text-lg md:text-xl">
-          Something went wrong inside Orbit’s core systems.
-          Don’t worry—your data is safe.
-          You can try again or return to safety.
+          Something went wrong inside Orbit’s core systems. Don’t worry—your
+          data is safe. You can try again or return to safety.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-6">

@@ -56,15 +56,17 @@ export default function Page() {
         const data = await res.json();
 
         setMessageType(data.messageType ?? "text");
-        setEmbed(data.embed ?? {
-          color: "#5865F2",
-          title: "",
-          titleUrl: "",
-          description: "",
-          author: { name: "", icon: "" },
-          thumbnail: "",
-          fields: [],
-        });
+        setEmbed(
+          data.embed ?? {
+            color: "#5865F2",
+            title: "",
+            titleUrl: "",
+            description: "",
+            author: { name: "", icon: "" },
+            thumbnail: "",
+            fields: [],
+          },
+        );
         setMessage(data.message ?? "");
 
         setTime(data.time ?? "");
@@ -107,7 +109,7 @@ export default function Page() {
       });
 
       if (!resp.ok) {
-        notify("Could not save", "", "error")
+        notify("Could not save", "", "error");
       }
 
       void addDashboardLog(selectedGuild, "INFO", "Updated birthday settings");
@@ -151,7 +153,6 @@ export default function Page() {
         </button>
       </div>
 
-
       <div className="mb-6">
         <label className="block text-gray-400 mb-2">Birthday message</label>
 
@@ -160,8 +161,8 @@ export default function Page() {
           value={messageType}
           onChange={setMessageType}
           options={[
-            { value: "text", label: "Text"},
-            { value: "embed", label: "Embed"}
+            { value: "text", label: "Text" },
+            { value: "embed", label: "Embed" },
           ]}
         />
 
@@ -177,8 +178,12 @@ export default function Page() {
 
             <MessagePreview
               username="Orbit"
-              message={message.replace("{user}", "@HeapReaper").replace("{age}", "3")}
-              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+              message={message
+                .replace("{user}", "@HeapReaper")
+                .replace("{age}", "3")}
+              channels={Object.fromEntries(
+                channels.map((channel) => [channel.id, channel.name]),
+              )}
             />
           </>
         ) : (
@@ -188,7 +193,7 @@ export default function Page() {
               embed={embed}
               replace={[
                 ["{user}", "HeapReaper"],
-                ["{age}", "3"]
+                ["{age}", "3"],
               ]}
             />
           </>
@@ -200,7 +205,9 @@ export default function Page() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Announcement Time</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Announcement Time
+        </label>
         <input
           type="time"
           value={time}

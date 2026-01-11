@@ -7,19 +7,24 @@ export async function GET(req: NextRequest) {
   const guildId = searchParams.get("guildId");
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const data = await prisma.serverAnniversarySettings.findFirst({
       where: { guildId },
     });
     return NextResponse.json(
-      data || { messages: [""], channel: null, enabled: 0, randomize: false }
+      data || { messages: [""], channel: null, enabled: 0, randomize: false },
     );
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch welcome_message_settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch welcome_message_settings" },
+      { status: 500 },
+    );
   }
 }
 
@@ -32,13 +37,15 @@ export async function POST(req: NextRequest) {
     channel,
     time,
     enabled,
-    randomize
+    randomize,
   } = await req.json();
 
   console.log(messageType);
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const updated = await prisma.serverAnniversarySettings.upsert({
@@ -67,6 +74,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(updated);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update welcome_message_settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update welcome_message_settings" },
+      { status: 500 },
+    );
   }
 }

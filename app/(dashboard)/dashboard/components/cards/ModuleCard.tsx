@@ -1,9 +1,9 @@
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
 import FreemiumLabel from "@/app/(dashboard)/dashboard/components/labels/Freemium";
 import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
-import {moduleType} from "@/app/types/modules";
+import { moduleType } from "@/app/types/modules";
 import Link from "next/link";
-import {Settings} from "lucide-react";
+import { Settings } from "lucide-react";
 
 export default function ModuleCard({
   name,

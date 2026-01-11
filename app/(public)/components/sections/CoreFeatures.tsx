@@ -14,25 +14,32 @@ import modules from "@/app/(dashboard)/dashboard/data/modules";
 export default async function CoreFeaturesSection() {
   const features = [
     {
-      icon: <Package className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />,
-      title: `${modules.filter(m => m.enabled).length} Modules`,
-      description:
-        `Enable modules like Streak, Auto Message, Kick Watcher, Minecraft and more with ease.`,
+      icon: (
+        <Package className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
+      ),
+      title: `${modules.filter((m) => m.enabled).length} Modules`,
+      description: `Enable modules like Streak, Auto Message, Kick Watcher, Minecraft and more with ease.`,
     },
     {
-      icon: <LayoutGridIcon className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />,
+      icon: (
+        <LayoutGridIcon className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
+      ),
       title: "Dashboard",
       description:
         "A powerful, customizable web dashboard that lets you effortlessly enable, disable, and configure every feature.",
     },
     {
-      icon: <CodeXml className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />,
+      icon: (
+        <CodeXml className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
+      ),
       title: "Active Development",
       description:
         "Our team is always working to improve the functionality of Orbit",
     },
     {
-      icon: <File className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />,
+      icon: (
+        <File className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
+      ),
       title: "Embeds",
       description:
         "We're also supporting embeds, so you can configure messages precisely",

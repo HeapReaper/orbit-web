@@ -12,7 +12,7 @@ interface HelpArticles {
 async function getArticle() {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*`,
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
 
   const data = await res.json();
@@ -25,9 +25,7 @@ export default async function HelpSection() {
 
   return (
     <section className="px-6 md:px-20 py-16">
-      <h2 className="text-3xl font-bold text-white mb-12 text-center">
-        Help
-      </h2>
+      <h2 className="text-3xl font-bold text-white mb-12 text-center">Help</h2>
 
       <div className="flex flex-wrap justify-center gap-8">
         {articles.map((article) => (

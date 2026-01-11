@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
       },
       httpOptions: {
         timeout: 10000, // 10 seconds timeout
-      }
+      },
     }),
   ],
 
@@ -30,8 +30,9 @@ export const authOptions: NextAuthOptions = {
       // On first login
       if (account) {
         token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token ?? token.refreshToken ?? null;
-        token.expiresAt = Date.now() + (account.expires_at! * 1000);
+        token.refreshToken =
+          account.refresh_token ?? token.refreshToken ?? null;
+        token.expiresAt = Date.now() + account.expires_at! * 1000;
         token.providerAccountId = account.providerAccountId;
         return token;
       }
@@ -69,7 +70,6 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = refreshed.access_token;
         token.refreshToken = refreshed.refresh_token ?? token.refreshToken;
         token.expiresAt = Date.now() + refreshed.expires_in * 1000;
-
       } catch (err) {
         console.error("Discord refresh error:", err);
         token.accessToken = null;

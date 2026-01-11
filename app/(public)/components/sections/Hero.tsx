@@ -12,7 +12,7 @@ export default function HeroSection() {
   const handleConfettiClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     ref: React.RefObject<HTMLAnchorElement | null>,
-    url: string
+    url: string,
   ) => {
     e.preventDefault();
 
@@ -42,8 +42,10 @@ export default function HeroSection() {
           Welcome to Orbit
         </h1>
         <p className="text-gray-400 text-lg md:text-xl">
-          Take your Discord server to Orbit.
-          Orbit is a powerful Discord bot that helps you manage, engage, and grow your server effortlessly. From moderation to analytics and community engagement, Orbit offers all the tools you need in a sleek dashboard.
+          Take your Discord server to Orbit. Orbit is a powerful Discord bot
+          that helps you manage, engage, and grow your server effortlessly. From
+          moderation to analytics and community engagement, Orbit offers all the
+          tools you need in a sleek dashboard.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -63,7 +65,7 @@ export default function HeroSection() {
               handleConfettiClick(
                 e,
                 addServerButtonRef,
-                "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
+                "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8",
               )
             }
             className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"
@@ -81,7 +83,7 @@ export default function HeroSection() {
             handleConfettiClick(
               e,
               joinDiscordButtonRef,
-              "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8"
+              "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8",
             )
           }
           className="inline-block px-6 py-3 bg-[var(--primary-color)] hover:bg-[var(--hover-color)] text-white font-semibold rounded-lg transition text-center"

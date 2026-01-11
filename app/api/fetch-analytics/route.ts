@@ -43,11 +43,14 @@ async function fetchDiscordNames(type: "channel" | "user", ids: string[]) {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guild_id = searchParams.get("guildId");
-  const range = (searchParams.get("range") as keyof typeof TIME_RANGES) || "last_week";
+  const range =
+    (searchParams.get("range") as keyof typeof TIME_RANGES) || "last_week";
 
   const session = await validateApiSessionAndGuildAdmin(guild_id);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guild_id) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guild_id)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const days: number = TIME_RANGES[range];
@@ -249,7 +252,6 @@ export async function GET(req: NextRequest) {
       activeVsInactive,
     };
 
-
     // Cache 5 minutes
     // TODO: Temp 2 seconds cache for debug
     await redis.set(cacheKey, JSON.stringify(result), "EX", 2);
@@ -257,6 +259,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error querying ClickHouse:", error);
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch data" },
+      { status: 500 },
+    );
   }
 }

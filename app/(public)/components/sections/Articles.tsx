@@ -10,7 +10,7 @@ interface Article {
 async function getDirectusArticles(): Promise<Article[]> {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Article?fields=title,slug,description&limit=4&sort[]=-date_created`,
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
 
   const data = await res.json();

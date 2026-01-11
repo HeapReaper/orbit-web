@@ -8,7 +8,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "placehold.co", pathname: "/**" },
       { protocol: "https", hostname: "cdn.discordapp.com", pathname: "/**" },
       { protocol: "https", hostname: "strapi.botinorbit.com", pathname: "/**" },
-      { protocol: "https", hostname: "directus.botinorbit.com", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname: "directus.botinorbit.com",
+        pathname: "/**",
+      },
     ],
   },
 };

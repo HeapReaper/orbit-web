@@ -60,7 +60,8 @@ export default async function ServersPage() {
                   )}
                 </div>
                 <p className="text-gray-400 mb-2">
-                  {(server.description?.slice(0, 100) || "No description") + "..."}
+                  {(server.description?.slice(0, 100) || "No description") +
+                    "..."}
                 </p>
                 <a
                   href={server.inviteLink}

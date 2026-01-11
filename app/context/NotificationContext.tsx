@@ -13,14 +13,21 @@ interface Notification {
 }
 
 interface NotificationContextProps {
-  notify: (title: string, description?: string, type?: NotificationType) => void;
+  notify: (
+    title: string,
+    description?: string,
+    type?: NotificationType,
+  ) => void;
 }
 
-const NotificationContext = createContext<NotificationContextProps | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextProps | undefined>(
+  undefined,
+);
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
-  if (!context) throw new Error("useNotification must be used within NotificationProvider");
+  if (!context)
+    throw new Error("useNotification must be used within NotificationProvider");
   return context;
 };
 
@@ -31,7 +38,11 @@ interface ProviderProps {
 export const NotificationProvider = ({ children }: ProviderProps) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const notify = (title: string, description?: string, type: NotificationType = "info") => {
+  const notify = (
+    title: string,
+    description?: string,
+    type: NotificationType = "info",
+  ) => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, title, description, type }]);
     setTimeout(() => {
@@ -86,7 +97,6 @@ export const NotificationProvider = ({ children }: ProviderProps) => {
           </div>
         ))}
       </div>
-
     </NotificationContext.Provider>
   );
 };

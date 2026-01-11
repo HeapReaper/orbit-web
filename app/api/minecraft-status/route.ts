@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { status } from "minecraft-server-util";
 import { getServerSession } from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -9,7 +9,8 @@ export async function GET(request: Request) {
   const port = parseInt(searchParams.get("port") || "25565", 10);
   const session = await getServerSession(authOptions);
 
-  if (!session) return NextResponse.json({ error: "Please authenticate first" });
+  if (!session)
+    return NextResponse.json({ error: "Please authenticate first" });
 
   if (!ip) return NextResponse.json({ error: "IP missing" }, { status: 400 });
 

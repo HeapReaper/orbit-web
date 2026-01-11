@@ -76,7 +76,11 @@ export default function Page() {
         notify("Could not save", "", "error");
       }
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated Twitch Watcher settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated Twitch Watcher settings",
+      );
 
       if (!auto) notify("Saved", "", "success");
     } catch (error) {
@@ -98,12 +102,15 @@ export default function Page() {
   };
 
   const addUser = () => setTwitchUsers([...twitchUsers, ""]);
-  const removeUser = (index: number) => setTwitchUsers(twitchUsers.filter((_, i) => i !== index));
+  const removeUser = (index: number) =>
+    setTwitchUsers(twitchUsers.filter((_, i) => i !== index));
 
   if (!isPremium) {
     return (
       <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6 text-center text-gray-400">
-        <p className="text-lg font-semibold mb-2 text-white">Premium Required</p>
+        <p className="text-lg font-semibold mb-2 text-white">
+          Premium Required
+        </p>
         <p>This feature is only available for premium guilds.</p>
       </section>
     );
@@ -142,7 +149,9 @@ export default function Page() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Twitch users/channels</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Twitch users/channels
+        </label>
         {twitchUsers.map((user, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <input

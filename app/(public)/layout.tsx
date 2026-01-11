@@ -19,15 +19,27 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Orbit – Powerful Discord Bot with Dashboard",
-  description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
-  keywords: ["Discord", "Dashboard", "Server management", "Orbit", "Automation", "Bots", "Analytics", "Tickets", "Notifications"],
+  description:
+    "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
+  keywords: [
+    "Discord",
+    "Dashboard",
+    "Server management",
+    "Orbit",
+    "Automation",
+    "Bots",
+    "Analytics",
+    "Tickets",
+    "Notifications",
+  ],
   authors: [{ name: "HeapReaper", url: "https://heapreaper.nl" }],
   creator: "HeapReaper",
   publisher: "HeapReaper",
   openGraph: {
     type: "website",
     title: "Orbit – Powerful Discord Bot with Dashboard",
-    description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
+    description:
+      "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
     url: "https://botinorbit.com",
     siteName: "Orbit",
     images: [
@@ -42,7 +54,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Orbit – Powerful Discord Bot with Dashboard",
-    description: "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
+    description:
+      "Manage and grow your Discord server effortlessly with Orbit: Automated moderation, engagement tools, analytics and more with a sleek web dashboard.",
     creator: "@HeapReaper",
     images: ["https://botinorbit.com/banner-v2.png"],
   },
@@ -56,7 +69,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="bg-[#0d0f13] text-gray-200">
       {/* Plausible analytics */}
@@ -65,7 +82,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         data-domain="botinorbit.com"
         src="https://analytics.heapreaper.nl/js/script.outbound-links.js"
       />
-      <Script id="plausible-init">{`
+      <Script id="plausible-init">
+        {`
         window.plausible = window.plausible || function() { 
           (window.plausible.q = window.plausible.q || []).push(arguments) 
         }
@@ -75,9 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <Provider>
         <Navbar />
 
-        <div>
-          {children}
-        </div>
+        <div>{children}</div>
       </Provider>
 
       <footer className="bg-[#14171f] text-gray-500 text-center py-6 mt-auto">
@@ -85,12 +101,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <p>
             &copy; {new Date().getFullYear()}{" "}
             <span className="underline decoration-purple-700 hover:text-white">
-            <a href="https://klikbit.nl" target="_blank" rel="noopener noreferrer">
-              KlikBit
-            </a>
+              <a
+                href="https://klikbit.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                KlikBit
+              </a>
             </span>
             <span className="block md:inline md:ml-2 text-xs text-gray-600">
-              — A product by <a href="https://klikbit.nl" target="_blank" className="underline decoration-purple-700">KlikBit</a>
+              — A product by{" "}
+              <a
+                href="https://klikbit.nl"
+                target="_blank"
+                className="underline decoration-purple-700"
+              >
+                KlikBit
+              </a>
             </span>
           </p>
           <div className="flex gap-4 text-sm">

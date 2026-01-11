@@ -9,14 +9,20 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guildId = searchParams.get("guildId");
 
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
 
   // Validate session + guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
 
-  const rateLimitResp = await rateLimitApi(`${session.user.id}:getApiSettings`, guildId, 10, 60);
+  const rateLimitResp = await rateLimitApi(
+    `${session.user.id}:getApiSettings`,
+    guildId,
+    10,
+    60,
+  );
   if (rateLimitResp) return rateLimitResp;
 
   try {
@@ -31,7 +37,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ enabled: settings.enabled, apiKey });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch API settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch API settings" },
+      { status: 500 },
+    );
   }
 }
 
@@ -40,13 +49,19 @@ export async function POST(req: NextRequest) {
   const { guildId, enabled, apiKey } = data;
 
   console.log(apiKey);
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
 
-  const rateLimitResp = await rateLimitApi(`${session.user.id}:postApiSettings`, guildId, 10, 60);
+  const rateLimitResp = await rateLimitApi(
+    `${session.user.id}:postApiSettings`,
+    guildId,
+    10,
+    60,
+  );
   if (rateLimitResp) return rateLimitResp;
 
   try {
@@ -69,6 +84,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ enabled: updated.enabled, apiKey });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update API settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update API settings" },
+      { status: 500 },
+    );
   }
 }

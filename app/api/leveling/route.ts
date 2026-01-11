@@ -10,16 +10,24 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session)
-    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Please authenticate first" },
+      { status: 401 },
+    );
   if (!guildId)
     return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   // @ts-ignore
   if (!(await isUserGuildAdmin(session.user.id, guildId)))
-    return NextResponse.json({ error: "You must be a guild admin" }, { status: 403 });
+    return NextResponse.json(
+      { error: "You must be a guild admin" },
+      { status: 403 },
+    );
 
   try {
-    const data = await prisma.levelingSettings.findUnique({ where: { guildId } });
+    const data = await prisma.levelingSettings.findUnique({
+      where: { guildId },
+    });
 
     return NextResponse.json(
       data ?? {
@@ -32,11 +40,14 @@ export async function GET(req: NextRequest) {
         curveExponent: 2.65,
         xpMessageGainSpeed: "oneTimeAMinute",
         xpVoiceGainSpeed: "everyMinute",
-      }
+      },
     );
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch leveling settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch leveling settings" },
+      { status: 500 },
+    );
   }
 }
 
@@ -45,13 +56,19 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session)
-    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Please authenticate first" },
+      { status: 401 },
+    );
   if (!data.guildId)
     return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   // @ts-ignore
   if (!(await isUserGuildAdmin(session.user.id, data.guildId)))
-    return NextResponse.json({ error: "You must be a guild admin" }, { status: 403 });
+    return NextResponse.json(
+      { error: "You must be a guild admin" },
+      { status: 403 },
+    );
 
   const {
     guildId,
@@ -97,6 +114,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(updated);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to save leveling settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save leveling settings" },
+      { status: 500 },
+    );
   }
 }

@@ -28,7 +28,12 @@ export default function MessageFlowChart({ data }: Props) {
           <XAxis dataKey="hour" />
           <YAxis width={110} />
           <Tooltip />
-          <Line type="monotone" dataKey="messages" stroke="var(--primary-color)" strokeWidth={2} />
+          <Line
+            type="monotone"
+            dataKey="messages"
+            stroke="var(--primary-color)"
+            strokeWidth={2}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

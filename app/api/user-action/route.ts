@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     data: {
       userId: userId,
       guildId: guildId,
-      action: action
-    }
-  })
+      action: action,
+    },
+  });
 }

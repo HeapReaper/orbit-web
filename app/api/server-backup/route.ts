@@ -7,10 +7,15 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const guildId = searchParams.get("guildId");
 
-    if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
+    if (!guildId)
+      return NextResponse.json(
+        { error: "Guild ID is missing" },
+        { status: 400 },
+      );
 
     const session = await validateApiSessionAndGuildAdmin(guildId);
-    if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
+    if (typeof session === "string")
+      return NextResponse.json({ error: session }, { status: 403 });
 
     const settings = await prisma.serverBackupSettings.findFirst({
       where: { guildId },
@@ -39,10 +44,15 @@ export async function POST(req: NextRequest) {
   try {
     const { guildId, backupContent } = await req.json();
 
-    if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
+    if (!guildId)
+      return NextResponse.json(
+        { error: "Guild ID is missing" },
+        { status: 400 },
+      );
 
     const session = await validateApiSessionAndGuildAdmin(guildId);
-    if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
+    if (typeof session === "string")
+      return NextResponse.json({ error: session }, { status: 403 });
 
     const backupData = backupContent ?? {
       roles: ["Admin", "Moderator", "Member"],
@@ -64,12 +74,18 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const { guildId, channel, frequency, time, content, enabled } = await req.json();
+    const { guildId, channel, frequency, time, content, enabled } =
+      await req.json();
 
-    if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
+    if (!guildId)
+      return NextResponse.json(
+        { error: "Guild ID is missing" },
+        { status: 400 },
+      );
 
     const session = await validateApiSessionAndGuildAdmin(guildId);
-    if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
+    if (typeof session === "string")
+      return NextResponse.json({ error: session }, { status: 403 });
 
     const updatedSettings = await prisma.serverBackupSettings.upsert({
       where: { guildId },
@@ -101,11 +117,17 @@ export async function DELETE(req: NextRequest) {
   try {
     const { backupId, guildId } = await req.json();
 
-    if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
-    if (!backupId) return NextResponse.json({ error: "Missing backupId" }, { status: 400 });
+    if (!guildId)
+      return NextResponse.json(
+        { error: "Guild ID is missing" },
+        { status: 400 },
+      );
+    if (!backupId)
+      return NextResponse.json({ error: "Missing backupId" }, { status: 400 });
 
     const session = await validateApiSessionAndGuildAdmin(guildId);
-    if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
+    if (typeof session === "string")
+      return NextResponse.json({ error: session }, { status: 403 });
 
     await prisma.serverBackups.delete({
       where: { id: parseInt(backupId, 10) },

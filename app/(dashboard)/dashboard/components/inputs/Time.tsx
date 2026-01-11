@@ -10,7 +10,13 @@ interface Props {
   placeholder?: string;
 }
 
-export default function TimeInput({ label, value, onChange, tooltip, placeholder }: Props) {
+export default function TimeInput({
+  label,
+  value,
+  onChange,
+  tooltip,
+  placeholder,
+}: Props) {
   return (
     <div className="mb-4">
       <div className="flex items-center gap-2 mb-1">

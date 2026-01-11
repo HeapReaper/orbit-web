@@ -77,7 +77,11 @@ export default function Page() {
         notify("Could not save", "", "error");
       }
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated kick Watcher settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated kick Watcher settings",
+      );
 
       if (!auto) notify("Saved", "", "success");
     } catch (error) {
@@ -99,12 +103,15 @@ export default function Page() {
   };
 
   const addUser = () => setKickUsers([...kickUsers, ""]);
-  const removeUser = (index: number) => setKickUsers(kickUsers.filter((_, i) => i !== index));
+  const removeUser = (index: number) =>
+    setKickUsers(kickUsers.filter((_, i) => i !== index));
 
   if (!isPremium) {
     return (
       <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6 text-center text-gray-400">
-        <p className="text-lg font-semibold mb-2 text-white">Premium Required</p>
+        <p className="text-lg font-semibold mb-2 text-white">
+          Premium Required
+        </p>
         <p>This feature is only available for premium guilds.</p>
       </section>
     );
@@ -147,7 +154,9 @@ export default function Page() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Kick Usernames</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Kick Usernames
+        </label>
         {kickUsers.map((user, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <input

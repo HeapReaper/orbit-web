@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
-import {EmbedData} from "@/app/types/embed";
+import { EmbedData } from "@/app/types/embed";
 
 interface EmbedBuilderProps {
   value: EmbedData;
@@ -16,7 +16,6 @@ export default function EmbedBuilder({ value, onChange }: EmbedBuilderProps) {
 
   return (
     <div className="bg-[#1f2330] p-5 rounded-lg border border-gray-700 space-y-4">
-
       {/* Color */}
       <div>
         <label className="block text-gray-400">Color</label>
@@ -168,7 +167,10 @@ export default function EmbedBuilder({ value, onChange }: EmbedBuilderProps) {
         <h3 className="text-gray-300 mb-2">Fields</h3>
 
         {(value.fields || []).map((field, i) => (
-          <div key={i} className="bg-[#0f1117] p-3 rounded border border-gray-700 mb-2 space-y-2">
+          <div
+            key={i}
+            className="bg-[#0f1117] p-3 rounded border border-gray-700 mb-2 space-y-2"
+          >
             <input
               placeholder="Field name"
               className="w-full bg-[#1f2330] p-2 rounded border border-gray-600 text-white"
@@ -204,13 +206,15 @@ export default function EmbedBuilder({ value, onChange }: EmbedBuilderProps) {
           className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg"
           onClick={() =>
             update({
-              fields: [...(value.fields || []), { name: "", value: "", inline: false }],
+              fields: [
+                ...(value.fields || []),
+                { name: "", value: "", inline: false },
+              ],
             })
           }
         >
           Add field
         </button>
-
       </div>
     </div>
   );

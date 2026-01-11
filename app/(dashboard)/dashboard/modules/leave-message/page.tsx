@@ -66,7 +66,9 @@ export default function LeaveMessagePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          messages: messages.map((m) => cleanMessage(m)).filter((m) => m.trim() !== ""),
+          messages: messages
+            .map((m) => cleanMessage(m))
+            .filter((m) => m.trim() !== ""),
           channel: channel || null,
           enabled: enabled ? 1 : 0,
           randomize,
@@ -76,7 +78,11 @@ export default function LeaveMessagePage() {
       if (!resp.ok) {
         if (!auto) notify("Oeps", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated leave message settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated leave message settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -98,7 +104,8 @@ export default function LeaveMessagePage() {
   };
 
   const addMessage = () => setMessages([...messages, ""]);
-  const removeMessage = (index: number) => setMessages(messages.filter((_, i) => i !== index));
+  const removeMessage = (index: number) =>
+    setMessages(messages.filter((_, i) => i !== index));
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -148,11 +155,11 @@ export default function LeaveMessagePage() {
         {messages.map((msg, index) => (
           <div key={index} className="mb-3">
             <div className="flex justify-between mb-2">
-              <label className="block text-gray-400 mb-1">Message {index + 1}</label>
+              <label className="block text-gray-400 mb-1">
+                Message {index + 1}
+              </label>
               {messages.length > 1 && (
-                <DeleteButton
-                  onClick={() => removeMessage(index)}
-                />
+                <DeleteButton onClick={() => removeMessage(index)} />
               )}
             </div>
 
@@ -182,7 +189,9 @@ export default function LeaveMessagePage() {
       <MessagePreview
         username="Orbit"
         message={messages[0]?.replace("{user}", "@HeapReaper") ?? ""}
-        channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+        channels={Object.fromEntries(
+          channels.map((channel) => [channel.id, channel.name]),
+        )}
       />
 
       <div className="text-right text-gray-400 text-sm mt-3">

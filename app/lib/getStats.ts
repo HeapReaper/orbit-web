@@ -4,7 +4,10 @@ import { getRedisClient } from "@/app/lib/redis";
 
 const redis = getRedisClient();
 
-export async function getStatsFromDatabaseAndBot(botData: { totalGuilds: number; totalUsers: number }) {
+export async function getStatsFromDatabaseAndBot(botData: {
+  totalGuilds: number;
+  totalUsers: number;
+}) {
   const cacheKey = "dashboard:stats";
 
   const cached = await redis.get(cacheKey);

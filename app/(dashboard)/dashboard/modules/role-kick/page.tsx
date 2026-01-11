@@ -30,7 +30,9 @@ export default function StreakSettingsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/role-kick?guildId=${selectedGuild}`, { cache: "no-store" });
+        const res = await fetch(`/api/role-kick?guildId=${selectedGuild}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
 
         if (!data || data.error) {
@@ -77,7 +79,11 @@ export default function StreakSettingsPage() {
       if (!resp.ok) {
         if (!auto) notify("Oops", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Role Kick settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Role Kick settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {

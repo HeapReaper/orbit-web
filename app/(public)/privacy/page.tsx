@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
 import { formatDate } from "@/app/lib/formatDate";
-import {Calendar} from "lucide-react";
+import { Calendar } from "lucide-react";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 async function getPrivacy() {
   const data = await fetch(`${process.env.DIRECTUS_URL}/items/Privacy`, {
     next: {
-      revalidate: 30
-    }
+      revalidate: 30,
+    },
   });
 
   const json = await data.json();
@@ -33,17 +33,15 @@ export default async function PrivacyPage() {
 
         <span className="inline-flex items-center gap-1">
           <Calendar size={16} className="inline-block text-blue-500" />
-            {new Date(data.date_created).toLocaleDateString(undefined, {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+          {new Date(data.date_created).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </span>
 
         <div className="space-y-8 mx-auto">
-          <ShowMarkdown
-            content={data.content}
-          />
+          <ShowMarkdown content={data.content} />
         </div>
       </div>
     </article>

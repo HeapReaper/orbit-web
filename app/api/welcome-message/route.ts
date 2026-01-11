@@ -8,19 +8,24 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const data = await prisma.welcomeMessageSettings.findFirst({
       where: { guildId },
     });
     return NextResponse.json(
-      data || { messages: [""], channel: null, enabled: 0, randomize: false }
+      data || { messages: [""], channel: null, enabled: 0, randomize: false },
     );
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch welcome_message_settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch welcome_message_settings" },
+      { status: 500 },
+    );
   }
 }
 
@@ -30,8 +35,10 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const updated = await prisma.welcomeMessageSettings.upsert({
@@ -54,6 +61,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(updated);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update welcome_message_settings" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update welcome_message_settings" },
+      { status: 500 },
+    );
   }
 }

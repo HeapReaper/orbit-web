@@ -75,7 +75,7 @@ export default function Page() {
   ];
 
   const filteredEvents = availableEvents.filter((event) =>
-    event.label.toLowerCase().includes(search.toLowerCase())
+    event.label.toLowerCase().includes(search.toLowerCase()),
   );
 
   useEffect(() => {
@@ -146,7 +146,7 @@ export default function Page() {
     setSelectedEvents((prev) =>
       prev.includes(eventId)
         ? prev.filter((e) => e !== eventId)
-        : [...prev, eventId]
+        : [...prev, eventId],
     );
   };
 
@@ -155,7 +155,7 @@ export default function Page() {
   const toggleSelectAll = () => {
     if (allEventIds.every((id) => selectedEvents.includes(id))) {
       setSelectedEvents((prev) =>
-        prev.filter((id) => !allEventIds.includes(id))
+        prev.filter((id) => !allEventIds.includes(id)),
       );
     } else {
       setSelectedEvents((prev) => [...new Set([...prev, ...allEventIds])]);

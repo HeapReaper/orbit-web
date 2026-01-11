@@ -27,14 +27,14 @@ export async function GET() {
   const userId = session.user.id;
   const userGuildsCacheKey = `guilds:user:${userId}`;
 
-   // Try user guild cache
+  // Try user guild cache
   const cachedUserGuilds = await redis.get(userGuildsCacheKey);
   if (cachedUserGuilds) {
     return NextResponse.json(JSON.parse(cachedUserGuilds));
   }
 
   try {
-     // Fetch user guilds
+    // Fetch user guilds
     const userRes = await fetch(`${DISCORD_API}/users/@me/guilds`, {
       // @ts-ignore
       headers: { Authorization: `Bearer ${session.accessToken}` },
@@ -43,7 +43,7 @@ export async function GET() {
     if (!userRes.ok) {
       return NextResponse.json(
         { error: "Failed to fetch user guilds" },
-        { status: userRes.status }
+        { status: userRes.status },
       );
     }
 
@@ -60,7 +60,7 @@ export async function GET() {
       if (!botRes.ok) {
         return NextResponse.json(
           { error: "Failed to fetch bot guilds" },
-          { status: 500 }
+          { status: 500 },
         );
       }
 
@@ -68,9 +68,7 @@ export async function GET() {
       await redis.set("guilds:bot", botGuildsRaw, "EX", BOT_GUILDS_TTL);
     }
 
-    const botGuildIds = new Set(
-      JSON.parse(botGuildsRaw).map((g: any) => g.id)
-    );
+    const botGuildIds = new Set(JSON.parse(botGuildsRaw).map((g: any) => g.id));
 
     // Filter manageable guilds
     const manageableGuilds = userGuilds.filter((g: any) => {
@@ -89,7 +87,7 @@ export async function GET() {
     });
 
     const premiumMap = new Map(
-      premiumGuilds.map((p) => [p.guildId, p.premium])
+      premiumGuilds.map((p) => [p.guildId, p.premium]),
     );
 
     // Fetch guild details (rate-limited)
@@ -137,7 +135,7 @@ export async function GET() {
               guildCacheKey,
               JSON.stringify(guildDetails),
               "EX",
-              GUILD_DETAILS_TTL
+              GUILD_DETAILS_TTL,
             );
 
             return guildDetails;
@@ -145,8 +143,8 @@ export async function GET() {
             console.warn(`Skipping guild ${g.id}`, err);
             return null;
           }
-        })
-      )
+        }),
+      ),
     );
 
     const validGuilds = detailedGuilds.filter(Boolean);
@@ -157,7 +155,7 @@ export async function GET() {
       userGuildsCacheKey,
       JSON.stringify(response),
       "EX",
-      USER_GUILDS_TTL
+      USER_GUILDS_TTL,
     );
 
     return NextResponse.json(response);
@@ -165,7 +163,7 @@ export async function GET() {
     console.error("Guild API error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

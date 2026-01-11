@@ -27,7 +27,9 @@ export default function TicketsSettingsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/tickets-settings?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/tickets-settings?guildId=${selectedGuild}`,
+        );
         const data = await res.json();
 
         setChannel(data.channel ?? "");

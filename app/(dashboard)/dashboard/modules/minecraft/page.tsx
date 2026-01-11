@@ -49,7 +49,6 @@ export default function MinecraftPage() {
         if (data?.enabled && data?.ip) {
           void fetchServerStatus();
         }
-
       } catch (err) {
         console.error(err);
       } finally {
@@ -86,7 +85,11 @@ export default function MinecraftPage() {
       if (!res.ok) {
         if (!auto) notify("Failed to save settings", "", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Minecraft settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Minecraft settings",
+        );
         if (!auto) notify("Saved!", "", "success");
       }
     } catch (err) {
@@ -179,7 +182,7 @@ export default function MinecraftPage() {
                 className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
                   notifyEnabled ? "translate-x-6" : "translate-x-1"
                 }`}
-            />
+              />
             </button>
           </div>
 

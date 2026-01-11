@@ -10,7 +10,11 @@ interface Props {
   channels?: Record<string, string>;
 }
 
-export default function MessagePreview({ username, message, channels = {} }: Props) {
+export default function MessagePreview({
+  username,
+  message,
+  channels = {},
+}: Props) {
   const renderMessage = (text: unknown) => {
     if (typeof text !== "string") return text;
 
@@ -20,14 +24,16 @@ export default function MessagePreview({ username, message, channels = {} }: Pro
       const match = part.match(/<#(\d+)>/);
       if (match) {
         const channelId = match[1];
-        const channelName = channels[channelId] ? `#${channels[channelId]}` : "#unknown";
+        const channelName = channels[channelId]
+          ? `#${channels[channelId]}`
+          : "#unknown";
         return (
           <span
             key={i}
             className="bg-[#35363a] text-blue-400 px-1.5 py-0.5 rounded font-semibold"
           >
-          {channelName}
-        </span>
+            {channelName}
+          </span>
         );
       }
       return part;
@@ -47,10 +53,15 @@ export default function MessagePreview({ username, message, channels = {} }: Pro
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="font-semibold text-white">{username}</span>
-            <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">APP</span>
+            <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">
+              APP
+            </span>
             <span className="text-xs text-gray-400">
               {/* TODO: Make it use locale settings */}
-              {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+              {new Date().toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </span>
           </div>
           <div className="mt-1 prose prose-invert break-words">
@@ -61,12 +72,18 @@ export default function MessagePreview({ username, message, channels = {} }: Pro
                 // @ts-ignore
                 code({ node, inline, className, children, ...props }) {
                   return inline ? (
-                    <code className="bg-[#1e1f22] px-1 py-0.5 rounded text-sm font-mono text-gray-300" {...props}>
+                    <code
+                      className="bg-[#1e1f22] px-1 py-0.5 rounded text-sm font-mono text-gray-300"
+                      {...props}
+                    >
                       {children}
                     </code>
                   ) : (
                     // @ts-ignore
-                    <pre className="bg-[#1e1f22] p-2 rounded text-sm font-mono text-gray-300 overflow-x-auto" {...props}>
+                    <pre
+                      className="bg-[#1e1f22] p-2 rounded text-sm font-mono text-gray-300 overflow-x-auto"
+                      {...props}
+                    >
                       <code>{children}</code>
                     </pre>
                   );
@@ -75,16 +92,65 @@ export default function MessagePreview({ username, message, channels = {} }: Pro
                   // @ts-ignore
                   return <p>{renderMessage(children as string)}</p>;
                 },
-                h1({ children }) { return <h1 className="text-white text-xl font-semibold my-1">{children}</h1>; },
-                h2({ children }) { return <h2 className="text-white text-lg font-semibold my-1">{children}</h2>; },
-                h3({ children }) { return <h3 className="text-white text-base font-semibold my-1">{children}</h3>; },
-                strong({ children }) { return <strong className="font-bold text-white">{children}</strong>; },
-                em({ children }) { return <em className="italic text-white">{children}</em>; },
-                del({ children }) { return <del className="line-through text-white">{children}</del>; },
-                a({ href, children }) { return <a href={href} className="text-blue-400 underline" target="_blank" rel="noopener noreferrer">{children}</a>; },
-                blockquote({ children }) { return <blockquote className="border-l-2 border-gray-600 pl-3 text-gray-300 italic my-2">{children}</blockquote>; },
-                ul({ children }) { return <ul className="list-disc ml-5 my-2">{children}</ul>; },
-                ol({ children }) { return <ol className="list-decimal ml-5 my-2">{children}</ol>; },
+                h1({ children }) {
+                  return (
+                    <h1 className="text-white text-xl font-semibold my-1">
+                      {children}
+                    </h1>
+                  );
+                },
+                h2({ children }) {
+                  return (
+                    <h2 className="text-white text-lg font-semibold my-1">
+                      {children}
+                    </h2>
+                  );
+                },
+                h3({ children }) {
+                  return (
+                    <h3 className="text-white text-base font-semibold my-1">
+                      {children}
+                    </h3>
+                  );
+                },
+                strong({ children }) {
+                  return (
+                    <strong className="font-bold text-white">{children}</strong>
+                  );
+                },
+                em({ children }) {
+                  return <em className="italic text-white">{children}</em>;
+                },
+                del({ children }) {
+                  return (
+                    <del className="line-through text-white">{children}</del>
+                  );
+                },
+                a({ href, children }) {
+                  return (
+                    <a
+                      href={href}
+                      className="text-blue-400 underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {children}
+                    </a>
+                  );
+                },
+                blockquote({ children }) {
+                  return (
+                    <blockquote className="border-l-2 border-gray-600 pl-3 text-gray-300 italic my-2">
+                      {children}
+                    </blockquote>
+                  );
+                },
+                ul({ children }) {
+                  return <ul className="list-disc ml-5 my-2">{children}</ul>;
+                },
+                ol({ children }) {
+                  return <ol className="list-decimal ml-5 my-2">{children}</ol>;
+                },
               }}
             >
               {message}

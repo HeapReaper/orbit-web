@@ -11,12 +11,18 @@ import { useGuild } from "@/app/context/GuildContext";
 import TotalMessagesChart from "@/app/(dashboard)/dashboard/components/charts/TotalMessagesOverTime";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
-const TIME_RANGES = ["last_week", "last_month", "last_year", "last_5_years"] as const;
+const TIME_RANGES = [
+  "last_week",
+  "last_month",
+  "last_year",
+  "last_5_years",
+] as const;
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPremium, setIsPremium] = useState<boolean>(false);
-  const [timeRange, setTimeRange] = useState<typeof TIME_RANGES[number]>("last_week");
+  const [timeRange, setTimeRange] =
+    useState<(typeof TIME_RANGES)[number]>("last_week");
   const [messageFlow, setMessageFlow] = useState<any[]>([]);
   const [totalMessages, setTotalMessages] = useState<any[]>([]);
   const [mostPopulairChannels, setMostPopulairChannels] = useState<any[]>([]);
@@ -25,10 +31,17 @@ export default function Page() {
 
   const [memberCount, setMemberCount] = useState<any[]>([]);
   const [memberChartData, setMemberChartData] = useState<any[]>([]);
-  const [activeInactiveMembers, setActiveInactiveMembers] = useState<{ active: number; inactive: number }>({ active: 0, inactive: 0 });
+  const [activeInactiveMembers, setActiveInactiveMembers] = useState<{
+    active: number;
+    inactive: number;
+  }>({ active: 0, inactive: 0 });
 
-  const allowedTimeRanges: ("last_week" | "last_month" | "last_year" | "last_5_years")[] =
-    isPremium ? [...TIME_RANGES] : ["last_week"];
+  const allowedTimeRanges: (
+    | "last_week"
+    | "last_month"
+    | "last_year"
+    | "last_5_years"
+  )[] = isPremium ? [...TIME_RANGES] : ["last_week"];
 
   useEffect(() => {
     document.title = "Analytics";
@@ -43,8 +56,9 @@ export default function Page() {
       const dataPremium = await res.json();
       setIsPremium(dataPremium?.premium ?? false);
 
-
-      const resp = await fetch(`/api/fetch-analytics?guildId=${selectedGuild}&range=${timeRange}`);
+      const resp = await fetch(
+        `/api/fetch-analytics?guildId=${selectedGuild}&range=${timeRange}`,
+      );
       const data = await resp.json();
 
       const chartData = (data.messageFlowHourly ?? []).map((item: any) => ({
@@ -91,13 +105,16 @@ export default function Page() {
             onClick={() => setTimeRange(range)}
             className="px-3 py-1 rounded text-white transition-colors"
             style={{
-              backgroundColor: timeRange === range ? "var(--primary-color)" : undefined,
+              backgroundColor:
+                timeRange === range ? "var(--primary-color)" : undefined,
             }}
             onMouseEnter={(e) => {
-              if (timeRange !== range) (e.currentTarget.style.backgroundColor = "var(--hover-color)");
+              if (timeRange !== range)
+                e.currentTarget.style.backgroundColor = "var(--hover-color)";
             }}
             onMouseLeave={(e) => {
-              if (timeRange !== range) e.currentTarget.style.backgroundColor = "";
+              if (timeRange !== range)
+                e.currentTarget.style.backgroundColor = "";
             }}
           >
             {range.replace(/_/g, " ").toUpperCase()}
@@ -113,37 +130,51 @@ export default function Page() {
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Message flow hourly</h3>
-        <p className="text-gray-400 mb-3">Shows the average messages send for each our of the day</p>
+        <p className="text-gray-400 mb-3">
+          Shows the average messages send for each our of the day
+        </p>
         <MessageFlowChart data={messageFlow} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Message flow total</h3>
-        <p className="text-gray-400 mb-3">Shows the total messages send for each period over time</p>
+        <p className="text-gray-400 mb-3">
+          Shows the total messages send for each period over time
+        </p>
         <TotalMessagesChart data={totalMessages} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Top channels</h3>
-        <p className="text-gray-400 mb-3">Shows the top 5 channels where the most messages where send</p>
+        <p className="text-gray-400 mb-3">
+          Shows the top 5 channels where the most messages where send
+        </p>
         <TopChannelsChart data={mostPopulairChannels} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Most active users</h3>
-        <p className="text-gray-400 mb-2">Shows the top 5 users who have send the most messages</p>
+        <p className="text-gray-400 mb-2">
+          Shows the top 5 users who have send the most messages
+        </p>
         <MostActiveUsersChart data={topUsers} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Member count over time</h3>
-        <p className="text-gray-400 mb-2">Shows how many total members in the server are at a given time</p>
+        <p className="text-gray-400 mb-2">
+          Shows how many total members in the server are at a given time
+        </p>
         <JoinsOverTimeChart data={memberChartData} />
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-1">Active vs inactive members</h3>
-        <p className="text-gray-400 mb-1">Count people inactive if they didnt send a message in the last X time</p>
+        <h3 className="text-xl font-semibold mb-1">
+          Active vs inactive members
+        </h3>
+        <p className="text-gray-400 mb-1">
+          Count people inactive if they didnt send a message in the last X time
+        </p>
         <ActiveVsInactiveChart
           active={activeInactiveMembers.active}
           inactive={activeInactiveMembers.inactive}

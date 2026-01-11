@@ -11,8 +11,10 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
   if (!DISCORD_BOT_TOKEN) {
@@ -32,15 +34,21 @@ export async function GET(req: NextRequest) {
     console.log(`[Cache Miss] ${cacheKey} → fetching from Discord & DB`);
 
     // Fetch invites from Discord API
-    const discordRes = await fetch(`https://discord.com/api/v10/guilds/${guildId}/invites`, {
-      headers: {
-        Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+    const discordRes = await fetch(
+      `https://discord.com/api/v10/guilds/${guildId}/invites`,
+      {
+        headers: {
+          Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+        },
       },
-    });
+    );
 
     if (!discordRes.ok) {
       const text = await discordRes.text();
-      return NextResponse.json({ error: `Discord API error: ${text}` }, { status: discordRes.status });
+      return NextResponse.json(
+        { error: `Discord API error: ${text}` },
+        { status: discordRes.status },
+      );
     }
 
     const discordInvites = await discordRes.json();
@@ -60,7 +68,7 @@ export async function GET(req: NextRequest) {
         inviter: inv.inviter?.username ?? "Unknown",
         channel: inv.channel?.name ?? "Unknown",
         type: db?.inviteType ?? "",
-        expiresAt: inv.expiresAt ?? null
+        expiresAt: inv.expiresAt ?? null,
       };
     });
 
@@ -80,7 +88,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(result);
   } catch (err) {
     console.error("Error fetching invites:", err);
-    return NextResponse.json({ error: "Failed to fetch invites" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch invites" },
+      { status: 500 },
+    );
   }
 }
 
@@ -90,8 +101,10 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     await prisma.guildInviteSettings.upsert({
@@ -117,6 +130,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to update invites" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update invites" },
+      { status: 500 },
+    );
   }
 }

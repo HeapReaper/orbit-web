@@ -33,7 +33,9 @@ export default function BoostSpotlightPage() {
     const fetchGuildData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/boost-spotlight?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/boost-spotlight?guildId=${selectedGuild}`,
+        );
         const data = await res.json();
         setMessages(data.messages?.length ? data.messages : [""]);
         setChannel(data.channel ?? "");
@@ -66,7 +68,9 @@ export default function BoostSpotlightPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          messages: messages.map((m) => cleanMessage(m)).filter((m) => m.trim() !== ""),
+          messages: messages
+            .map((m) => cleanMessage(m))
+            .filter((m) => m.trim() !== ""),
           channel: channel || null,
           enabled: enabled,
           randomize,
@@ -76,7 +80,11 @@ export default function BoostSpotlightPage() {
       if (!resp.ok) {
         if (!auto) notify("Oeps", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated welcome message settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated welcome message settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -98,7 +106,8 @@ export default function BoostSpotlightPage() {
   };
 
   const addMessage = () => setMessages([...messages, ""]);
-  const removeMessage = (index: number) => setMessages(messages.filter((_, i) => i !== index));
+  const removeMessage = (index: number) =>
+    setMessages(messages.filter((_, i) => i !== index));
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -142,7 +151,9 @@ export default function BoostSpotlightPage() {
         {messages.map((msg, index) => (
           <div key={index} className="mb-6">
             <div className="flex justify-between mb-2">
-              <label className="block text-gray-400 mb-1">Message {index + 1}</label>
+              <label className="block text-gray-400 mb-1">
+                Message {index + 1}
+              </label>
               {messages.length > 1 && (
                 <DeleteButton onClick={() => removeMessage(index)} />
               )}
@@ -157,13 +168,18 @@ export default function BoostSpotlightPage() {
               </div>
             </div>
             <p className="text-sm text-gray-500 mb-2 mt-1">
-              You can use <InlineCode text="{user}" /> to mention the user and <InlineCode text="{boostCount}" /> for the total boost count.
+              You can use <InlineCode text="{user}" /> to mention the user and{" "}
+              <InlineCode text="{boostCount}" /> for the total boost count.
             </p>
 
             <MessagePreview
               username="Orbit"
-              message={msg.replace("{user}", "@HeapReaper").replace("{boostCount}", "3")}
-              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+              message={msg
+                .replace("{user}", "@HeapReaper")
+                .replace("{boostCount}", "3")}
+              channels={Object.fromEntries(
+                channels.map((channel) => [channel.id, channel.name]),
+              )}
             />
           </div>
         ))}

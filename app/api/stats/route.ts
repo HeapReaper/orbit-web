@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import modules from "@/app/(dashboard)/dashboard/data/modules";
 import { getRedisClient } from "@/app/lib/redis";
 import { getServerSession } from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 const redis = getRedisClient();
 const prisma = new PrismaClient();
@@ -13,9 +13,10 @@ export async function GET(req: NextRequest) {
     const cachedData = await redis.get(req.url);
     const session = await getServerSession(authOptions);
 
-    if (!session) return NextResponse.json({ error: "Please authenticate first" });
+    if (!session)
+      return NextResponse.json({ error: "Please authenticate first" });
 
-    if (cachedData)  return NextResponse.json(JSON.parse(cachedData));
+    if (cachedData) return NextResponse.json(JSON.parse(cachedData));
 
     const data = await prisma.premiumGuild.findMany({
       where: { premium: true },
@@ -23,7 +24,9 @@ export async function GET(req: NextRequest) {
 
     const enabledModulesCount = modules.filter((mod) => mod.enabled).length;
 
-    const res = await fetch(`${process.env.API_URL}/api/expose-guild-channels-and-roles`);
+    const res = await fetch(
+      `${process.env.API_URL}/api/expose-guild-channels-and-roles`,
+    );
     if (!res.ok) {
       console.error(`External API failed with status ${res.status}`);
     }
@@ -41,7 +44,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(response);
   } catch (err) {
     console.error("Error in /api/stats:", err);
-    return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch stats" },
+      { status: 500 },
+    );
   } finally {
     await prisma.$disconnect();
   }

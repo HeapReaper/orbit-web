@@ -5,6 +5,5 @@ module.exports = {
   outDir: "public",
   sourceDir: "app",
   generateIndexSitemap: true,
-  additionalPaths: async (config) => [
-  ],
+  additionalPaths: async (config) => [],
 };

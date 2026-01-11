@@ -16,7 +16,7 @@ export default function ResetButon({ onClick, loading = false }: Props) {
           text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed
         `}
     >
-      <Undo size={18}  />
+      <Undo size={18} />
       Reset
     </button>
   );

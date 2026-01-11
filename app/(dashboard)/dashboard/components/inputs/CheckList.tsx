@@ -28,7 +28,7 @@ export default function CheckList<T extends Item>({
   const [search, setSearch] = useState("");
 
   const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+    item.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -48,9 +48,11 @@ export default function CheckList<T extends Item>({
           text-gray-200 placeholder-gray-500"
       />
 
-      <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700
+      <div
+        className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700
         p-2 rounded bg-[#0f1117] custom-scrollbar
-      ">
+      "
+      >
         {filteredItems.length > 0 ? (
           filteredItems.map((item) => (
             <label
@@ -68,7 +70,9 @@ export default function CheckList<T extends Item>({
             </label>
           ))
         ) : (
-          <p className="text-gray-500 text-sm text-center py-2">No items found.</p>
+          <p className="text-gray-500 text-sm text-center py-2">
+            No items found.
+          </p>
         )}
       </div>
     </div>

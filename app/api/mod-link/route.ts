@@ -7,8 +7,10 @@ export async function GET(req: NextRequest) {
   const guildId = searchParams.get("guildId");
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const data = await prisma.modLinkSettings.findFirst({
@@ -28,20 +30,29 @@ export async function POST(req: NextRequest) {
   const { guildId, enabled, channel, syncedGuilds, actionsToSync } = data;
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const updated = await prisma.modLinkSettings.upsert({
     where: {
-      guildId
+      guildId,
     },
     update: {
-      channel, enabled, syncedGuilds, actionsToSync
+      channel,
+      enabled,
+      syncedGuilds,
+      actionsToSync,
     },
     create: {
-      guildId, channel, enabled, syncedGuilds, actionsToSync
-    }
-  })
+      guildId,
+      channel,
+      enabled,
+      syncedGuilds,
+      actionsToSync,
+    },
+  });
 
   return NextResponse.json(updated);
 }

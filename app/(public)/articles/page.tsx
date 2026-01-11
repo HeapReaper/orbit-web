@@ -11,9 +11,12 @@ export const metadata: Metadata = {
 };
 
 async function getArticles() {
-  const res = await fetch(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&sort[]=-date_created`, {
-    next: { revalidate: 30 },
-  });
+  const res = await fetch(
+    `${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&sort[]=-date_created`,
+    {
+      next: { revalidate: 30 },
+    },
+  );
 
   const data = await res.json();
   return data.data;
@@ -33,7 +36,9 @@ export default async function ArticlesPage() {
             href={`/articles/${article.slug}`}
             className="block bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition border border-gray-800 hover:border-blue-600"
           >
-            <h2 className="text-xl font-bold text-white mb-2">{article.title}</h2>
+            <h2 className="text-xl font-bold text-white mb-2">
+              {article.title}
+            </h2>
 
             {article.category && (
               <p className="text-sm text-blue-400 mb-2">{article.category}</p>
@@ -46,14 +51,14 @@ export default async function ArticlesPage() {
                 <User size={16} className="inline-block text-blue-500" />
                 {article.Author.name ? article.Author.name : "Unknown"}
               </span>
-                  •
-                  <span className="inline-flex items-center gap-1">
+              •
+              <span className="inline-flex items-center gap-1">
                 <Calendar size={16} className="inline-block text-blue-500" />
-                  {new Date(article.date_created).toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                {new Date(article.date_created).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </span>
             </p>
           </Link>

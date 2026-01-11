@@ -1,4 +1,4 @@
-import {Save} from "lucide-react";
+import { Save } from "lucide-react";
 
 interface Props {
   onClick?: () => void;
@@ -16,7 +16,7 @@ export default function SaveButton({ onClick, loading = false }: Props) {
           text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed
         `}
     >
-      <Save size={18}  />
+      <Save size={18} />
       Save
     </button>
   );

@@ -48,7 +48,9 @@ export default function AntiBotPage() {
         setTimeWindow(data?.timeWindow ?? 10);
         setChannelLimit(data?.channelLimit ?? 3);
         setPunishment(data?.punishment ?? "");
-        setForbiddenWords(data?.forbiddenWords?.length ? data.forbiddenWords : [""]);
+        setForbiddenWords(
+          data?.forbiddenWords?.length ? data.forbiddenWords : [""],
+        );
         setNotificationChannel(data?.notificationChannel ?? "");
         setJailRole(data?.jailRole ?? "");
         setExcludeAdmins(data?.excludeAdmins ?? false);
@@ -96,7 +98,11 @@ export default function AntiBotPage() {
       if (!res.ok) {
         if (!auto) notify("Failed to save settings", "", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Anti-Bot settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Anti-Bot settings",
+        );
         if (!auto) notify("Saved!", "", "success");
       }
     } catch (err) {
@@ -104,13 +110,23 @@ export default function AntiBotPage() {
     } finally {
       setIsSaving(false);
     }
-  }
+  };
 
   // Trigger auto save
   useEffect(() => {
     if (!selectedGuild || !isPremium) return;
     triggerAutoSave();
-  }, [enabled, timeWindow, channelLimit, punishment, forbiddenWords, notificationChannel, jailRole, excludeAdmins, blockInvites]);
+  }, [
+    enabled,
+    timeWindow,
+    channelLimit,
+    punishment,
+    forbiddenWords,
+    notificationChannel,
+    jailRole,
+    excludeAdmins,
+    blockInvites,
+  ]);
 
   // Manage forbidden words
   const addForbiddenWord = () => setForbiddenWords([...forbiddenWords, ""]);
@@ -210,7 +226,9 @@ export default function AntiBotPage() {
       )}
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Forbidden Words/Sentences</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Forbidden Words/Sentences
+        </label>
         <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
           {forbiddenWords.map((word, index) => (
             <div key={index} className="flex items-center gap-2">

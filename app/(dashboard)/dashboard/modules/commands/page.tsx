@@ -1,10 +1,10 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useNotification } from "@/app/context/NotificationContext";
 import { useGuild } from "@/app/context/GuildContext";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
-import {addDashboardLog} from "@/app/lib/addDashboardLog";
+import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 
 export default function Page() {
@@ -15,7 +15,7 @@ export default function Page() {
 
   useEffect(() => {
     document.title = "Commands";
-  })
+  });
 
   const handleRefresh = async (guildId?: string) => {
     setLoading(true);
@@ -31,7 +31,11 @@ export default function Page() {
       const data = await res.json();
 
       if (!res.ok) {
-        void addDashboardLog(selectedGuild, "ERROR", `Error refreshing slash commands: ${data.error}`);
+        void addDashboardLog(
+          selectedGuild,
+          "ERROR",
+          `Error refreshing slash commands: ${data.error}`,
+        );
         notify("Error", data.error || "Failed to refresh commands", "error");
         setResult("Error");
       } else {
@@ -39,7 +43,6 @@ export default function Page() {
         notify("Success", data.message, "success");
         setResult(data.message);
       }
-
     } catch (err) {
       console.error(err);
       notify("Error", "Something went wrong", "error");
@@ -55,8 +58,10 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Slash Command Management
-        <InfoTooltip text="Use this tool to refresh Discord slash commands for your bot.
-        You can refresh them for A specific guild." />
+        <InfoTooltip
+          text="Use this tool to refresh Discord slash commands for your bot.
+        You can refresh them for A specific guild."
+        />
       </h1>
 
       <div className="mb-6">

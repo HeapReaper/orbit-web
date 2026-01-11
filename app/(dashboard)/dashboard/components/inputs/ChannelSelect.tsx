@@ -11,7 +11,12 @@ interface Props {
   tooltip?: string;
 }
 
-export default function ChannelSelect({ label, value, onChange, tooltip }: Props) {
+export default function ChannelSelect({
+  label,
+  value,
+  onChange,
+  tooltip,
+}: Props) {
   const { channels } = useGuild();
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +28,10 @@ export default function ChannelSelect({ label, value, onChange, tooltip }: Props
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -63,9 +71,7 @@ export default function ChannelSelect({ label, value, onChange, tooltip }: Props
       <div className="flex items-center gap-2 mb-1">
         <label className="text-gray-400">{label}</label>
 
-        {tooltip && (
-          <InfoTooltip text={tooltip} size={16} />
-        )}
+        {tooltip && <InfoTooltip text={tooltip} size={16} />}
       </div>
       <div className="relative">
         <input
@@ -86,7 +92,9 @@ export default function ChannelSelect({ label, value, onChange, tooltip }: Props
               <li
                 key={channel.value}
                 className={`px-3 py-2 cursor-pointer text-sm hover:bg-gray-700 ${
-                  channel.matchIndex === Infinity ? "text-gray-500" : "text-white"
+                  channel.matchIndex === Infinity
+                    ? "text-gray-500"
+                    : "text-white"
                 }`}
                 onClick={() => handleSelect(channel.value, channel.label)}
               >
@@ -97,8 +105,18 @@ export default function ChannelSelect({ label, value, onChange, tooltip }: Props
         )}
 
         <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <svg
+            className="w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </div>
       </div>

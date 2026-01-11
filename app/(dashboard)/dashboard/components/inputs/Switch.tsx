@@ -18,7 +18,9 @@ export default function ToggleSwitch({
   label,
   tooltip,
 }: Props) {
-  const [internalEnabled, setInternalEnabled] = useState(controlledEnabled ?? false);
+  const [internalEnabled, setInternalEnabled] = useState(
+    controlledEnabled ?? false,
+  );
 
   useEffect(() => {
     if (controlledEnabled !== undefined) {
@@ -33,7 +35,9 @@ export default function ToggleSwitch({
   };
 
   return (
-    <div className={`inline-flex items-center mb-6 cursor-pointer ${className}`}>
+    <div
+      className={`inline-flex items-center mb-6 cursor-pointer ${className}`}
+    >
       <button
         type="button"
         onClick={toggle}
@@ -41,7 +45,7 @@ export default function ToggleSwitch({
           internalEnabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
         }`}
         aria-pressed={internalEnabled}
-        aria-label={typeof label === 'string' ? label : 'Toggle switch'}
+        aria-label={typeof label === "string" ? label : "Toggle switch"}
       >
         <span
           className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
@@ -52,9 +56,7 @@ export default function ToggleSwitch({
       <div className="flex items-center gap-2 mb-1 ml-2 ">
         <label className="text-gray-400">{label}</label>
 
-        {tooltip && (
-          <InfoTooltip text={tooltip} size={16} />
-        )}
+        {tooltip && <InfoTooltip text={tooltip} size={16} />}
       </div>
     </div>
   );

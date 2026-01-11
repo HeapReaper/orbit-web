@@ -10,10 +10,12 @@ interface Props {
 async function getArticle(slug: string) {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&filter[slug][_eq]=${slug}`,
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
 
-  console.log(`${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&filter[slug][_eq]=${slug}`)
+  console.log(
+    `${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*&filter[slug][_eq]=${slug}`,
+  );
 
   const data = await res.json();
   return data.data?.[0] || null;
@@ -75,19 +77,19 @@ export default async function ArticlePage({ params }: Props) {
 
         {/* Author + Updated */}
         <p className="text-gray-400 text-sm flex items-center gap-2">
-        <span className="inline-flex items-center gap-1">
-          <User size={16} className="inline-block text-blue-500" />
-          {article.Author.name ?? "Unknown"}
-        </span>
+          <span className="inline-flex items-center gap-1">
+            <User size={16} className="inline-block text-blue-500" />
+            {article.Author.name ?? "Unknown"}
+          </span>
           •
-        <span className="inline-flex items-center gap-1">
-          <Calendar size={16} className="inline-block text-blue-500" />
+          <span className="inline-flex items-center gap-1">
+            <Calendar size={16} className="inline-block text-blue-500" />
             {new Date(article.date_created).toLocaleDateString(undefined, {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
-        </span>
+          </span>
         </p>
 
         <ShowMarkdown content={article.content} classes="" />

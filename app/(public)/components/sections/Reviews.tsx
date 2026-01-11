@@ -48,9 +48,7 @@ export default async function ReviewsSection() {
               "{review.review}"
             </p>
 
-            <div className="flex text-yellow-400 mt-4">
-              {review.stars}
-            </div>
+            <div className="flex text-yellow-400 mt-4">{review.stars}</div>
           </div>
         ))}
       </div>

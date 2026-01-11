@@ -6,9 +6,18 @@ const secret = process.env.API_ENCRYPTION_KEY!;
 export function encrypt(text: string) {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(secret), iv);
-  const encrypted = Buffer.concat([cipher.update(text, "utf8"), cipher.final()]);
+  const encrypted = Buffer.concat([
+    cipher.update(text, "utf8"),
+    cipher.final(),
+  ]);
   const tag = cipher.getAuthTag();
-  return iv.toString("hex") + ":" + tag.toString("hex") + ":" + encrypted.toString("hex");
+  return (
+    iv.toString("hex") +
+    ":" +
+    tag.toString("hex") +
+    ":" +
+    encrypted.toString("hex")
+  );
 }
 
 export function decrypt(encryptedText: string) {

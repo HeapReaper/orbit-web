@@ -1,7 +1,3 @@
 export default function Page() {
-  return (
-    <>
-      Support page
-    </>
-  );
+  return <>Support page</>;
 }

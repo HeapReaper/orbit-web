@@ -28,7 +28,9 @@ export default function Page() {
     const fetchGuildData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/youtube-watcher?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/youtube-watcher?guildId=${selectedGuild}`,
+        );
         const data = await res.json();
         setEnabled(data.enabled ?? false);
         setSelectedChannel(data.channel ?? "");
@@ -70,7 +72,11 @@ export default function Page() {
         notify("Could not save", "", "error");
       }
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated YouTube Watcher settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated YouTube Watcher settings",
+      );
 
       if (!auto) notify("Saved", "", "success");
     } catch (error) {
@@ -93,7 +99,8 @@ export default function Page() {
   };
 
   const addUser = () => setUsers([...users, ""]);
-  const removeUser = (index: number) => setUsers(users.filter((_, i) => i !== index));
+  const removeUser = (index: number) =>
+    setUsers(users.filter((_, i) => i !== index));
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -128,7 +135,9 @@ export default function Page() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">YouTube Users / Channels</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          YouTube Users / Channels
+        </label>
         {users.map((user, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <input
@@ -140,7 +149,6 @@ export default function Page() {
             />
             {users.length > 1 && (
               <DeleteButton onClick={() => removeUser(index)} />
-
             )}
           </div>
         ))}
