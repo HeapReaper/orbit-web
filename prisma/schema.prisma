@@ -26,7 +26,7 @@ model AntiBotSettings {
 }
 
 model AutoMessage {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   guildId      String   @map("guild_id") @db.VarChar(22)
   messageType  String   @default("") @map("message_type") @db.VarChar(7)
   scheduleType String   @default("daily") @map("schedule_type") @db.VarChar(10)
