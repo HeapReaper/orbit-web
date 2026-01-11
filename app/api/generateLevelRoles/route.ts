@@ -9,9 +9,15 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const { guildId, count } = data;
 
-    if (!guildId) return NextResponse.json({ error: "Guild ID is missing" }, { status: 400 });
-    if (!count) return NextResponse.json({ error: "Count is missing" }, { status: 400 });
-    if (!BOT_TOKEN) return NextResponse.json({ error: "Bot token not set" }, { status: 500 });
+    if (!guildId)
+      return NextResponse.json(
+        { error: "Guild ID is missing" },
+        { status: 400 },
+      );
+    if (!count)
+      return NextResponse.json({ error: "Count is missing" }, { status: 400 });
+    if (!BOT_TOKEN)
+      return NextResponse.json({ error: "Bot token not set" }, { status: 500 });
 
     // Validate authentication & admin permissions
     const session = await validateApiSessionAndGuildAdmin(guildId);
@@ -22,23 +28,29 @@ export async function POST(req: NextRequest) {
     const roles: { id: string; name: string }[] = [];
 
     for (let i = 1; i <= count; i++) {
-      const response = await fetch(`${DISCORD_API_BASE}/guilds/${guildId}/roles`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bot ${BOT_TOKEN}`,
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${DISCORD_API_BASE}/guilds/${guildId}/roles`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bot ${BOT_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: `Level ${i}`,
+            hoist: false,
+            mentionable: false,
+            reason: "Leveling system",
+          }),
         },
-        body: JSON.stringify({
-          name: `Level ${i}`,
-          hoist: false,
-          mentionable: false,
-          reason: "Leveling system",
-        }),
-      });
+      );
 
       if (!response.ok) {
         const text = await response.text();
-        return NextResponse.json({ error: `Failed to create role ${i}: ${text}` }, { status: 500 });
+        return NextResponse.json(
+          { error: `Failed to create role ${i}: ${text}` },
+          { status: 500 },
+        );
       }
 
       const roleData = await response.json();
@@ -48,6 +60,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ roles });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to generate level roles" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to generate level roles" },
+      { status: 500 },
+    );
   }
 }

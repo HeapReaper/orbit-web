@@ -3,8 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary-color: #9B30FF;
-  --hover-color: #8A29E6;
+  --primary-color: #9b30ff;
+  --hover-color: #8a29e6;
   --primary-background: #0d0f13;
   --secondary-background: #101218;
 }
@@ -29,7 +29,9 @@ textarea:focus {
   outline: none !important;
   border-color: var(--primary-color) !important;
   box-shadow: 0 0 0 2px var(--primary-color) !important;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 @keyframes spin-slow {
@@ -49,7 +51,7 @@ textarea:focus {
 }
 
 .mdxeditor-toolbar button {
-  fill: #f3f4f6 !important;  /* SVGs */
+  fill: #f3f4f6 !important; /* SVGs */
 }
 
 .mdxeditor-toolbar button:hover {

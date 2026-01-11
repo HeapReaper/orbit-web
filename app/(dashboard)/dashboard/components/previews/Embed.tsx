@@ -47,7 +47,7 @@ function replaceInEmbed(obj: any, replace?: Array<[string, string]>): any {
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(item => replaceInEmbed(item, replace));
+    return obj.map((item) => replaceInEmbed(item, replace));
   }
 
   if (typeof obj === "object" && obj !== null) {
@@ -82,9 +82,14 @@ export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
           {/* Header */}
           <div className="flex items-center gap-2 mb-1">
             <span className="font-semibold text-white">Orbit</span>
-            <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">APP</span>
+            <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded font-bold">
+              APP
+            </span>
             <span className="text-xs text-gray-400">
-              {new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}
+              {new Date().toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </span>
           </div>
 
@@ -94,7 +99,7 @@ export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
               className="flex-1 bg-[#393A41] rounded border-l-4 p-3 mt-2"
               style={{ borderColor: renderedEmbed.color || "#5865F2" }}
             >
-              <div className={`flex ${renderedEmbed.thumbnail ? 'gap-4' : ''}`}>
+              <div className={`flex ${renderedEmbed.thumbnail ? "gap-4" : ""}`}>
                 {/* Left column: Text content */}
                 <div className="flex-1">
                   {/* Author */}
@@ -107,13 +112,15 @@ export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
                           className="w-7 h-7 object-cover rounded-full border border-gray-600"
                         />
                       )}
-                      <span className="text-white font-semibold text-sm">{renderedEmbed.author.name}</span>
+                      <span className="text-white font-semibold text-sm">
+                        {renderedEmbed.author.name}
+                      </span>
                     </div>
                   )}
 
                   {/* Title */}
-                  {renderedEmbed.title && (
-                    renderedEmbed.titleUrl ? (
+                  {renderedEmbed.title &&
+                    (renderedEmbed.titleUrl ? (
                       <a
                         href={renderedEmbed.titleUrl}
                         className="font-bold text-sm text-[#7BB0F5] block mb-1 no-underline hover:underline underline-offset-2"
@@ -126,8 +133,7 @@ export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
                       <h5 className="font-bold text-sm text-white mb-1">
                         <ReactMarkdown>{renderedEmbed.title}</ReactMarkdown>
                       </h5>
-                    )
-                  )}
+                    ))}
 
                   {/* Description */}
                   {renderedEmbed.description && (
@@ -139,26 +145,47 @@ export default function EmbedPreview({ embed, replace }: EmbedPreviewProps) {
                   {/* Fields */}
                   {(renderedEmbed.fields?.length ?? 0) > 0 && (
                     <div className="mt-1 grid grid-cols-1 gap-1">
-                      {(renderedEmbed.fields || []).map((f: { inline: any; name: string | null | undefined; value: string | null | undefined; }, i: React.Key | null | undefined) => (
-                        <div key={i} className={f.inline ? "inline-block w-[45%] mr-2" : "block"}>
-                          <div className="text-white font-semibold text-xs">
-                            <ReactMarkdown>{f.name}</ReactMarkdown>
+                      {(renderedEmbed.fields || []).map(
+                        (
+                          f: {
+                            inline: any;
+                            name: string | null | undefined;
+                            value: string | null | undefined;
+                          },
+                          i: React.Key | null | undefined,
+                        ) => (
+                          <div
+                            key={i}
+                            className={
+                              f.inline ? "inline-block w-[45%] mr-2" : "block"
+                            }
+                          >
+                            <div className="text-white font-semibold text-xs">
+                              <ReactMarkdown>{f.name}</ReactMarkdown>
+                            </div>
+                            <div className="text-gray-300 text-xs whitespace-pre-line">
+                              <ReactMarkdown>{f.value}</ReactMarkdown>
+                            </div>
                           </div>
-                          <div className="text-gray-300 text-xs whitespace-pre-line">
-                            <ReactMarkdown>{f.value}</ReactMarkdown>
-                          </div>
-                        </div>
-                      ))}
+                        ),
+                      )}
                     </div>
                   )}
 
                   {/* Footer */}
-                  {(renderedEmbed.footer?.text || renderedEmbed.footer?.icon) && (
+                  {(renderedEmbed.footer?.text ||
+                    renderedEmbed.footer?.icon) && (
                     <div className="flex items-center gap-1 mt-2 text-gray-400 text-xs">
                       {renderedEmbed.footer.icon && (
-                        <img src={renderedEmbed.footer.icon} className="w-3 h-3 rounded" alt="" />
+                        <img
+                          src={renderedEmbed.footer.icon}
+                          className="w-3 h-3 rounded"
+                          alt=""
+                        />
                       )}
-                      <ReactMarkdown>{renderedEmbed.footer?.text || ""}</ReactMarkdown>
+                      <ReactMarkdown>
+                        {renderedEmbed.footer?.text || ""}
+                      </ReactMarkdown>
                     </div>
                   )}
                 </div>

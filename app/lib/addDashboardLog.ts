@@ -1,6 +1,10 @@
 import { useSession } from "next-auth/react";
 
-export async function addDashboardLog(guildId: string, type: string, message: string) {
+export async function addDashboardLog(
+  guildId: string,
+  type: string,
+  message: string,
+) {
   try {
     // Get current session
     const sessionRes = await fetch("/api/auth/session");

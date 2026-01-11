@@ -40,7 +40,7 @@ export default function Page() {
               isPremium: g.isPremium,
               trialEndsAt: g.trialEndsAt ?? null,
               createdAt: g.createdAt ?? null,
-            }))
+            })),
           );
         }
       } catch (err) {
@@ -105,7 +105,12 @@ export default function Page() {
       {loadingGuilds ? (
         <p className="text-gray-400">Loading guilds...</p>
       ) : (
-        <GenericTable title="Guilds" headers={headers} rows={rows} maxHeight="64" />
+        <GenericTable
+          title="Guilds"
+          headers={headers}
+          rows={rows}
+          maxHeight="64"
+        />
       )}
 
       <div className="mb-6 mt-6">

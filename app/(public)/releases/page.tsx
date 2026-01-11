@@ -35,11 +35,13 @@ export default async function ReleasesPage() {
               Authorization: `token ${process.env.GITHUB_TOKEN}`,
             },
             next: { revalidate: 30 },
-          }
+          },
         );
 
         if (!res.ok) {
-          console.warn(`[GitHub] Failed to fetch releases for ${owner}/${repo}: ${res.status} ${res.statusText}`);
+          console.warn(
+            `[GitHub] Failed to fetch releases for ${owner}/${repo}: ${res.status} ${res.statusText}`,
+          );
           return {
             repoName: repo,
             releases: [],
@@ -53,13 +55,16 @@ export default async function ReleasesPage() {
           releases: Array.isArray(data) ? data.slice(0, 3) : [],
         };
       } catch (error) {
-        console.error(`[GitHub] Error fetching releases for ${owner}/${repo}:`, error);
+        console.error(
+          `[GitHub] Error fetching releases for ${owner}/${repo}:`,
+          error,
+        );
         return {
           repoName: repo,
           releases: [],
         };
       }
-    })
+    }),
   );
 
   return (
@@ -82,7 +87,9 @@ export default async function ReleasesPage() {
                     {release.name} ({release.tag_name})
                   </a>
                 </h3>
-                <p className="mt-1">{new Date(release.published_at).toLocaleDateString()}</p>
+                <p className="mt-1">
+                  {new Date(release.published_at).toLocaleDateString()}
+                </p>
                 <ul className="list-disc list-inside mt-2">
                   {release.body
                     .split("\n")

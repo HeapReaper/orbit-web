@@ -25,7 +25,8 @@ export default function Page() {
   const [search, setSearch] = useState<string>("");
   const [xpPerMessage, setXpPerMessage] = useState<number>(10);
   const [xpPerVoice, setXpPerVoice] = useState<number>(5);
-  const [xpMessageGainSpeed, setXpMessageGainSpeed] = useState<string>("oneTimeAMinute");
+  const [xpMessageGainSpeed, setXpMessageGainSpeed] =
+    useState<string>("oneTimeAMinute");
   const [xpVoiceGainSpeed, setXpVoiceGainSpeed] = useState("everyMinute");
   const [curveExponent, setCurveExponent] = useState<number>(2.65);
 
@@ -67,7 +68,7 @@ export default function Page() {
     if (!selectedGuild) return;
 
     const confirmed = confirm(
-      "This will create 10 new roles (Level 1 → Level 10) and assign them for leveling. You can change the names later. Continue?"
+      "This will create 10 new roles (Level 1 → Level 10) and assign them for leveling. You can change the names later. Continue?",
     );
     if (!confirmed) return;
 
@@ -176,7 +177,18 @@ export default function Page() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [enabled, selectedChannel, levelRoles, xpRate, xpPerMessage, xpPerVoice, xpRate, curveExponent, xpMessageGainSpeed, xpVoiceGainSpeed]);
+  }, [
+    enabled,
+    selectedChannel,
+    levelRoles,
+    xpRate,
+    xpPerMessage,
+    xpPerVoice,
+    xpRate,
+    curveExponent,
+    xpMessageGainSpeed,
+    xpVoiceGainSpeed,
+  ]);
 
   const toggleRole = (roleId: string) => {
     if (levelRoles.includes(roleId)) {
@@ -272,10 +284,22 @@ export default function Page() {
           options={[
             { label: "Every message", value: "everyMessage" },
             { label: "One time a minute", value: "oneTimeAMinute" },
-            { label: "One time every 2 minutes", value: "oneTimeEvery2Minutes" },
-            { label: "One time every 3 minutes", value: "oneTimeEvery3Minutes" },
-            { label: "One time every 4 minutes", value: "oneTimeEvery4Minutes" },
-            { label: "One time every 5 minutes", value: "oneTimeEvery5Minutes" },
+            {
+              label: "One time every 2 minutes",
+              value: "oneTimeEvery2Minutes",
+            },
+            {
+              label: "One time every 3 minutes",
+              value: "oneTimeEvery3Minutes",
+            },
+            {
+              label: "One time every 4 minutes",
+              value: "oneTimeEvery4Minutes",
+            },
+            {
+              label: "One time every 5 minutes",
+              value: "oneTimeEvery5Minutes",
+            },
           ]}
         />
       </div>

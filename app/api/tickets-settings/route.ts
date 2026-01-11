@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
-import {validateApiSessionAndGuildAdmin} from "@/app/lib/validateApiSessionAndGuildAdmin";
+import { validateApiSessionAndGuildAdmin } from "@/app/lib/validateApiSessionAndGuildAdmin";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -8,8 +8,10 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
     const data = await prisma.ticketSettings.findFirst({
@@ -30,14 +32,16 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const updated = await prisma.ticketSettings.upsert({
     where: { guildId },
     update: { channel, channelConf, enabled },
-    create: { guildId, channel, channelConf, enabled }
-  })
+    create: { guildId, channel, channelConf, enabled },
+  });
 
   return NextResponse.json(updated);
 }

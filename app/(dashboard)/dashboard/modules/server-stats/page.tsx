@@ -24,7 +24,8 @@ export default function Page() {
         </div>
 
         <p className="mt-3 text-sm text-gray-400">
-          The bot will guide you through creating and managing the statistic channels.
+          The bot will guide you through creating and managing the statistic
+          channels.
         </p>
       </div>
     </section>

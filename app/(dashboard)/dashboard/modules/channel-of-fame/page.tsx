@@ -29,7 +29,9 @@ export default function Page() {
     const fetchGuildData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/channel-of-fame?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/channel-of-fame?guildId=${selectedGuild}`,
+        );
         const data = await res.json();
         setEnabled(data.enabled ?? false);
         setEmoji(data.emoji ?? "");
@@ -73,7 +75,11 @@ export default function Page() {
         notify("Could not save", "", "error");
       }
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated Channel of Fame settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated Channel of Fame settings",
+      );
 
       if (!auto) notify("Saved", "", "success");
     } catch (error) {

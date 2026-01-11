@@ -17,7 +17,9 @@ export default function Page() {
 
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Orbit</h1>
-          <p className="text-gray-400 text-sm">Log in to manage your bot and server(s)</p>
+          <p className="text-gray-400 text-sm">
+            Log in to manage your bot and server(s)
+          </p>
         </div>
 
         <button

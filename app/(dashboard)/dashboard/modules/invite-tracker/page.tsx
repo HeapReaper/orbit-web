@@ -68,9 +68,7 @@ export default function InviteTrackerPage() {
 
   const updateInviteType = (code: string, newType: string) => {
     setInvites((prev) =>
-      prev.map((i) =>
-        i.code === code ? { ...i, type: newType } : i
-      )
+      prev.map((i) => (i.code === code ? { ...i, type: newType } : i)),
     );
   };
 
@@ -96,7 +94,11 @@ export default function InviteTrackerPage() {
       if (!res.ok) {
         if (!auto) notify("Failed to save settings", "", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Invite Tracker settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Invite Tracker settings",
+        );
         if (!auto) notify("Saved!", "", "success");
       }
     } catch (err) {
@@ -116,7 +118,8 @@ export default function InviteTrackerPage() {
       </h1>
 
       <p className="text-xs text-gray-400 mb-4">
-        To enable the Invite Tracker, make sure logging is turned on, select a channel, and enable the "Member Joined" event.
+        To enable the Invite Tracker, make sure logging is turned on, select a
+        channel, and enable the "Member Joined" event.
       </p>
 
       {/* Enable */}
@@ -155,14 +158,18 @@ export default function InviteTrackerPage() {
                 className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
               />
 
-              <span className="text-sm text-gray-500 w-20">{inv.uses} uses</span>
+              <span className="text-sm text-gray-500 w-20">
+                {inv.uses} uses
+              </span>
 
               <span className="text-sm text-gray-400 w-28 text-center">
-              {inv.inviter || "Unknown"}
+                {inv.inviter || "Unknown"}
               </span>
 
               <span className="text-sm text-gray-400 w-36 text-center">
-                {inv.expiresAt ? new Date(inv.expiresAt).toLocaleString() : "Permanent"}
+                {inv.expiresAt
+                  ? new Date(inv.expiresAt).toLocaleString()
+                  : "Permanent"}
               </span>
             </div>
           ))}

@@ -8,8 +8,10 @@ export async function POST(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   let startDate: Date | undefined;
   const now = new Date();

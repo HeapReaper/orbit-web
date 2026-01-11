@@ -11,7 +11,8 @@ const endpoints = [
   {
     method: "GET",
     path: "/api/bumper",
-    description: "Returns a list of all users who bumped the server in the last 24 hours",
+    description:
+      "Returns a list of all users who bumped the server in the last 24 hours",
     response: `[
   {
     "id": "123456789012345678",
@@ -57,7 +58,9 @@ export default function ApiSettingsPage() {
   }, [selectedGuild]);
 
   const generateApiKey = () => {
-    const key = [...Array(32)].map(() => Math.random().toString(36)[2]).join("");
+    const key = [...Array(32)]
+      .map(() => Math.random().toString(36)[2])
+      .join("");
     setApiKey(key);
   };
 
@@ -172,7 +175,6 @@ export default function ApiSettingsPage() {
         </div>
       </div>
 
-
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
       </div>
@@ -204,9 +206,10 @@ export default function ApiSettingsPage() {
             </div>
 
             <pre className="bg-gray-800 text-xs text-white p-2 rounded mb-2 overflow-x-auto">
-{`curl -X GET "https://bot.botinorbit.com/api/bumper" \\
+              {`curl -X GET "https://bot.botinorbit.com/api/bumper" \\
   -H "Authorization: Bearer API_KEY_HERE" \\
-  -H "X-Guild-ID: ${selectedGuild}"`}</pre>
+  -H "X-Guild-ID: ${selectedGuild}"`}
+            </pre>
 
             <div className="text-gray-300 text-sm whitespace-pre-wrap">{`${ep.description}\n\nResponse:\n${ep.response}`}</div>
           </div>

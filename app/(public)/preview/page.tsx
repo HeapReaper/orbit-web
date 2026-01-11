@@ -16,7 +16,9 @@ export default function Page() {
         <h1 className="text-4xl font-bold text-white mb-6">Preview</h1>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-white mb-4">Video Preview</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4">
+            Video Preview
+          </h2>
           <div className="border rounded-lg border-[var(--primary-color)]">
             <div className="relative aspect-video w-full rounded-lg overflow-hidden shadow-lg ">
               <video
@@ -29,17 +31,19 @@ export default function Page() {
               />
             </div>
           </div>
-
         </section>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold text-white mb-4">Screenshot Previews</h2>
+          <h2 className="text-2xl font-semibold text-white mb-4">
+            Screenshot Previews
+          </h2>
 
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold">API Config</h3>
               <p className="text-gray-400">
-                Enable the API to be able to interact with the bot on a API level.
+                Enable the API to be able to interact with the bot on a API
+                level.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-lg">
@@ -66,7 +70,8 @@ export default function Page() {
             <div className="order-1 md:order-2 space-y-4">
               <h3 className="text-2xl font-semibold">Server Backup</h3>
               <p className="text-gray-400">
-                Backup your server’s channels, category and channel positions, server settings (name, region, icon), roles, and permissions.
+                Backup your server’s channels, category and channel positions,
+                server settings (name, region, icon), roles, and permissions.
               </p>
             </div>
           </div>
@@ -75,8 +80,9 @@ export default function Page() {
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold">Bot Settings</h3>
               <p className="text-gray-400">
-                Manage global bot preferences and permissions directly from this page.
-                Everything is synced automatically with your Discord server.
+                Manage global bot preferences and permissions directly from this
+                page. Everything is synced automatically with your Discord
+                server.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-lg">
@@ -103,8 +109,9 @@ export default function Page() {
             <div className="order-1 md:order-2 space-y-4">
               <h3 className="text-2xl font-semibold">Bump Reminder</h3>
               <p className="text-gray-400">
-                Set automatic reminders for server bumps, helping your community stay visible on Discord lists.
-                Fully configurable and easy to use.
+                Set automatic reminders for server bumps, helping your community
+                stay visible on Discord lists. Fully configurable and easy to
+                use.
               </p>
             </div>
           </div>
@@ -113,8 +120,8 @@ export default function Page() {
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold">Auto message</h3>
               <p className="text-gray-400">
-                Send automatic messages to your channels on a schedule.
-                Perfect for announcements, server updates, or community engagement.
+                Send automatic messages to your channels on a schedule. Perfect
+                for announcements, server updates, or community engagement.
                 Embeds and advanced customization are coming soon!
               </p>
             </div>
@@ -142,7 +149,9 @@ export default function Page() {
             <div className="order-1 md:order-2 space-y-4">
               <h3 className="text-2xl font-semibold">Analytics</h3>
               <p className="text-gray-400">
-                Get insight on what time your server is the most active, how many people have joined over time, active vs inactive members and more.
+                Get insight on what time your server is the most active, how
+                many people have joined over time, active vs inactive members
+                and more.
               </p>
             </div>
           </div>

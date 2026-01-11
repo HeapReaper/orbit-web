@@ -62,7 +62,11 @@ export default function TimeKeeperSettingsPage() {
       if (!resp.ok) {
         if (!auto) notify("Oops", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated time keeper settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated time keeper settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {

@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface Channel {
   id: string;
@@ -62,8 +68,8 @@ export function GuildProvider({ children }: { children: ReactNode }) {
 
             setGuilds((prev) =>
               prev.map((x) =>
-                x.id === g.id ? { ...x, isPremium: !!premData } : x
-              )
+                x.id === g.id ? { ...x, isPremium: !!premData } : x,
+              ),
             );
           } catch (err) {
             console.error("Premium check failed:", err);

@@ -76,7 +76,11 @@ export default function ModLinkSettings() {
       if (!resp.ok) {
         if (!auto) notify("Oops", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Mod Link settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Mod Link settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -97,14 +101,10 @@ export default function ModLinkSettings() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Mod Link
-        <InfoTooltip
-          text="Sync moderation actions like Ban, Kick and Mute across multiple servers"
-        />
+        <InfoTooltip text="Sync moderation actions like Ban, Kick and Mute across multiple servers" />
       </h1>
 
-      <InfoLabel
-        text="This syncs moderation actions from the currently selected guild (on the left in the menu bar) to the other servers selected under 'Servers to Sync'. If you want a ban from one of the servers below to sync to the currently selected guild, you need to manually change the selected guild and choose the desired servers to sync."
-      />
+      <InfoLabel text="This syncs moderation actions from the currently selected guild (on the left in the menu bar) to the other servers selected under 'Servers to Sync'. If you want a ban from one of the servers below to sync to the currently selected guild, you need to manually change the selected guild and choose the desired servers to sync." />
 
       <div className="flex items-center justify-between mb-4">
         <span className="text-gray-400">Enable</span>
@@ -134,10 +134,11 @@ export default function ModLinkSettings() {
         items={guilds}
         selectedIds={syncedGuilds}
         onToggle={(id) =>
-          setSyncedGuilds((prev) =>
-            prev.includes(id)
-              ? prev.filter((g) => g !== id) // Remove guild ID if already selected
-              : [...prev, id] // Add guild ID if not selected
+          setSyncedGuilds(
+            (prev) =>
+              prev.includes(id)
+                ? prev.filter((g) => g !== id) // Remove guild ID if already selected
+                : [...prev, id], // Add guild ID if not selected
           )
         }
       />
@@ -145,16 +146,14 @@ export default function ModLinkSettings() {
       <CheckList
         label="Actions to sync"
         items={[
-          { id: "ban", name: "Ban"},
-          { id: "kick", name: "Kick"},
-          { id: "mute", name: "Mute"},
+          { id: "ban", name: "Ban" },
+          { id: "kick", name: "Kick" },
+          { id: "mute", name: "Mute" },
         ]}
         selectedIds={actionsToSync}
         onToggle={(id) =>
           setActionsToSync((prev) =>
-            prev.includes(id)
-              ? prev.filter((a) => a !== id)
-              : [...prev, id]
+            prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id],
           )
         }
       />

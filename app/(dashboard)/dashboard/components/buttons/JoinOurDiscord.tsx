@@ -26,7 +26,7 @@ export default function JoinOurDiscord() {
       window.open(
         "https://discord.gg/HyGNHZCeTQ",
         "_blank",
-        "noopener,noreferrer"
+        "noopener,noreferrer",
       );
     }, 100);
   };

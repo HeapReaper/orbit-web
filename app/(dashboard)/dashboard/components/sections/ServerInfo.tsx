@@ -6,7 +6,7 @@ import { useGuild } from "@/app/context/GuildContext";
 export default function ServerInfo() {
   const { selectedGuild, setSelectedGuild, channels, guilds } = useGuild();
 
-  let guildName = guilds.find(g => g.id === selectedGuild);
+  let guildName = guilds.find((g) => g.id === selectedGuild);
 
   if (!guildName) return null;
 
@@ -20,13 +20,15 @@ export default function ServerInfo() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
         <p>
-          <span className="font-semibold text-white">Guild:</span> {guildName.name}
+          <span className="font-semibold text-white">Guild:</span>{" "}
+          {guildName.name}
         </p>
         <p>
           <span className="font-semibold text-white">Members:</span> 3
         </p>
         <p>
-          <span className="font-semibold text-white">Channels:</span> {channels.length}
+          <span className="font-semibold text-white">Channels:</span>{" "}
+          {channels.length}
         </p>
       </div>
     </section>

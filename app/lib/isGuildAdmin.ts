@@ -2,7 +2,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { getRedisClient } from "@/app/lib/redis";
 
-export default async function isUserGuildAdmin(userId: string, guildId: string) {
+export default async function isUserGuildAdmin(
+  userId: string,
+  guildId: string,
+) {
   const redis = getRedisClient();
   const cacheKey = `user_guilds:${userId}`;
 
@@ -36,5 +39,8 @@ export default async function isUserGuildAdmin(userId: string, guildId: string) 
   const ADMINISTRATOR = 0x00000008;
   const permissions = BigInt(guild.permissions);
 
-  return (permissions & BigInt(ADMINISTRATOR)) === BigInt(ADMINISTRATOR) || guild.owner === true;
+  return (
+    (permissions & BigInt(ADMINISTRATOR)) === BigInt(ADMINISTRATOR) ||
+    guild.owner === true
+  );
 }

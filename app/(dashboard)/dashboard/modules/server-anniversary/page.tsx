@@ -49,19 +49,23 @@ export default function ServerAnniversaryPage() {
     const fetchGuildData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/server-anniversary?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/server-anniversary?guildId=${selectedGuild}`,
+        );
         const data = await res.json();
         setMessageType(data.messageType ?? "text");
         setMessage(data.message ?? "");
-        setEmbed(data.embed ?? {
-          color: "#5865F2",
-          title: "",
-          titleUrl: "",
-          description: "",
-          author: { name: "", icon: "" },
-          thumbnail: "",
-          fields: [],
-        });
+        setEmbed(
+          data.embed ?? {
+            color: "#5865F2",
+            title: "",
+            titleUrl: "",
+            description: "",
+            author: { name: "", icon: "" },
+            thumbnail: "",
+            fields: [],
+          },
+        );
         setChannel(data.channel ?? "");
         setTime(data.time ?? "");
         setEnabled(data.enabled ?? false);
@@ -106,7 +110,11 @@ export default function ServerAnniversaryPage() {
       if (!resp.ok) {
         if (!auto) notify("Oeps", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated welcome message settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated welcome message settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -153,11 +161,7 @@ export default function ServerAnniversaryPage() {
         onChange={(value) => setChannel(value)}
       />
 
-      <TimeInput
-        label="Notification time"
-        value={time}
-        onChange={setTime}
-      />
+      <TimeInput label="Notification time" value={time} onChange={setTime} />
 
       <div className="mb-6">
         <div className="mb-6">
@@ -166,15 +170,16 @@ export default function ServerAnniversaryPage() {
             value={messageType}
             onChange={setMessageType}
             options={[
-              { value: "text", label: "Text"},
-              { value: "embed", label: "Embed"}
+              { value: "text", label: "Text" },
+              { value: "embed", label: "Embed" },
             ]}
           />
 
           <div className="mb-2">
             <label className="block text-gray-400 mb-1">Message</label>
             <p className="text-sm text-gray-500 mb-2 mt-1">
-              You can use <InlineCode text="{guildAge}" /> to get the current server age in years (like 2).
+              You can use <InlineCode text="{guildAge}" /> to get the current
+              server age in years (like 2).
             </p>
           </div>
 
@@ -191,17 +196,15 @@ export default function ServerAnniversaryPage() {
               <MessagePreview
                 username="Orbit"
                 message={message.replace("{guildAge}", "2")}
-                channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+                channels={Object.fromEntries(
+                  channels.map((channel) => [channel.id, channel.name]),
+                )}
               />
             </>
           ) : (
             <>
               <EmbedBuilder value={embed} onChange={setEmbed} />
-              <EmbedPreview
-                embed={embed}
-                replace={[
-                ["{guildAge}", "2"]
-              ]} />
+              <EmbedPreview embed={embed} replace={[["{guildAge}", "2"]]} />
             </>
           )}
         </div>

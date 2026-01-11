@@ -52,11 +52,13 @@ export default function MarkdownEditor({
     (val: string) => {
       onChange(val);
     },
-    [onChange]
+    [onChange],
   );
 
   return (
-    <div className={`rounded-lg border border-gray-700 bg-[#1f2330] ${className} `}>
+    <div
+      className={`rounded-lg border border-gray-700 bg-[#1f2330] ${className} `}
+    >
       <SimpleMdeReact value={value} onChange={handleChange} options={options} />
 
       <style jsx global>{`

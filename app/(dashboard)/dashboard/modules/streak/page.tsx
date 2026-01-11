@@ -30,7 +30,9 @@ export default function StreakSettingsPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/streak?guildId=${selectedGuild}`, { cache: "no-store" });
+        const res = await fetch(`/api/streak?guildId=${selectedGuild}`, {
+          cache: "no-store",
+        });
         const data = await res.json();
 
         if (!data || data.error) {

@@ -2,5 +2,5 @@ export default interface NavType {
   name: string;
   href?: string;
   children?: NavType[];
-  target?: "_blank" | "_self"
+  target?: "_blank" | "_self";
 }

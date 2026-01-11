@@ -8,7 +8,11 @@ import { redirect } from "next/navigation";
 import { GuildProvider } from "@/app/context/GuildContext";
 import Script from "next/script";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await getServerSession(authOptions);
 
   if (!session) {

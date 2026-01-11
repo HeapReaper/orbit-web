@@ -99,11 +99,21 @@ export default function BotSettings() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [nickname, language, updatesChannel, timezone, primaryColor, secondaryColor]);
+  }, [
+    nickname,
+    language,
+    updatesChannel,
+    timezone,
+    primaryColor,
+    secondaryColor,
+  ]);
 
   const timezones = Intl.supportedValuesOf("timeZone").map((tz) => {
     const now = new Date();
-    const tzName = now.toLocaleTimeString("en-US", { timeZone: tz, timeZoneName: "short" });
+    const tzName = now.toLocaleTimeString("en-US", {
+      timeZone: tz,
+      timeZoneName: "short",
+    });
     const parts = tzName.split(" ");
     const rawOffset = parts.length > 1 ? parts.pop() : "UTC";
     const offset = rawOffset?.replace("GMT", "UTC") ?? "UTC";
@@ -161,7 +171,9 @@ export default function BotSettings() {
         </div>
 
         <div className="border-t border-gray-700 pt-4 space-y-4 mb-3">
-          <h3 className="text-md font-semibold text-gray-300 mb-2">Theme Settings</h3>
+          <h3 className="text-md font-semibold text-gray-300 mb-2">
+            Theme Settings
+          </h3>
 
           <div className="grid md:grid-cols-2 gap-4 items-center">
             <label className="block text-gray-400">Primary Color</label>

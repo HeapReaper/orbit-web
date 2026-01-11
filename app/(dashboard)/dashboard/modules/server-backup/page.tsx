@@ -34,7 +34,9 @@ export default function ServerBackupPage() {
     if (!selectedGuild) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/server-backup?guildId=${selectedGuild}`, { cache: "no-store" });
+      const res = await fetch(`/api/server-backup?guildId=${selectedGuild}`, {
+        cache: "no-store",
+      });
       const data = await res.json();
       if (!data || data.error) {
         setEnabled(false);
@@ -83,7 +85,11 @@ export default function ServerBackupPage() {
       if (!resp.ok) {
         if (!auto) notify("Oops", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated Server Backup settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated Server Backup settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -110,7 +116,9 @@ export default function ServerBackupPage() {
   };
 
   const deleteBackup = async (backupId: number) => {
-    const confirmDelete = confirm("Are you sure you want to delete this backup?");
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this backup?",
+    );
     if (!confirmDelete) return;
 
     const res = await fetch("/api/server-backup", {
@@ -129,7 +137,7 @@ export default function ServerBackupPage() {
 
   const handleRestore = async (guildId: string, backup: any) => {
     const confirmRestore: boolean = confirm(
-      "⚠️ Are you sure you want to restore this backup? Orbit is not responsible for any damages. ⚠️"
+      "⚠️ Are you sure you want to restore this backup? Orbit is not responsible for any damages. ⚠️",
     );
     if (!confirmRestore) return;
 
@@ -167,8 +175,8 @@ export default function ServerBackupPage() {
       </h1>
 
       <p className="text-sm text-gray-500 mb-4 mt-1">
-        Free members can store up to 3 weeks of backups,
-        while Premium members enjoy 1.5 months of backup history.
+        Free members can store up to 3 weeks of backups, while Premium members
+        enjoy 1.5 months of backup history.
       </p>
 
       <div className="flex items-center justify-between mb-4">
@@ -206,11 +214,7 @@ export default function ServerBackupPage() {
         ]}
       />
 
-      <TimeInput
-        label="Backup time"
-        value={time}
-        onChange={setTime}
-      />
+      <TimeInput label="Backup time" value={time} onChange={setTime} />
 
       <CheckList
         label="Backup content"
@@ -224,7 +228,7 @@ export default function ServerBackupPage() {
         selectedIds={backupContent}
         onToggle={(id) =>
           setBackupContent((prev) =>
-            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
           )
         }
       />
@@ -236,34 +240,38 @@ export default function ServerBackupPage() {
         <div className="overflow-x-auto rounded-lg border border-gray-700 bg-[#1f2330] max-h-64 overflow-y-auto">
           <table className="w-full text-left text-gray-300">
             <thead className="bg-[#14171f] text-gray-400 sticky top-0">
-            <tr>
-              <th className="px-4 py-2">Backup Time</th>
-              <th className="px-4 py-2">Restore</th>
-              <th className="px-4 py-2">Delete</th>
-            </tr>
+              <tr>
+                <th className="px-4 py-2">Backup Time</th>
+                <th className="px-4 py-2">Restore</th>
+                <th className="px-4 py-2">Delete</th>
+              </tr>
             </thead>
             <tbody>
-            {backups.map((backup: BackupType) => (
-              <tr key={backup.id} className="border-t border-gray-700">
-                <td className="px-4 py-2">{formatDateTime(backup.createdAt)}</td>
-                <td className="px-4 py-2">
-                  <button
-                    className="text-green-400 hover:underline"
-                    onClick={() => handleRestore(selectedGuild, backup.backup)}
-                  >
-                    <Undo />
-                  </button>
-                </td>
-                <td className="px-4 py-2">
-                  <button
-                    className="text-red-400 hover:underline"
-                    onClick={() => deleteBackup(backup.id)}
-                  >
-                    <Trash />
-                  </button>
-                </td>
-              </tr>
-            ))}
+              {backups.map((backup: BackupType) => (
+                <tr key={backup.id} className="border-t border-gray-700">
+                  <td className="px-4 py-2">
+                    {formatDateTime(backup.createdAt)}
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      className="text-green-400 hover:underline"
+                      onClick={() =>
+                        handleRestore(selectedGuild, backup.backup)
+                      }
+                    >
+                      <Undo />
+                    </button>
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      className="text-red-400 hover:underline"
+                      onClick={() => deleteBackup(backup.id)}
+                    >
+                      <Trash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

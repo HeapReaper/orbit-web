@@ -14,7 +14,7 @@ import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/Channel
 import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
 import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
-import {EmbedData} from "@/app/types/embed";
+import { EmbedData } from "@/app/types/embed";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 
 export default function Page() {
@@ -102,7 +102,11 @@ export default function Page() {
         notify("Could not save", "", "error");
       }
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated Introduction settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated Introduction settings",
+      );
 
       if (!auto) notify("Saved", "", "success");
     } catch (error) {
@@ -150,7 +154,9 @@ export default function Page() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Max messages per user</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Max messages per user
+        </label>
         <input
           type="number"
           min={1}
@@ -171,13 +177,15 @@ export default function Page() {
         value={messageType}
         onChange={setMessageType}
         options={[
-          { value: "text", label: "Text"},
-          { value: "embed", label: "Embed"}
+          { value: "text", label: "Text" },
+          { value: "embed", label: "Embed" },
         ]}
       />
 
       <div className="mb-6">
-        <label className="block text-gray-400 mb-2">Auto reply (optional)</label>
+        <label className="block text-gray-400 mb-2">
+          Auto reply (optional)
+        </label>
         {messageType === "text" ? (
           <>
             <div className="rounded-lg border border-gray-700 bg-[#1f2330]">
@@ -205,7 +213,9 @@ export default function Page() {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm text-gray-400 mb-2">Auto emoji reaction (optional)</label>
+        <label className="block text-sm text-gray-400 mb-2">
+          Auto emoji reaction (optional)
+        </label>
         <input
           type="text"
           value={autoEmoji}

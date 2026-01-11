@@ -14,7 +14,10 @@ export default function InfoTooltip({ text, size = 20 }: Props) {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (tooltipRef.current && !tooltipRef.current.contains(e.target as Node)) {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(e.target as Node)
+      ) {
         setShow(false);
       }
     };

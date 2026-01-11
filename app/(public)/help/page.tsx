@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 async function getArticles() {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*&sort[]=-date_created`,
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
 
   const data = await res.json();
@@ -35,7 +35,9 @@ export default async function HelpArticlesPage() {
             href={`/help/${article.slug}`}
             className="block bg-[#14171f] p-6 rounded-lg hover:shadow-lg transition border border-gray-800 hover:border-blue-600"
           >
-            <h2 className="text-xl font-bold text-white mb-2">{article.title}</h2>
+            <h2 className="text-xl font-bold text-white mb-2">
+              {article.title}
+            </h2>
             <p className="text-gray-400 text-sm mb-3">{article.description}</p>
 
             <p className="text-gray-400 text-sm  flex items-center gap-2">
@@ -43,14 +45,14 @@ export default async function HelpArticlesPage() {
                 <User size={16} className="inline-block text-blue-500" />
                 {article.author.name ?? "Unknown"}
               </span>
-                  •
+              •
               <span className="inline-flex items-center gap-1">
                 <Calendar size={16} className="inline-block text-blue-500" />
-                  {new Date(article.date_created).toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                {new Date(article.date_created).toLocaleDateString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </span>
             </p>
           </Link>

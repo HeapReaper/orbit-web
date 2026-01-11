@@ -39,7 +39,9 @@ export default function PictureContestPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/picture-contest?guildId=${selectedGuild}`);
+        const res = await fetch(
+          `/api/picture-contest?guildId=${selectedGuild}`,
+        );
         if (res.ok) {
           const data = await res.json();
           setContests(data?.contests ?? []);
@@ -73,8 +75,14 @@ export default function PictureContestPage() {
     ]);
   };
 
-  const updateContest = (id: string, field: keyof PictureContest, value: any) => {
-    setContests((prev) => prev.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
+  const updateContest = (
+    id: string,
+    field: keyof PictureContest,
+    value: any,
+  ) => {
+    setContests((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, [field]: value } : c)),
+    );
   };
 
   const removeContest = (id: string) => {
@@ -106,7 +114,11 @@ export default function PictureContestPage() {
 
       if (!res.ok) throw new Error(res.statusText);
 
-      void addDashboardLog(selectedGuild, "INFO", "Updated Picture Contest settings");
+      void addDashboardLog(
+        selectedGuild,
+        "INFO",
+        "Updated Picture Contest settings",
+      );
 
       if (!auto) notify("Saved!", "", "success");
     } catch (err) {
@@ -126,7 +138,10 @@ export default function PictureContestPage() {
       </h1>
 
       {contests.map((contest, i) => (
-        <div key={contest.id} className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]">
+        <div
+          key={contest.id}
+          className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]"
+        >
           <div className="flex justify-between mb-2">
             <span className="text-gray-400">Contest #{i + 1}</span>
             {contests.length > 1 && (
@@ -139,7 +154,9 @@ export default function PictureContestPage() {
             <input
               type="text"
               value={contest.name}
-              onChange={(e) => updateContest(contest.id, "name", e.target.value)}
+              onChange={(e) =>
+                updateContest(contest.id, "name", e.target.value)
+              }
               placeholder="Enter contest name"
               className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
@@ -148,13 +165,17 @@ export default function PictureContestPage() {
           <ChannelSelect
             label="Select channel for the contest"
             value={contest.contestChannel ?? ""}
-            onChange={(value) => updateContest(contest.id, "contestChannel", value)}
+            onChange={(value) =>
+              updateContest(contest.id, "contestChannel", value)
+            }
           />
 
           <ChannelSelect
             label="Select channel for Picture Contest notifications"
             value={contest.announceChannel ?? ""}
-            onChange={(value) => updateContest(contest.id, "announceChannel", value)}
+            onChange={(value) =>
+              updateContest(contest.id, "announceChannel", value)
+            }
           />
 
           <div className="mb-2">
@@ -162,7 +183,9 @@ export default function PictureContestPage() {
             <input
               type="text"
               value={contest.voteEmoji}
-              onChange={(e) => updateContest(contest.id, "voteEmoji", e.target.value)}
+              onChange={(e) =>
+                updateContest(contest.id, "voteEmoji", e.target.value)
+              }
               placeholder="Example: 👍 or ❤️"
               className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
@@ -175,8 +198,14 @@ export default function PictureContestPage() {
               value={contest.voteType}
               onChange={(v) => updateContest(contest.id, "voteType", v)}
               options={[
-                { value: "highest", label: "Highest Votes (Winner after period)" },
-                { value: "fixed", label: "Fixed Vote Count (Ends when reached)" },
+                {
+                  value: "highest",
+                  label: "Highest Votes (Winner after period)",
+                },
+                {
+                  value: "fixed",
+                  label: "Fixed Vote Count (Ends when reached)",
+                },
               ]}
             />
           </div>
@@ -189,7 +218,11 @@ export default function PictureContestPage() {
                 min={1}
                 value={contest.requiredVotes}
                 onChange={(e) =>
-                  updateContest(contest.id, "requiredVotes", Number(e.target.value))
+                  updateContest(
+                    contest.id,
+                    "requiredVotes",
+                    Number(e.target.value),
+                  )
                 }
                 className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
               />
@@ -214,7 +247,9 @@ export default function PictureContestPage() {
             <span className="text-gray-400 mr-2">Enabled</span>
             <button
               type="button"
-              onClick={() => updateContest(contest.id, "enabled", !contest.enabled)}
+              onClick={() =>
+                updateContest(contest.id, "enabled", !contest.enabled)
+              }
               className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 focus:outline-none ${
                 contest.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
               }`}

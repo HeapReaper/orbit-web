@@ -13,15 +13,22 @@ interface Props {
   tooltip?: string;
 }
 
-export default function NumberInput({ label, value, onChange, min, max, step, placeholder, tooltip }: Props) {
+export default function NumberInput({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  placeholder,
+  tooltip,
+}: Props) {
   return (
     <div className="mb-4">
       <div className="flex items-center gap-2 mb-1">
         <label className="text-gray-400">{label}</label>
 
-        {tooltip && (
-          <InfoTooltip text={tooltip} size={16} />
-        )}
+        {tooltip && <InfoTooltip text={tooltip} size={16} />}
       </div>
       <input
         type="number"

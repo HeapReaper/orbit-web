@@ -16,11 +16,17 @@ interface Props {
   onToggle: (roleId: string) => void;
 }
 
-export default function RolesInput({ label, toolTip, roles, selectedRoles, onToggle }: Props) {
+export default function RolesInput({
+  label,
+  toolTip,
+  roles,
+  selectedRoles,
+  onToggle,
+}: Props) {
   const [search, setSearch] = useState("");
 
   const filteredRoles = roles.filter((role) =>
-    role.name.toLowerCase().includes(search.toLowerCase())
+    role.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -41,9 +47,11 @@ export default function RolesInput({ label, toolTip, roles, selectedRoles, onTog
       />
 
       {/* Role list */}
-      <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 
+      <div
+        className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 
         p-2 rounded bg-[#0f1117] custom-scrollbar
-      ">
+      "
+      >
         {filteredRoles.length > 0 ? (
           filteredRoles.map((role) => (
             <label
@@ -61,7 +69,9 @@ export default function RolesInput({ label, toolTip, roles, selectedRoles, onTog
             </label>
           ))
         ) : (
-          <p className="text-gray-500 text-sm text-center py-2">No roles found.</p>
+          <p className="text-gray-500 text-sm text-center py-2">
+            No roles found.
+          </p>
         )}
       </div>
     </div>

@@ -16,7 +16,7 @@ export default function Navbar() {
 
   const isActive = (href: string) => {
     return pathName === href;
-  }
+  };
 
   const navItems: NavType[] = [
     { name: "Home", href: "/" },
@@ -28,10 +28,14 @@ export default function Navbar() {
       children: [
         { name: "Preview", href: "/preview" },
         { name: "Help articles", href: "/help" },
-        { name :"Terms of Services", href: "/terms" },
-        { name :"Privacy policy", href: "/privacy" },
+        { name: "Terms of Services", href: "/terms" },
+        { name: "Privacy policy", href: "/privacy" },
         { name: "Releases", href: "/releases" },
-        { name: "Status", href: "https://uptime.klikbit.nl/status/klikbit", target: "_blank" },
+        {
+          name: "Status",
+          href: "https://uptime.klikbit.nl/status/klikbit",
+          target: "_blank",
+        },
       ],
     },
   ];
@@ -47,7 +51,9 @@ export default function Navbar() {
             height={40}
             className="mr-2"
           />
-          <span className="font-bold text-xl hover:text-[var(--primary-color)]">Orbit</span>
+          <span className="font-bold text-xl hover:text-[var(--primary-color)]">
+            Orbit
+          </span>
         </Link>
 
         <ul className="hidden md:flex gap-6 items-center">
@@ -59,16 +65,22 @@ export default function Navbar() {
                 <Link
                   href={item.href!}
                   className={`hover:text-[var(--primary-color)] transition font-medium ${
-                    isActive(item.href!) ? "text-[var(--primary-color)] font-bold" : ""
+                    isActive(item.href!)
+                      ? "text-[var(--primary-color)] font-bold"
+                      : ""
                   }`}
                 >
                   {item.name}
                 </Link>
               </li>
-            )
+            ),
           )}
           <li>
-            {session ? <Link href="/dashboard">Dashboard</Link> : <Link href="/login">Login</Link>}
+            {session ? (
+              <Link href="/dashboard">Dashboard</Link>
+            ) : (
+              <Link href="/login">Login</Link>
+            )}
           </li>
         </ul>
 
@@ -117,7 +129,10 @@ export default function Navbar() {
           {navItems.map((item) => (
             <li key={item.name} className="flex flex-col">
               {item.children ? (
-                <MobileDropdown item={item} closeMenu={() => setMenuOpen(false)} />
+                <MobileDropdown
+                  item={item}
+                  closeMenu={() => setMenuOpen(false)}
+                />
               ) : (
                 <Link
                   href={item.href!}

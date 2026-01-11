@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getRedisClient } from "@/app/lib/redis";
 
 const redis = getRedisClient();
-const CACHE_TTL: number = 120 // 2 minutes
+const CACHE_TTL: number = 120; // 2 minutes
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -27,12 +27,18 @@ export async function GET(req: Request) {
   }
 
   try {
-    const res = await fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, {
-      headers: { Authorization: `Bot ${BOT_TOKEN}` },
-    });
+    const res = await fetch(
+      `https://discord.com/api/v10/guilds/${guildId}/channels`,
+      {
+        headers: { Authorization: `Bot ${BOT_TOKEN}` },
+      },
+    );
 
     if (!res.ok) {
-      return NextResponse.json({ error: "Failed to fetch channels" }, { status: res.status });
+      return NextResponse.json(
+        { error: "Failed to fetch channels" },
+        { status: res.status },
+      );
     }
 
     const data = await res.json();
@@ -51,6 +57,9 @@ export async function GET(req: Request) {
     return NextResponse.json(textChannels);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

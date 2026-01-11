@@ -27,7 +27,7 @@ export default function AddBot() {
       window.open(
         "https://discord.com/oauth2/authorize?client_id=1424327630706184343&scope=bot%20applications.commands&permissions=8",
         "_blank",
-        "noopener,noreferrer"
+        "noopener,noreferrer",
       );
     }, 1000);
   };

@@ -33,30 +33,43 @@ export async function POST(req: NextRequest) {
 
   try {
     await Promise.all(
-      autoMessages.map((msg: { id: any; messageType: string; message: any; embed: any; channel: any; time: any; days: any; scheduleType: any; enabled: any; }) => prisma.autoMessage.upsert({
-        where: { id: msg.id },
-        update: {
-          messageType: msg.messageType,
-          message: msg.message,
-          embed: msg.messageType === "embed" ? msg.embed : null,
-          channel: msg.channel,
-          time: msg.time,
-          days: msg.days ?? [],
-          scheduleType: msg.scheduleType,
-          enabled: msg.enabled
-        },
-        create: {
-          guildId,
-          messageType: msg.messageType,
-          message: msg.message,
-          embed: msg.messageType === "embed" ? msg.embed : null,
-          channel: msg.channel,
-          time: msg.time,
-          days: msg.days ?? [],
-          scheduleType: msg.scheduleType,
-          enabled: msg.enabled
-        }
-      }))
+      autoMessages.map(
+        (msg: {
+          id: any;
+          messageType: string;
+          message: any;
+          embed: any;
+          channel: any;
+          time: any;
+          days: any;
+          scheduleType: any;
+          enabled: any;
+        }) =>
+          prisma.autoMessage.upsert({
+            where: { id: msg.id },
+            update: {
+              messageType: msg.messageType,
+              message: msg.message,
+              embed: msg.messageType === "embed" ? msg.embed : null,
+              channel: msg.channel,
+              time: msg.time,
+              days: msg.days ?? [],
+              scheduleType: msg.scheduleType,
+              enabled: msg.enabled,
+            },
+            create: {
+              guildId,
+              messageType: msg.messageType,
+              message: msg.message,
+              embed: msg.messageType === "embed" ? msg.embed : null,
+              channel: msg.channel,
+              time: msg.time,
+              days: msg.days ?? [],
+              scheduleType: msg.scheduleType,
+              enabled: msg.enabled,
+            },
+          }),
+      ),
     );
 
     return NextResponse.json({ success: true });

@@ -7,7 +7,6 @@ export default function NotFound() {
   return (
     <main className="flex flex-col min-h-screen bg-[#0d0f13] text-white items-center justify-center px-6 py-20">
       <div className="flex flex-col items-center text-center space-y-6 max-w-xl">
-
         <Image
           src="/logo.png"
           alt="Orbit Logo"
@@ -21,8 +20,8 @@ export default function NotFound() {
         </h1>
 
         <p className="text-gray-400 text-lg md:text-xl">
-          Looks like this page drifted too far from the Orbit.
-          It may have been moved, deleted, or never existed.
+          Looks like this page drifted too far from the Orbit. It may have been
+          moved, deleted, or never existed.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mt-6">

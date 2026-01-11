@@ -42,9 +42,11 @@ export default function BumpReminderPage() {
   const [xpBoost, setXpBoost] = useState<number>(0);
   const [rewardRole, setRewardRole] = useState<string | null>(null);
   const [boostLeaderboard, setBoostLeaderboard] = useState<boolean>(false);
-  const [leaderboardAutoUpdates, setLeaderboardAutoUpdates] = useState<boolean>(false);
+  const [leaderboardAutoUpdates, setLeaderboardAutoUpdates] =
+    useState<boolean>(false);
   const [leaderboardChannel, setLeaderboardChannel] = useState<string>("");
-  const [autoLeaderboardInterval, setAutoLeaderboardInterval] = useState<string>("");
+  const [autoLeaderboardInterval, setAutoLeaderboardInterval] =
+    useState<string>("");
 
   const { selectedGuild, channels, roles } = useGuild();
   const { notify } = useNotification();
@@ -118,7 +120,11 @@ export default function BumpReminderPage() {
       if (!resp.ok) {
         if (!auto) notify("Oeps", "Could not save settings", "error");
       } else {
-        void addDashboardLog(selectedGuild, "INFO", "Updated the bump reminder settings");
+        void addDashboardLog(
+          selectedGuild,
+          "INFO",
+          "Updated the bump reminder settings",
+        );
         if (!auto) notify("Saved", "", "success");
       }
     } catch (error) {
@@ -135,11 +141,11 @@ export default function BumpReminderPage() {
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
-      {loading && <PageLoader/>}
+      {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Bumper
-        <InfoTooltip text="Receive reminders when it’s time to bump your server and reward members who bump"/>
+        <InfoTooltip text="Receive reminders when it’s time to bump your server and reward members who bump" />
       </h1>
 
       <div className="flex items-center justify-between mb-4">
@@ -170,10 +176,10 @@ export default function BumpReminderPage() {
           value={messageType}
           onChange={setMessageType}
           options={[
-            { value: "text", label: "Text"},
-            { value: "embed", label: "Embed"}
+            { value: "text", label: "Text" },
+            { value: "embed", label: "Embed" },
           ]}
-          />
+        />
 
         {messageType === "text" ? (
           <>
@@ -188,7 +194,9 @@ export default function BumpReminderPage() {
             <MessagePreview
               username="Orbit"
               message={message.replace("{xpBoost}", xpBoost.toString())}
-              channels={Object.fromEntries(channels.map(channel => [channel.id, channel.name]))}
+              channels={Object.fromEntries(
+                channels.map((channel) => [channel.id, channel.name]),
+              )}
             />
           </>
         ) : (
@@ -221,7 +229,7 @@ export default function BumpReminderPage() {
         roles={roles}
         selectedRoles={rewardRole ? [rewardRole] : []}
         onToggle={(roleId) => {
-          (rewardRole === roleId) ? setRewardRole(null) : setRewardRole(roleId);
+          rewardRole === roleId ? setRewardRole(null) : setRewardRole(roleId);
         }}
       />
 
@@ -266,7 +274,7 @@ export default function BumpReminderPage() {
         {isSaving ? "Saving..." : "Auto saved!"}
       </div>
 
-      <SaveButton onClick={() => handleSave(false)}/>
+      <SaveButton onClick={() => handleSave(false)} />
     </section>
   );
 }

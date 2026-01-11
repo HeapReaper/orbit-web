@@ -10,8 +10,10 @@ export async function GET(req: NextRequest) {
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof session === "string") return NextResponse.json({ error: session }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof session === "string")
+    return NextResponse.json({ error: session }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   // Rate limit
   const rateLimitResp = await rateLimitApi(session.user.id, guildId, 10, 60);
@@ -24,25 +26,58 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(data);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Failed to fetch reminders" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch reminders" },
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList } = data;
+  const {
+    guildId,
+    nickname,
+    language,
+    updatesChannel,
+    timezone,
+    primaryColor,
+    secondaryColor,
+    showInGuildList,
+  } = data;
 
-  if (!botSettingsSchema.safeParse(data)) return NextResponse.json({ error: "Invalid form data"});
+  if (!botSettingsSchema.safeParse(data))
+    return NextResponse.json({ error: "Invalid form data" });
 
   // Validate authentication by session and if user is guild admin
   const validation = await validateApiSessionAndGuildAdmin(guildId);
-  if (typeof validation === "string") return NextResponse.json({ error: validation }, { status: 403 });
-  if (!guildId) return NextResponse.json({ error: "Guild ID is missing"}, { status: 403 });
+  if (typeof validation === "string")
+    return NextResponse.json({ error: validation }, { status: 403 });
+  if (!guildId)
+    return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   const updated = await prisma.botSettings.upsert({
     where: { guildId },
-    update: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList },
-    create: { guildId, nickname, language, updatesChannel, timezone, primaryColor, secondaryColor, showInGuildList },
+    update: {
+      guildId,
+      nickname,
+      language,
+      updatesChannel,
+      timezone,
+      primaryColor,
+      secondaryColor,
+      showInGuildList,
+    },
+    create: {
+      guildId,
+      nickname,
+      language,
+      updatesChannel,
+      timezone,
+      primaryColor,
+      secondaryColor,
+      showInGuildList,
+    },
   });
 
   return NextResponse.json(updated);

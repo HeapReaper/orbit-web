@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ClipboardClock, RefreshCw, MessageCircle, LayoutPanelTop } from "lucide-react";
+import {
+  ClipboardClock,
+  RefreshCw,
+  MessageCircle,
+  LayoutPanelTop,
+} from "lucide-react";
 import IconButton from "@/app/(dashboard)/dashboard/components/inputs/IconButton";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import { useNotification } from "@/app/context/NotificationContext";
@@ -20,7 +25,7 @@ export default function BotLogs() {
   const fetchLogs = async () => {
     if (!selectedGuild) return;
     // @ts-ignore
-    setIsPremium(guilds.filter(g => g.id === selectedGuild)[0].isPremium)
+    setIsPremium(guilds.filter((g) => g.id === selectedGuild)[0].isPremium);
 
     setLoading(true);
 
@@ -66,7 +71,6 @@ export default function BotLogs() {
       </div>
 
       <div className="flex flex-wrap gap-4 items-center">
-
         <div className="flex flex-wrap gap-4 items-center mb-4">
           <SelectInput
             label="Log Type"
@@ -111,12 +115,12 @@ export default function BotLogs() {
         </div>
 
         <div className="bg-[#0f1117] border border-gray-800 rounded-lg p-4 h-[300px] overflow-y-auto font-mono text-sm text-gray-300">
-        {loading ? (
+          {loading ? (
             <p className="text-gray-500 italic">Loading logs...</p>
           ) : logs.length > 0 ? (
             logs.map((log, i: number) => (
               <div key={log.id} className="whitespace-pre-wrap">
-                {new Date(log.timestamp).toLocaleString()} {" "}
+                {new Date(log.timestamp).toLocaleString()}{" "}
                 <span
                   className={
                     log.type === "ERROR"

@@ -10,8 +10,8 @@ import { moduleType } from "@/app/types/modules";
 export default function ModuleSection() {
   const [search, setSearch] = useState("");
 
-  const filteredModules = modules.filter(module =>
-    module.name.toLowerCase().includes(search.toLowerCase())
+  const filteredModules = modules.filter((module) =>
+    module.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   const groupedModules = filteredModules.reduce(
@@ -21,7 +21,7 @@ export default function ModuleSection() {
       acc[category].push(module);
       return acc;
     },
-    {}
+    {},
   );
 
   return (

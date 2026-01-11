@@ -15,12 +15,18 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session)
-    return NextResponse.json({ error: "Please authenticate first" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Please authenticate first" },
+      { status: 401 },
+    );
   if (!guildId)
     return NextResponse.json({ error: "guildId is required" }, { status: 400 });
 
   if (!(await isUserGuildAdmin(session.user.id, guildId))) {
-    return NextResponse.json({ error: "You must be a guild admin to access this" }, { status: 403 });
+    return NextResponse.json(
+      { error: "You must be a guild admin to access this" },
+      { status: 403 },
+    );
   }
 
   try {
@@ -53,6 +59,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(premiumGuild);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Could not fetch guild data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Could not fetch guild data" },
+      { status: 500 },
+    );
   }
 }

@@ -2,16 +2,17 @@ import { Bot } from "lucide-react";
 import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
 
 async function getBotInfo() {
-  const res = await fetch("https://bot.botinorbit.com/api/bot-info")
+  const res = await fetch("https://bot.botinorbit.com/api/bot-info");
   return await res.json();
 }
 
 async function getRepoInfo() {
-  const res = await fetch("https://api.github.com/repos/HeapReaper/Orbit-bot/releases/latest")
+  const res = await fetch(
+    "https://api.github.com/repos/HeapReaper/Orbit-bot/releases/latest",
+  );
 
   return await res.json();
 }
-
 
 export default async function BotInfo() {
   const data = await getBotInfo();
@@ -27,19 +28,25 @@ export default async function BotInfo() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
         <p>
-          <span className="font-semibold text-white">Status: </span> <InlineCode text={data.status} />
+          <span className="font-semibold text-white">Status: </span>{" "}
+          <InlineCode text={data.status} />
         </p>
         <p>
-          <span className="font-semibold text-white">Uptime: </span> <InlineCode text={data.uptime} />
+          <span className="font-semibold text-white">Uptime: </span>{" "}
+          <InlineCode text={data.uptime} />
         </p>
         <p>
-          <span className="font-semibold text-white">Ping: </span> <InlineCode text={data.ping} />ms
+          <span className="font-semibold text-white">Ping: </span>{" "}
+          <InlineCode text={data.ping} />
+          ms
         </p>
         <p>
-          <span className="font-semibold text-white">Servers: </span> <InlineCode text={data.guilds} />
+          <span className="font-semibold text-white">Servers: </span>{" "}
+          <InlineCode text={data.guilds} />
         </p>
         <p>
-          <span className="font-semibold text-white">Users: </span>  <InlineCode text={data.users} />
+          <span className="font-semibold text-white">Users: </span>{" "}
+          <InlineCode text={data.users} />
         </p>
       </div>
     </section>

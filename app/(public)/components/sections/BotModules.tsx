@@ -12,7 +12,7 @@ const groupedModules = modules.reduce(
     acc[category].push(module);
     return acc;
   },
-  {}
+  {},
 );
 
 export default function BotModulesSection() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect} from "react";
+import { useEffect } from "react";
 
 export default function Page() {
   useEffect(() => {
@@ -14,15 +14,11 @@ export default function Page() {
           Support
         </h1>
 
-        <p className="text-gray-400 mb-10">
-          Last updated: 14-11-2025
-        </p>
+        <p className="text-gray-400 mb-10">Last updated: 14-11-2025</p>
 
         <section className="space-y-8">
           <h2 className="text-2xl font-semibold text-white mb-3">W.i.p</h2>
-          <p>
-            W.i.p
-          </p>
+          <p>W.i.p</p>
         </section>
       </div>
     </main>

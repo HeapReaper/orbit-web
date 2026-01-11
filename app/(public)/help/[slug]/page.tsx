@@ -11,14 +11,18 @@ export interface Props {
 async function getArticle(slug: string) {
   const res = await fetch(
     `${process.env.DIRECTUS_URL}/items/Help?fields=*,author.*&filters[slug][_eq]=${slug}`,
-    { next: { revalidate: 30 } }
+    { next: { revalidate: 30 } },
   );
 
   const data = await res.json();
   return data.data?.[0] || null;
 }
 
-export async function generateMetadata({ params }: { params: Promise<Props> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Props>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
 
@@ -45,14 +49,14 @@ export default async function HelpPage({ params }: { params: Promise<Props> }) {
             <User size={16} className="inline-block text-blue-500" />
             {article.author.name ?? "Unknown"}
           </span>
-            •
+          •
           <span className="inline-flex items-center gap-1">
             <Calendar size={16} className="inline-block text-blue-500" />
-              {new Date(article.date_created).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+            {new Date(article.date_created).toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </span>
         </p>
 

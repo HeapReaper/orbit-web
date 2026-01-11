@@ -68,7 +68,7 @@ export default function Page() {
       });
 
       if (!resp.ok) {
-        notify("Could not save", "", "error")
+        notify("Could not save", "", "error");
       }
 
       void addDashboardLog(selectedGuild, "INFO", "Updated donations settings");

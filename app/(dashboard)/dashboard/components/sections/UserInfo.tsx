@@ -17,7 +17,8 @@ export default function UserInfo() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
         <p>
-          <span className="font-semibold text-white">Username:</span> {session.user.name}
+          <span className="font-semibold text-white">Username:</span>{" "}
+          {session.user.name}
         </p>
         <p>
           <span className="font-semibold text-white">Servers joined:</span> 3

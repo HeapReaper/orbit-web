@@ -39,9 +39,9 @@ export default function Sidebar() {
     .filter((module) => module.name !== "Analytics")
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const isActive = (href: string)=> {
+  const isActive = (href: string) => {
     return href === usePathname();
-  }
+  };
 
   useEffect(() => {
     const fetchUserGuilds = async () => {
@@ -63,7 +63,7 @@ export default function Sidebar() {
 
         const saved: string | null = localStorage.getItem("selectedGuild");
         // @ts-ignore
-        if (saved && data.guilds.some(g => g.id === saved)) {
+        if (saved && data.guilds.some((g) => g.id === saved)) {
           setSelectedGuild(saved);
         }
         setGuilds(data.guilds);
@@ -176,9 +176,7 @@ export default function Sidebar() {
         <nav className="flex flex-col space-y-2 text-gray-400 mt-4">
           <Link
             href="/dashboard"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <Home className="w-6 h-6 text-[var(--primary-color)]" />
             Dashboard
@@ -186,9 +184,7 @@ export default function Sidebar() {
 
           <Link
             href="/dashboard/bot"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/bot") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/bot") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <Settings className="w-6 h-6 text-[var(--primary-color)]" />
             Settings
@@ -196,9 +192,7 @@ export default function Sidebar() {
 
           <Link
             href="/dashboard/api"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/api") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/api") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <Zap className="w-6 h-6 text-[var(--primary-color)]" />
             API
@@ -228,9 +222,7 @@ export default function Sidebar() {
                   <Link
                     key={index}
                     href={`/dashboard/modules/${module.url}`}
-                    className={
-                      `hover:text-[var(--hover-color)]  px-2 py-1 rounded-md ${isActive(`/dashboard/modules/${module.url}`) ? "font-bold text-[var(--hover-color)]" : ""}`
-                    }
+                    className={`hover:text-[var(--hover-color)]  px-2 py-1 rounded-md ${isActive(`/dashboard/modules/${module.url}`) ? "font-bold text-[var(--hover-color)]" : ""}`}
                   >
                     {module.name}
                   </Link>
@@ -241,9 +233,7 @@ export default function Sidebar() {
 
           <Link
             href="/dashboard/modules/analytics"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/modules/analytics") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/modules/analytics") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <ChartColumn className="w-6 h-6 text-[var(--primary-color)]" />
             Analytics
@@ -251,9 +241,7 @@ export default function Sidebar() {
 
           <Link
             href="/dashboard/logs"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/logs") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/logs") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <ClipboardClock className="w-6 h-6 text-[var(--primary-color)]" />
             Logs
@@ -262,9 +250,7 @@ export default function Sidebar() {
           <a
             href="https://uptime.klikbit.nl/status/klikbit"
             target="_blank"
-            className={
-              `flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/logs") ? "font-bold text-[var(--hover-color)]" : ""}`
-            }
+            className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/logs") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
             <Activity className="w-6 h-6 text-[var(--primary-color)]" />
             Status ↗
@@ -311,7 +297,6 @@ export default function Sidebar() {
           </p>
         </div>
       </aside>
-
 
       <button
         onClick={() => setOpen(true)}

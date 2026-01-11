@@ -4,11 +4,12 @@ const modules: moduleType[] = [
   {
     name: "Bumper",
     url: "bumper",
-    description: "Receive reminders when it’s time to bump your server and reward members who bump!",
+    description:
+      "Receive reminders when it’s time to bump your server and reward members who bump!",
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Automation"
+    category: "Automation",
   },
   {
     name: "Anti Bot",
@@ -17,7 +18,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
+    category: "Moderation",
   },
   {
     name: "Role Kick",
@@ -26,7 +27,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
+    category: "Moderation",
   },
   {
     name: "Analytics",
@@ -35,16 +36,17 @@ const modules: moduleType[] = [
     tier: "freemium",
     enabled: true,
     inDevelopment: false,
-    category: "Analytics / Tracking"
+    category: "Analytics / Tracking",
   },
   {
     name: "Auto Role",
     url: "auto-role",
-    description: "Automatically assign roles to new members joining your server.",
+    description:
+      "Automatically assign roles to new members joining your server.",
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
+    category: "Moderation",
   },
   {
     name: "Birthday",
@@ -53,7 +55,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Tickets",
@@ -62,16 +64,17 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Donations",
     url: "donations",
-    description: "Track and manage server donations with customizable goals and progress tracking.",
+    description:
+      "Track and manage server donations with customizable goals and progress tracking.",
     tier: "freemium",
     enabled: true,
     inDevelopment: false,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Logging",
@@ -80,7 +83,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
+    category: "Moderation",
   },
   {
     name: "Introduction",
@@ -89,7 +92,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Automation"
+    category: "Automation",
   },
   {
     name: "Invite Tracker",
@@ -98,7 +101,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Analytics / Tracking"
+    category: "Analytics / Tracking",
   },
   {
     name: "Picture Contest",
@@ -107,7 +110,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: true,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Youtube Watcher",
@@ -116,7 +119,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Streaming / Media"
+    category: "Streaming / Media",
   },
   {
     name: "Twitch Watcher",
@@ -125,16 +128,17 @@ const modules: moduleType[] = [
     tier: "premium",
     enabled: true,
     inDevelopment: false,
-    category: "Streaming / Media"
+    category: "Streaming / Media",
   },
   {
     name: "Kick Watcher",
     url: "kick-watcher",
-    description: "Get notifications when favorite Kick streamers start streaming.",
+    description:
+      "Get notifications when favorite Kick streamers start streaming.",
     tier: "premium",
     enabled: true,
     inDevelopment: false,
-    category: "Streaming / Media"
+    category: "Streaming / Media",
   },
   {
     name: "Auto Message",
@@ -143,7 +147,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Automation"
+    category: "Automation",
   },
   {
     name: "Welcome Message",
@@ -152,7 +156,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Automation"
+    category: "Automation",
   },
   {
     name: "Leave Message",
@@ -161,7 +165,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Automation"
+    category: "Automation",
   },
   {
     name: "Leveling",
@@ -170,7 +174,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: true,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Channel of Fame",
@@ -179,16 +183,17 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Server Stats",
     url: "server-stats",
-    description: "Display stats like Member count and boosts count with channels",
+    description:
+      "Display stats like Member count and boosts count with channels",
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Giveaway",
@@ -197,7 +202,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Minecraft",
@@ -206,16 +211,17 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Streaming / Media"
+    category: "Streaming / Media",
   },
   {
     name: "Mod Link",
     url: "mod-link",
-    description: "Synchronize moderation actions across multiple servers automatically.",
+    description:
+      "Synchronize moderation actions across multiple servers automatically.",
     tier: "premium",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
+    category: "Moderation",
   },
   {
     name: "Streak",
@@ -224,7 +230,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Time Keeper",
@@ -233,7 +239,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Analytics / Tracking"
+    category: "Analytics / Tracking",
   },
   {
     name: "Boost Spotlight",
@@ -242,7 +248,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Streaming / Media"
+    category: "Streaming / Media",
   },
   {
     name: "Git Buddy",
@@ -251,16 +257,17 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: false,
     inDevelopment: true,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "QOTD",
     url: "qotd",
-    description: "Send daily or weekly a question in a channel to simulate interaction",
+    description:
+      "Send daily or weekly a question in a channel to simulate interaction",
     tier: "free",
     enabled: false,
     inDevelopment: true,
-    category: "Fun / Engagement"
+    category: "Fun / Engagement",
   },
   {
     name: "Server Backup",
@@ -269,7 +276,7 @@ const modules: moduleType[] = [
     tier: "freemium",
     enabled: true,
     inDevelopment: false,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Server Anniversary",
@@ -278,7 +285,7 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Events / Server Management"
+    category: "Events / Server Management",
   },
   {
     name: "Message Report",
@@ -287,8 +294,8 @@ const modules: moduleType[] = [
     tier: "free",
     enabled: true,
     inDevelopment: false,
-    category: "Moderation"
-  }
+    category: "Moderation",
+  },
 ];
 
 export default modules;

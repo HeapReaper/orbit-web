@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ShowMarkdown from "@/app/(public)/components/showMarkdown";
 import { formatDate } from "@/app/lib/formatDate";
-import {Calendar} from "lucide-react";
+import { Calendar } from "lucide-react";
 import React from "react";
 
 export const metadata: Metadata = {
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 async function getTerms() {
   const data = await fetch(`${process.env.DIRECTUS_URL}/items/Terms`, {
     next: {
-      revalidate: 30
-    }
+      revalidate: 30,
+    },
   });
 
   const json = await data.json();
@@ -41,9 +41,7 @@ export default async function TermsOfService() {
         </span>
 
         <div className="space-y-8 mx-auto">
-          <ShowMarkdown
-            content={data.content}
-          />
+          <ShowMarkdown content={data.content} />
         </div>
       </div>
     </article>

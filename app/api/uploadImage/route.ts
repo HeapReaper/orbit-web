@@ -1,7 +1,7 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 const s3 = new S3Client({
   region: process.env.S3_REGION || "us-east-1",
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         Key: fileName,
         Body: Buffer.from(arrayBuffer),
         ContentType: file.type,
-      })
+      }),
     );
 
     const url = `${process.env.S3_ENDPOINT}/${process.env.S3_BUCKET_NAME}/${fileName}`;

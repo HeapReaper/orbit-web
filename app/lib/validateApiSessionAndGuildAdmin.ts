@@ -2,7 +2,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import isUserGuildAdmin from "@/app/lib/isGuildAdmin";
 
-export async function validateApiSessionAndGuildAdmin(guildId: string | null | undefined = null) {
+export async function validateApiSessionAndGuildAdmin(
+  guildId: string | null | undefined = null,
+) {
   const session = await getServerSession(authOptions);
 
   if (!session) {

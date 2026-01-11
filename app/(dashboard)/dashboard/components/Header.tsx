@@ -2,7 +2,9 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between p-4 md:p-8 border-b border-gray-800 bg-[#0d0f13] sticky top-0 z-20">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold text-white">Reap the heap</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-white">
+          Reap the heap
+        </h1>
         <p className="text-gray-400 text-sm">@heapreaper</p>
       </div>
       <img
