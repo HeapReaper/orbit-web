@@ -31,6 +31,11 @@ export async function POST(req: NextRequest) {
   if (!guildId)
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
+  // Hacky way
+  await prisma.autoMessage.deleteMany({
+    where: { guildId },
+  });
+
   try {
     await Promise.all(
       autoMessages.map(

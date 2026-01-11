@@ -27,6 +27,7 @@ interface AutoMessage {
   scheduleType: "daily" | "weekly" | "biweekly" | "monthly";
   monthlyDate?: number;
   enabled: boolean;
+  embed: EmbedData;
 }
 
 export default function Page() {
@@ -35,8 +36,6 @@ export default function Page() {
   const { notify } = useNotification();
 
   const [autoMessages, setAutoMessages] = useState<AutoMessage[]>([]);
-  const [embeds, setEmbeds] = useState<EmbedData[]>([]);
-
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -62,22 +61,16 @@ export default function Page() {
             scheduleType: msg.scheduleType || "daily",
             monthlyDate: msg.monthlyDate,
             enabled: msg.enabled,
+            embed: msg.embed ?? {
+              color: "#5865F2",
+              title: "",
+              titleUrl: "",
+              description: "",
+              author: { name: "", icon: "" },
+              thumbnail: "",
+              fields: [],
+            },
           })),
-        );
-
-        setEmbeds(
-          data.map(
-            (msg: any) =>
-              msg.embed ?? {
-                color: "#5865F2",
-                title: "",
-                titleUrl: "",
-                description: "",
-                author: { name: "", icon: "" },
-                thumbnail: "",
-                fields: [],
-              },
-          ),
         );
       } catch (err) {
         console.error(err);
@@ -100,19 +93,15 @@ export default function Page() {
         scheduleType: "daily",
         monthlyDate: undefined,
         enabled: true,
-      },
-    ]);
-
-    setEmbeds((prev) => [
-      ...prev,
-      {
-        color: "#5865F2",
-        title: "",
-        titleUrl: "",
-        description: "",
-        author: { name: "", icon: "" },
-        thumbnail: "",
-        fields: [],
+        embed: {
+          color: "#5865F2",
+          title: "",
+          titleUrl: "",
+          description: "",
+          author: { name: "", icon: "" },
+          thumbnail: "",
+          fields: [],
+        },
       },
     ]);
   };
@@ -129,17 +118,8 @@ export default function Page() {
     });
   };
 
-  const updateEmbed = (index: number, value: EmbedData) => {
-    setEmbeds((prev) => {
-      const updated = [...prev];
-      updated[index] = value;
-      return updated;
-    });
-  };
-
   const removeAutoMessage = (index: number) => {
     setAutoMessages((prev) => prev.filter((_, i) => i !== index));
-    setEmbeds((prev) => prev.filter((_, i) => i !== index));
   };
 
   const triggerAutoSave = () => {
@@ -153,10 +133,9 @@ export default function Page() {
     if (!selectedGuild) return;
     setIsSaving(true);
     try {
-      const cleanedAutoMessages = autoMessages.map((msg, i) => ({
+      const cleanedAutoMessages = autoMessages.map((msg) => ({
         ...msg,
         message: cleanMessage(msg.message),
-        embed: embeds[i],
       }));
 
       const resp = await fetch(`/api/auto-message`, {
@@ -187,7 +166,7 @@ export default function Page() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [autoMessages, embeds, selectedGuild]);
+  }, [autoMessages, selectedGuild]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -305,10 +284,10 @@ export default function Page() {
           ) : (
             <>
               <EmbedBuilder
-                value={embeds[i]}
-                onChange={(v) => updateEmbed(i, v)}
+                value={msg.embed}
+                onChange={(v) => updateAutoMessage(i, "embed", v)}
               />
-              <EmbedPreview embed={embeds[i]} />
+              <EmbedPreview embed={msg.embed} />
             </>
           )}
 
