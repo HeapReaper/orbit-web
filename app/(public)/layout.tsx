@@ -76,20 +76,6 @@ export default function RootLayout({
 }) {
   return (
     <div className="bg-[#0d0f13] text-gray-200">
-      {/* Plausible analytics */}
-      <Script
-        defer
-        data-domain="botinorbit.com"
-        src="https://analytics.heapreaper.nl/js/script.outbound-links.js"
-      />
-      <Script id="plausible-init">
-        {`
-        window.plausible = window.plausible || function() { 
-          (window.plausible.q = window.plausible.q || []).push(arguments) 
-        }
-      `}
-      </Script>
-
       <Provider>
         <Navbar />
 
