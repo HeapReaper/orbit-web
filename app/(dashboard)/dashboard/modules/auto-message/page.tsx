@@ -119,6 +119,12 @@ export default function Page() {
   };
 
   const removeAutoMessage = (index: number) => {
+    const msg = autoMessages[index];
+    const confirmed = window.confirm(
+      `Are you sure you want to delete Auto Message ${index + 1}?`
+    );
+    if (!confirmed) return;
+
     setAutoMessages((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -182,7 +188,37 @@ export default function Page() {
           key={msg.id}
           className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]"
         >
-          <span className="text-gray-400">Auto Message {i + 1}</span>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-gray-400 font-medium">
+              Auto Message {i + 1}
+            </span>
+
+            <div className="flex items-center gap-3">
+              {/* Enable switch */}
+              <div className="flex items-center gap-2 text-gray-400">
+                <span className="text-sm select-none">Enabled</span>
+
+                <button
+                  type="button"
+                  onClick={() => updateAutoMessage(i, "enabled", !msg.enabled)}
+                  className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 ${
+                    msg.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
+                  }`}
+                >
+                  <span
+                    className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
+                      msg.enabled ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Delete button */}
+              {autoMessages.length > 1 && (
+                <DeleteButton onClick={() => removeAutoMessage(i)} />
+              )}
+            </div>
+          </div>
 
           <SelectInput
             label="Message type"
@@ -261,12 +297,6 @@ export default function Page() {
             </div>
           )}
 
-          <div className="flex justify-between mb-2">
-            {autoMessages.length > 1 && (
-              <DeleteButton onClick={() => removeAutoMessage(i)} />
-            )}
-          </div>
-
           {msg.messageType === "text" ? (
             <>
               <MarkdownEditor
@@ -305,23 +335,6 @@ export default function Page() {
               onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
               className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
             />
-          </div>
-
-          <div className="flex items-center">
-            <span className="text-gray-400 mr-2">Enabled</span>
-            <button
-              type="button"
-              onClick={() => updateAutoMessage(i, "enabled", !msg.enabled)}
-              className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 ${
-                msg.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
-              }`}
-            >
-              <span
-                className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
-                  msg.enabled ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
           </div>
         </div>
       ))}
