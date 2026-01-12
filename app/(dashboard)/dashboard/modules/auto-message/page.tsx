@@ -119,6 +119,12 @@ export default function Page() {
   };
 
   const removeAutoMessage = (index: number) => {
+    const msg = autoMessages[index];
+    const confirmed = window.confirm(
+      `Are you sure you want to delete Auto Message ${index + 1}?`
+    );
+    if (!confirmed) return;
+
     setAutoMessages((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -146,8 +152,6 @@ export default function Page() {
           autoMessages: cleanedAutoMessages,
         }),
       });
-
-      if (!resp.ok) throw new Error(resp.statusText);
 
       void addDashboardLog(
         selectedGuild,
@@ -182,36 +186,92 @@ export default function Page() {
           key={msg.id}
           className="mb-6 border border-gray-700 rounded p-4 bg-[#1f2330]"
         >
-          <span className="text-gray-400">Auto Message {i + 1}</span>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-gray-400 font-medium">
+              Auto Message {i + 1}
+            </span>
 
-          <SelectInput
-            label="Message type"
-            value={msg.messageType}
-            onChange={(v) =>
-              updateAutoMessage(i, "messageType", v as "text" | "embed")
-            }
-            options={[
-              { value: "text", label: "Text" },
-              { value: "embed", label: "Embed" },
-            ]}
-          />
+            <div className="flex items-center gap-3">
+              {/* Enable switch */}
+              <div className="flex items-center gap-2 text-gray-400">
+                <span className="text-sm select-none">Enabled</span>
 
-          <div className="mb-3 mt-3">
-            <SelectInput
-              label="Schedule type"
-              value={msg.scheduleType}
-              onChange={(v) => updateAutoMessage(i, "scheduleType", v)}
-              options={[
-                { value: "daily", label: "Daily" },
-                { value: "weekly", label: "Weekly" },
-                { value: "biweekly", label: "Every 2 Weeks" },
-                { value: "monthly", label: "Monthly" },
-              ]}
-            />
+                <button
+                  type="button"
+                  onClick={() => updateAutoMessage(i, "enabled", !msg.enabled)}
+                  className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 ${
+                    msg.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
+                  }`}
+                >
+                  <span
+                    className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
+                      msg.enabled ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Delete button */}
+              {autoMessages.length > 1 && (
+                <DeleteButton onClick={() => removeAutoMessage(i)} />
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <SelectInput
+                label="Message type"
+                value={msg.messageType}
+                onChange={(v) =>
+                  updateAutoMessage(i, "messageType", v as "text" | "embed")
+                }
+                options={[
+                  { value: "text", label: "Text" },
+                  { value: "embed", label: "Embed" },
+                ]}
+              />
+            </div>
+
+            <div className="flex-1">
+              <SelectInput
+                label="Schedule type"
+                value={msg.scheduleType}
+                onChange={(v) => updateAutoMessage(i, "scheduleType", v)}
+                options={[
+                  { value: "daily", label: "Daily" },
+                  { value: "weekly", label: "Weekly" },
+                  { value: "biweekly", label: "Every 2 Weeks" },
+                  { value: "monthly", label: "Monthly" },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <ChannelSelect
+                label="Channel"
+                value={msg.channel ?? ""}
+                onChange={(value) => updateAutoMessage(i, "channel", value)}
+              />
+            </div>
+
+            <div className="flex-1">
+              <div className="mb-0">
+                <label className="block text-gray-400 mb-1">Time</label>
+                <input
+                  type="time"
+                  value={msg.time}
+                  onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
+                  className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
+                />
+              </div>
+            </div>
           </div>
 
           {["daily", "weekly", "biweekly"].includes(msg.scheduleType) && (
-            <div className="mb-3 mt-3">
+            <div className="mb-3 mt-0">
               <label className="block text-gray-400 mb-1">Days</label>
               <div className="flex flex-wrap gap-2">
                 {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
@@ -261,12 +321,6 @@ export default function Page() {
             </div>
           )}
 
-          <div className="flex justify-between mb-2">
-            {autoMessages.length > 1 && (
-              <DeleteButton onClick={() => removeAutoMessage(i)} />
-            )}
-          </div>
-
           {msg.messageType === "text" ? (
             <>
               <MarkdownEditor
@@ -291,38 +345,6 @@ export default function Page() {
             </>
           )}
 
-          <ChannelSelect
-            label="Channel"
-            value={msg.channel ?? ""}
-            onChange={(value) => updateAutoMessage(i, "channel", value)}
-          />
-
-          <div className="mb-2">
-            <label className="block text-gray-400 mb-1">Time</label>
-            <input
-              type="time"
-              value={msg.time}
-              onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
-              className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
-            />
-          </div>
-
-          <div className="flex items-center">
-            <span className="text-gray-400 mr-2">Enabled</span>
-            <button
-              type="button"
-              onClick={() => updateAutoMessage(i, "enabled", !msg.enabled)}
-              className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 ${
-                msg.enabled ? "bg-[var(--primary-color)]" : "bg-gray-700"
-              }`}
-            >
-              <span
-                className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
-                  msg.enabled ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-          </div>
         </div>
       ))}
 
