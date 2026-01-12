@@ -6,7 +6,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Provider from "@/app/providers/SessionProvider";
 import { redirect } from "next/navigation";
 import { GuildProvider } from "@/app/context/GuildContext";
-import Script from "next/script";
 
 export default async function DashboardLayout({
   children,
@@ -24,17 +23,6 @@ export default async function DashboardLayout({
       <NotificationProvider>
         <GuildProvider>
           <div className="flex min-h-screen">
-            <Script
-              defer
-              data-domain="botinorbit.com"
-              src="https://analytics.heapreaper.nl/js/script.outbound-links.js"
-            />
-            <Script id="plausible-init">{`
-              window.plausible = window.plausible || function() { 
-                (window.plausible.q = window.plausible.q || []).push(arguments) 
-              }
-            `}</Script>
-
             <Sidebar />
 
             <div className="flex-1 flex flex-col">
