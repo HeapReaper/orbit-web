@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
           time: any;
           days: any;
           scheduleType: any;
+          monthlyDate: any;
           enabled: any;
         }) =>
           prisma.autoMessage.upsert({
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
               time: msg.time,
               days: msg.days ?? [],
               scheduleType: msg.scheduleType,
+              monthlyDate: msg.monthlyDate ?? null,
               enabled: msg.enabled,
             },
             create: {
@@ -71,6 +73,7 @@ export async function POST(req: NextRequest) {
               time: msg.time,
               days: msg.days ?? [],
               scheduleType: msg.scheduleType,
+              monthlyDate: msg.monthlyDate ?? null,
               enabled: msg.enabled,
             },
           }),
