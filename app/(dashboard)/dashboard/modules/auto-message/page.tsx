@@ -153,8 +153,6 @@ export default function Page() {
         }),
       });
 
-      if (!resp.ok) throw new Error(resp.statusText);
-
       void addDashboardLog(
         selectedGuild,
         "INFO",
@@ -220,34 +218,60 @@ export default function Page() {
             </div>
           </div>
 
-          <SelectInput
-            label="Message type"
-            value={msg.messageType}
-            onChange={(v) =>
-              updateAutoMessage(i, "messageType", v as "text" | "embed")
-            }
-            options={[
-              { value: "text", label: "Text" },
-              { value: "embed", label: "Embed" },
-            ]}
-          />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <SelectInput
+                label="Message type"
+                value={msg.messageType}
+                onChange={(v) =>
+                  updateAutoMessage(i, "messageType", v as "text" | "embed")
+                }
+                options={[
+                  { value: "text", label: "Text" },
+                  { value: "embed", label: "Embed" },
+                ]}
+              />
+            </div>
 
-          <div className="mb-3 mt-3">
-            <SelectInput
-              label="Schedule type"
-              value={msg.scheduleType}
-              onChange={(v) => updateAutoMessage(i, "scheduleType", v)}
-              options={[
-                { value: "daily", label: "Daily" },
-                { value: "weekly", label: "Weekly" },
-                { value: "biweekly", label: "Every 2 Weeks" },
-                { value: "monthly", label: "Monthly" },
-              ]}
-            />
+            <div className="flex-1">
+              <SelectInput
+                label="Schedule type"
+                value={msg.scheduleType}
+                onChange={(v) => updateAutoMessage(i, "scheduleType", v)}
+                options={[
+                  { value: "daily", label: "Daily" },
+                  { value: "weekly", label: "Weekly" },
+                  { value: "biweekly", label: "Every 2 Weeks" },
+                  { value: "monthly", label: "Monthly" },
+                ]}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <ChannelSelect
+                label="Channel"
+                value={msg.channel ?? ""}
+                onChange={(value) => updateAutoMessage(i, "channel", value)}
+              />
+            </div>
+
+            <div className="flex-1">
+              <div className="mb-0">
+                <label className="block text-gray-400 mb-1">Time</label>
+                <input
+                  type="time"
+                  value={msg.time}
+                  onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
+                  className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
+                />
+              </div>
+            </div>
           </div>
 
           {["daily", "weekly", "biweekly"].includes(msg.scheduleType) && (
-            <div className="mb-3 mt-3">
+            <div className="mb-3 mt-0">
               <label className="block text-gray-400 mb-1">Days</label>
               <div className="flex flex-wrap gap-2">
                 {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
@@ -321,21 +345,6 @@ export default function Page() {
             </>
           )}
 
-          <ChannelSelect
-            label="Channel"
-            value={msg.channel ?? ""}
-            onChange={(value) => updateAutoMessage(i, "channel", value)}
-          />
-
-          <div className="mb-2">
-            <label className="block text-gray-400 mb-1">Time</label>
-            <input
-              type="time"
-              value={msg.time}
-              onChange={(e) => updateAutoMessage(i, "time", e.target.value)}
-              className="w-full bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
-            />
-          </div>
         </div>
       ))}
 
