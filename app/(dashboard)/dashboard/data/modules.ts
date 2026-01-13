@@ -113,6 +113,15 @@ const modules: moduleType[] = [
     category: "Fun / Engagement",
   },
   {
+    name: "Number Guesser",
+    url: "number-guesser",
+    description: "Run a guessing contest to pick the right number.",
+    tier: "free",
+    enabled: true,
+    inDevelopment: true,
+    category: "Fun / Engagement",
+  },
+  {
     name: "Youtube Watcher",
     url: "youtube-watcher",
     description: "Get notified when your favorite YouTube channels post.",
