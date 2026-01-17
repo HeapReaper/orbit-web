@@ -1,14 +1,3 @@
-async function getArticles() {
-  const res = await fetch(
-    `${process.env.DIRECTUS_URL}/items/Article?fields=*,Author.*,Category.*`,
-    {
-      next: { revalidate: 30 },
-    },
-  );
-
-  const data = await res.json();
-
-  return data.data;
+for (let i = 5; i <= 100; i += 5) {
+  console.log(`Level ${i}+`);
 }
-
-await getArticles();
