@@ -240,6 +240,7 @@ model LevelingSettings {
   id                 Int      @id @default(autoincrement())
   guildId            String   @unique @map("guild_id")
   channel            String?  @db.VarChar(22)
+  roleType           String   @default("1-10") @map("role_type") @db.VarChar(12)
   levelRoles         Json?    @map("level_roles")
   xpRate             Float    @default(200) @map("xp_rate")
   enabled            Boolean  @default(false)

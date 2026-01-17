@@ -27,34 +27,70 @@ export async function POST(req: NextRequest) {
 
     const roles: { id: string; name: string }[] = [];
 
-    for (let i = 1; i <= count; i++) {
-      const response = await fetch(
-        `${DISCORD_API_BASE}/guilds/${guildId}/roles`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bot ${BOT_TOKEN}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: `Level ${i}`,
-            hoist: false,
-            mentionable: false,
-            reason: "Leveling system",
-          }),
-        },
-      );
+    switch (data.roleType) {
+      case "1-10":
+        for (let i = 1; i <= count; i++) {
+          const response = await fetch(
+            `${DISCORD_API_BASE}/guilds/${guildId}/roles`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bot ${BOT_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: `Level ${i}`,
+                hoist: false,
+                mentionable: false,
+                reason: "Leveling system",
+              }),
+            },
+          );
 
-      if (!response.ok) {
-        const text = await response.text();
-        return NextResponse.json(
-          { error: `Failed to create role ${i}: ${text}` },
-          { status: 500 },
-        );
-      }
 
-      const roleData = await response.json();
-      roles.push({ id: roleData.id, name: roleData.name });
+          if (!response.ok) {
+            const text = await response.text();
+            return NextResponse.json(
+              { error: `Failed to create role ${i}: ${text}` },
+              { status: 500 },
+            );
+          }
+
+          const roleData = await response.json();
+          roles.push({ id: roleData.id, name: roleData.name });
+        }
+        break;
+      case "5-10":
+        for (let i = 5; i <= 95; i += 5) {
+          const response = await fetch(
+            `${DISCORD_API_BASE}/guilds/${guildId}/roles`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bot ${BOT_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: `Level ${i}+`,
+                hoist: false,
+                mentionable: false,
+                reason: "Leveling system",
+              }),
+            },
+          );
+
+          if (!response.ok) {
+            const text = await response.text();
+            return NextResponse.json(
+              { error: `Failed to create role ${i}: ${text}` },
+              { status: 500 },
+            );
+          }
+
+          const roleData = await response.json();
+          roles.push({ id: roleData.id, name: roleData.name });
+        }
+        break;
     }
 
     return NextResponse.json({ roles });

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import SaveButton from "@/app/(dashboard)/dashboard/components/buttons/Save";
 import { useNotification } from "@/app/context/NotificationContext";
@@ -21,6 +22,7 @@ export default function Page() {
   const [selectedChannel, setSelectedChannel] = useState<string>("");
   const [levelRoles, setLevelRoles] = useState<string[]>([]);
   const [xpRate, setXpRate] = useState<number>(5);
+  const [roleType, setRoleType] = useState<string>("1-10");
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [xpPerMessage, setXpPerMessage] = useState<number>(10);
@@ -38,6 +40,7 @@ export default function Page() {
 
   const DEFAULTS = {
     xpRate: 5,
+    roleType: "1-10",
     xpPerMessage: 10,
     xpPerVoice: 5,
     curveExponent: 2.65,
@@ -55,6 +58,7 @@ export default function Page() {
     setXpRate(DEFAULTS.xpRate);
     setXpPerMessage(DEFAULTS.xpPerMessage);
     setXpPerVoice(DEFAULTS.xpPerVoice);
+    setRoleType(DEFAULTS.roleType)
     setCurveExponent(DEFAULTS.curveExponent);
     setXpMessageGainSpeed(DEFAULTS.xpMessageGainSpeed);
     setXpVoiceGainSpeed(DEFAULTS.xpVoiceGainSpeed);
@@ -68,7 +72,7 @@ export default function Page() {
     if (!selectedGuild) return;
 
     const confirmed = confirm(
-      "This will create 10 new roles (Level 1 → Level 10) and assign them for leveling. You can change the names later. Continue?",
+      "This will create new in your server and assign them for leveling. You can change the names later. Continue?",
     );
     if (!confirmed) return;
 
@@ -79,22 +83,25 @@ export default function Page() {
         body: JSON.stringify({
           guildId: selectedGuild,
           count: 10,
+          roleType,
         }),
       });
 
       const text = await res.text();
+      // @ts-ignore
       let data;
       try {
         data = JSON.parse(text);
       } catch {
-        throw new Error(`Invalid JSON response: ${text}`);
+        console.error(`Invalid JSON response: ${text}`);
       }
 
-      if (!res.ok) throw new Error(data.error || "Failed to generate roles");
+      if (!res.ok) console.error(data.error || "Failed to generate roles");
 
       const newRoleIds = data.roles.map((r: { id: string }) => r.id);
       setLevelRoles((prev) => [...prev, ...newRoleIds]);
 
+      // @ts-ignore
       setRoles((prevRoles) => [...prevRoles, ...data.roles]);
 
       notify("Level roles generated and selected successfully", "", "success");
@@ -115,6 +122,7 @@ export default function Page() {
         setEnabled(data.enabled ?? false);
         setLevelRoles(data.levelRoles ?? []);
         setXpRate(data.xpRate ?? 5);
+        setRoleType(data.roleType ?? "1-10")
         setSelectedChannel(data.channel ?? "");
         setXpPerMessage(data.xpPerMessage ?? 10);
         setXpPerVoice(data.xpPerVoice ?? 5);
@@ -152,6 +160,7 @@ export default function Page() {
           enabled,
           levelRoles,
           xpRate,
+          roleType,
           xpPerMessage,
           xpPerVoice,
           curveExponent,
@@ -185,6 +194,7 @@ export default function Page() {
     xpPerMessage,
     xpPerVoice,
     xpRate,
+    roleType,
     curveExponent,
     xpMessageGainSpeed,
     xpVoiceGainSpeed,
@@ -317,6 +327,16 @@ export default function Page() {
             { label: "Every 5 minutes", value: "every5Minutes" },
           ]}
         />
+
+        <SelectInput
+          label="Which level role system do you wanna use?"
+          value={roleType}
+          onChange={(value) => setRoleType(value)}
+          options={[
+            { label: "1-10", value: "1-10" },
+            { label: "5+, 10+ etc etc", value: "5-10" },
+          ]}
+        />
       </div>
 
       <div className="mb-4">
@@ -345,7 +365,12 @@ export default function Page() {
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--primary-color)] hover:bg-[var(--hover-color)]
           text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Pickaxe size={16} />
+          <Image
+            alt="Pickaxe"
+            src="/icons/Diamond_Pickaxe_JE3_BE3.webp"
+            height={24}
+            width={24}
+            />
           Generate Level Roles
         </button>
 
