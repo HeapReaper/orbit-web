@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         }
         break;
       case "5-10":
-        for (let i = 5; i <= 95; i += 5) {
+        for (let i = 5; i <= 100; i += 5) {
           const response = await fetch(
             `${DISCORD_API_BASE}/guilds/${guildId}/roles`,
             {

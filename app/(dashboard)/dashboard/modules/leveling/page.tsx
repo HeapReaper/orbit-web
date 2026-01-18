@@ -54,6 +54,19 @@ export default function Page() {
     if (guildRoles) setRoles(guildRoles);
   }, [guildRoles]);
 
+  const extractLevelNumber = (roleName: string) => {
+    const match = roleName.match(/Level (\d+)/);
+    return match ? parseInt(match[1], 10) : 0; // fallback 0
+  };
+
+  const sortLevelRolesByLevel = (levelRoleIds: string[], allRoles: { id: string; name: string }[]) => {
+    return [...levelRoleIds]
+      .map(id => allRoles.find(r => r.id === id))
+      .filter(Boolean)
+      .sort((a, b) => extractLevelNumber(a!.name) - extractLevelNumber(b!.name))
+      .map(r => r!.id);
+  };
+
   const handleReset = () => {
     setXpRate(DEFAULTS.xpRate);
     setXpPerMessage(DEFAULTS.xpPerMessage);
@@ -99,7 +112,11 @@ export default function Page() {
       if (!res.ok) console.error(data.error || "Failed to generate roles");
 
       const newRoleIds = data.roles.map((r: { id: string }) => r.id);
-      setLevelRoles((prev) => [...prev, ...newRoleIds]);
+
+      setLevelRoles(prevLevelRoles =>
+        // @ts-ignore
+        sortLevelRolesByLevel(data.levelRoles ?? [], data.roles ?? roles)
+      );
 
       // @ts-ignore
       setRoles((prevRoles) => [...prevRoles, ...data.roles]);
@@ -120,7 +137,7 @@ export default function Page() {
         const res = await fetch(`/api/leveling?guildId=${selectedGuild}`);
         const data = await res.json();
         setEnabled(data.enabled ?? false);
-        setLevelRoles(data.levelRoles ?? []);
+        setLevelRoles(sortLevelRolesByLevel(data.levelRoles ?? [], data.roles ?? roles));
         setXpRate(data.xpRate ?? 5);
         setRoleType(data.roleType ?? "1-10")
         setSelectedChannel(data.channel ?? "");
@@ -201,11 +218,13 @@ export default function Page() {
   ]);
 
   const toggleRole = (roleId: string) => {
+    let updated;
     if (levelRoles.includes(roleId)) {
-      setLevelRoles(levelRoles.filter((r) => r !== roleId));
+      updated = levelRoles.filter((r) => r !== roleId);
     } else {
-      setLevelRoles([...levelRoles, roleId]);
+      updated = [...levelRoles, roleId];
     }
+    setLevelRoles(sortLevelRolesByLevel(updated, roles));
   };
 
   return (
