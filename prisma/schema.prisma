@@ -15,6 +15,7 @@ model AntiBotSettings {
   channelLimit        Int      @default(3) @map("channel_limit")
   punishment          String   @default("none") @db.VarChar(20)
   forbiddenWords      Json?    @map("forbidden_words")
+  forbiddenUsernames  Json?    @map("forbidden_usernames")
   notificationChannel String?  @map("notification_channel") @db.VarChar(22)
   jailRole            String?  @map("jail_role") @db.VarChar(22)
   createdAt           DateTime @default(now()) @map("created_at")
