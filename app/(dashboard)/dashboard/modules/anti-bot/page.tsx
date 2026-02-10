@@ -21,6 +21,8 @@ export default function AntiBotPage() {
   const [channelLimit, setChannelLimit] = useState(3);
   const [punishment, setPunishment] = useState("");
   const [forbiddenWords, setForbiddenWords] = useState<string[]>([""]);
+  const [forbiddenUsernames, setForbiddenUsernames] = useState<string[]>([""]);
+
   const [notificationChannel, setNotificationChannel] = useState("");
   const [jailRole, setJailRole] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -50,6 +52,9 @@ export default function AntiBotPage() {
         setPunishment(data?.punishment ?? "");
         setForbiddenWords(
           data?.forbiddenWords?.length ? data.forbiddenWords : [""],
+        );
+        setForbiddenUsernames(
+          data?.forbiddenUsernames?.length ? data.forbiddenUsernames : [""],
         );
         setNotificationChannel(data?.notificationChannel ?? "");
         setJailRole(data?.jailRole ?? "");
@@ -88,6 +93,7 @@ export default function AntiBotPage() {
           channelLimit,
           punishment,
           forbiddenWords: forbiddenWords.filter((w) => w.trim() !== ""),
+          forbiddenUsernames: forbiddenUsernames.filter((w) => w.trim() !== ""),
           notificationChannel,
           jailRole: punishment === "jail" ? jailRole : null,
           excludeAdmins,
@@ -130,15 +136,32 @@ export default function AntiBotPage() {
 
   // Manage forbidden words
   const addForbiddenWord = () => setForbiddenWords([...forbiddenWords, ""]);
+
   const updateForbiddenWord = (index: number, value: string) => {
     const updated = [...forbiddenWords];
     updated[index] = value;
     setForbiddenWords(updated);
   };
+
   const removeForbiddenWord = (index: number) => {
     const updated = [...forbiddenWords];
     updated.splice(index, 1);
     setForbiddenWords(updated);
+  };
+
+  // Manage forbidden usernames
+  const addForbiddenUsername = () => setForbiddenUsernames([...forbiddenUsernames, ""]);
+
+  const updateForbiddenUsernames = (index: number, value: string) => {
+    const updated = [...forbiddenUsernames];
+    updated[index] = value;
+    setForbiddenUsernames(updated);
+  };
+
+  const removeForbiddenUsernames = (index: number) => {
+    const updated = [...forbiddenUsernames];
+    updated.splice(index, 1);
+    setForbiddenUsernames(updated);
   };
 
   return (
@@ -248,6 +271,39 @@ export default function AntiBotPage() {
         <button
           type="button"
           onClick={addForbiddenWord}
+          className="mt-2 px-3 py-1 bg-[var(--primary-color)] rounded hover:brightness-90 text-white"
+        >
+          Add Word/Sentence
+        </button>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm text-gray-400 mb-2">
+        <span className="inline-flex items-center gap-1">
+          Forbidden usernames
+          <InfoTooltip text="On server join, if one of these words are in the username, then the user will get the punishment" />
+        </span>
+        </label>
+
+        <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
+          {forbiddenUsernames.map((username, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => updateForbiddenUsernames(index, e.target.value)}
+                placeholder="Enter forbidden word or sentence"
+                className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
+              />
+              {forbiddenUsernames.length > 1 && (
+                <DeleteButton onClick={() => removeForbiddenUsernames(index)} />
+              )}
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={addForbiddenUsername}
           className="mt-2 px-3 py-1 bg-[var(--primary-color)] rounded hover:brightness-90 text-white"
         >
           Add Word/Sentence
