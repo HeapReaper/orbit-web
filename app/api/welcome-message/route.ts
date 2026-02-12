@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, messages, channel, enabled, randomize } = data;
+  const { guildId, messages, channel, enabled, randomize, deleteMessage } = data;
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
         channel,
         enabled,
         randomize,
+        deleteMessage,
       },
       create: {
         guildId,
@@ -55,6 +56,7 @@ export async function POST(req: NextRequest) {
         channel,
         enabled,
         randomize,
+        deleteMessage,
       },
     });
 

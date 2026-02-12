@@ -357,13 +357,14 @@ model UserAction {
 }
 
 model WelcomeMessageSettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "welcome_message_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
-  messages  Json?
-  channel   String?  @db.VarChar(22)
-  enabled   Int
-  randomize Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
+  id            Int      @id @default(autoincrement())
+  guildId       String   @unique(map: "welcome_message_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  messages      Json?
+  channel       String?  @db.VarChar(22)
+  enabled       Int
+  randomize     Boolean  @default(false)
+  deleteMessage Boolean  @default(false) @map("delete_message")
+  createdAt     DateTime @default(now()) @map("created_at")
 
   @@map("welcome_message_settings")
 }

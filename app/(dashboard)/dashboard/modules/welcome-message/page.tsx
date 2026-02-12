@@ -13,6 +13,7 @@ import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 
 export default function WelcomeMessagePage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,6 +22,7 @@ export default function WelcomeMessagePage() {
   const [channel, setChannel] = useState<string>("");
   const [randomize, setRandomize] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [deleteMessage, setDeleteMessage] = useState<boolean>(false);
 
   const { selectedGuild, channels } = useGuild();
   const { notify } = useNotification();
@@ -41,6 +43,7 @@ export default function WelcomeMessagePage() {
         setChannel(data.channel ?? "");
         setEnabled(data.enabled ?? false);
         setRandomize(data.randomize ?? false);
+        setDeleteMessage(data.deleteMessage ?? false);
       } catch (err) {
         console.error(err);
       } finally {
@@ -74,6 +77,7 @@ export default function WelcomeMessagePage() {
           channel: channel || null,
           enabled: enabled ? 1 : 0,
           randomize,
+          deleteMessage,
         }),
       });
 
@@ -141,16 +145,20 @@ export default function WelcomeMessagePage() {
         onChange={(value) => setChannel(value)}
       />
 
-      <div className="mb-4">
-        <label className="flex items-center gap-2 text-gray-400 mb-2">
-          <input
-            type="checkbox"
-            checked={randomize}
-            onChange={() => setRandomize(!randomize)}
-            className="accent-[var(--primary-color)]"
-          />
-          Pick messages randomly
-        </label>
+      <div className="">
+        <ToggleSwitch
+          enabled={randomize}
+          onChange={() => setRandomize(!randomize)}
+          label="Pick messages randomly"
+        />
+      </div>
+
+      <div className="">
+        <ToggleSwitch
+          enabled={deleteMessage}
+          onChange={() => setDeleteMessage(!deleteMessage)}
+          label="Delete welcome message on member leave"
+        />
       </div>
 
       <div className="mb-6">
