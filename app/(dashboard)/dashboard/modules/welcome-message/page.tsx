@@ -54,6 +54,9 @@ export default function WelcomeMessagePage() {
     void fetchGuildData();
   }, [selectedGuild]);
 
+  const hasValidMessage = () =>
+    messages.some((m) => cleanMessage(m).trim() !== "");
+
   const triggerAutoSave = () => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     saveTimeout.current = setTimeout(() => {
@@ -100,8 +103,12 @@ export default function WelcomeMessagePage() {
 
   useEffect(() => {
     if (!selectedGuild) return;
+
+    // Prevent autosave if all messages are empty
+    if (!hasValidMessage()) return;
+
     triggerAutoSave();
-  }, [messages, channel, enabled, randomize]);
+  }, [messages, channel, enabled, randomize, deleteMessage]);
 
   const handleMessageChange = (index: number, value: string) => {
     const newMessages = [...messages];
