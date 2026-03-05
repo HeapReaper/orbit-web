@@ -369,6 +369,16 @@ model WelcomeMessageSettings {
   @@map("welcome_message_settings")
 }
 
+model WelcomeMessagesSended {
+  id        Int    @id @default(autoincrement())
+  guildId   String @map("guild_id")
+  userId    String @map("user_id")
+  channelId String @map("channel_id")
+  messageId String @map("message_io")
+
+  @@map("welcome_messages_sended")
+}
+
 model YoutubeWatcher {
   id        Int      @id @default(autoincrement())
   guildId   String   @unique(map: "youtube_watcher_guild_id_unique") @map("guild_id") @db.VarChar(22)
