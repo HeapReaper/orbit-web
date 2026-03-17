@@ -137,7 +137,7 @@ export default function Page() {
         const res = await fetch(`/api/leveling?guildId=${selectedGuild}`);
         const data = await res.json();
         setEnabled(data.enabled ?? false);
-        setLevelRoles(sortLevelRolesByLevel(data.levelRoles ?? [], data.roles ?? roles));
+        setLevelRoles(data.levelRoles ?? []);
         setXpRate(data.xpRate ?? 5);
         setRoleType(data.roleType ?? "1-10")
         setSelectedChannel(data.channel ?? "");
