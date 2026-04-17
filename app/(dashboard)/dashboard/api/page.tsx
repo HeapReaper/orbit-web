@@ -21,6 +21,41 @@ const endpoints = [
   }
 ]`,
   },
+  {
+    method: "GET",
+    path: "/api/ServerStats",
+    description: "Returns detailed statistics about the server",
+    response: `{
+  "id": "123456789012345678",
+  "name": "My Server",
+  "icon": "https://cdn.discordapp.com/icons/.../icon.png",
+  "description": "Server description",
+  "ownerId": "123456789012345678",
+  "createdAt": "2021-01-01T00:00:00.000Z",
+  "members": {
+    "total": 500,
+    "humans": 480,
+    "bots": 20,
+    "online": 120,
+    "idle": 30,
+    "dnd": 10,
+    "offline": 340
+  },
+  "boosts": {
+    "level": 2,
+    "count": 15
+  },
+  "channels": {
+    "total": 40,
+    "text": 25,
+    "voice": 10,
+    "categories": 5
+  },
+  "roles": 18,
+  "verificationLevel": 1,
+  "explicitContentFilter": 1
+}`,
+  },
 ];
 
 const API_URL = "https://bot.botinorbit.com";
