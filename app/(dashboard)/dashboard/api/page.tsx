@@ -56,6 +56,27 @@ const endpoints = [
   "explicitContentFilter": 1
 }`,
   },
+  {
+    method: "GET",
+    path: "/api/get-images-api?channelid=CHANNEL_ID",
+    description:
+      "Returns a list of all images uploaded in the specified channel",
+    response: `{
+  "channelId": "1379143853293961346",
+  "total": 1,
+  "images": [
+    {
+      "url": "https://cdn.discordapp.com/attachments/.../image.png",
+      "uploadedAt": "2026-04-24T18:52:28.328Z",
+      "uploadedBy": {
+        "id": "632677231113666601",
+        "username": "heapreaper",
+        "displayName": "HeapReaper"
+      }
+    }
+  ]
+}`,
+  },
 ];
 
 const API_URL = "https://bot.botinorbit.com";
