@@ -29,7 +29,7 @@ export default function AntiBotPage() {
   const [isPremium, setIsPremium] = useState(false);
   const [excludeAdmins, setExcludeAdmins] = useState(false);
   const [blockInvites, setBlockInvites] = useState(false);
-
+  const [blockNSFWInvites, setBlockNSFWInvites] = useState(false);
   const { selectedGuild, roles, channels } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -60,6 +60,7 @@ export default function AntiBotPage() {
         setJailRole(data?.jailRole ?? "");
         setExcludeAdmins(data?.excludeAdmins ?? false);
         setBlockInvites(data?.blockInvites ?? false);
+        setBlockNSFWInvites(data?.blockNSFWInvites ?? false);
       } catch (err) {
         console.error("Failed to fetch anti-bot data:", err);
       } finally {
@@ -98,6 +99,7 @@ export default function AntiBotPage() {
           jailRole: punishment === "jail" ? jailRole : null,
           excludeAdmins,
           blockInvites,
+          blockNSFWInvites,
         }),
       });
 
@@ -132,6 +134,7 @@ export default function AntiBotPage() {
     jailRole,
     excludeAdmins,
     blockInvites,
+    blockNSFWInvites,
   ]);
 
   // Manage forbidden words
@@ -310,7 +313,7 @@ export default function AntiBotPage() {
         </button>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-2">
         <ToggleSwitch
           enabled={excludeAdmins}
           onChange={() => setExcludeAdmins(!excludeAdmins)}
@@ -318,12 +321,21 @@ export default function AntiBotPage() {
         />
       </div>
 
-      <div className="mb-4">
+      <div className="mb-2">
         <ToggleSwitch
           enabled={blockInvites}
           onChange={() => setBlockInvites(!blockInvites)}
           label="Block Discord invites"
           tooltip="This does not block Discord invites from admin users"
+        />
+      </div>
+
+      <div className="mb-2">
+        <ToggleSwitch
+          enabled={blockNSFWInvites}
+          onChange={() => setBlockNSFWInvites(!blockNSFWInvites)}
+          label="Block NSFW Discord invites"
+          tooltip="This does not block NSFW Discord invites from admin users"
         />
       </div>
 

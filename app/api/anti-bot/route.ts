@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
         jailRole: null,
         excludeAdmins: false,
         blockInvites: false,
+        blockNSFWInvites: false,
       },
     );
   } catch (err) {
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
     jailRole = null,
     excludeAdmins = false,
     blockInvites = false,
+    blockNSFWInvites = false,
   } = data;
 
   // Validate authentication by session and if user is guild admin
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
         jailRole,
         excludeAdmins,
         blockInvites,
+        blockNSFWInvites,
       },
       create: {
         guildId,
@@ -90,6 +93,7 @@ export async function POST(req: NextRequest) {
         jailRole,
         excludeAdmins,
         blockInvites,
+        blockNSFWInvites,
       },
     });
 

@@ -21,6 +21,7 @@ model AntiBotSettings {
   createdAt           DateTime @default(now()) @map("created_at")
   updatedAt           DateTime @updatedAt @map("updated_at")
   blockInvites        Boolean  @default(false) @map("block_invites")
+  blockNSFWInvites    Boolean  @default(false) @map("block_nsfw_invites")
   excludeAdmins       Boolean  @default(false) @map("exclude_admins")
 
   @@map("anti_bot_settings")
