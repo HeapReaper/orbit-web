@@ -705,3 +705,12 @@ model RoleKickSettings {
 
   @@map("role_kick_settings")
 }
+
+model ChessSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "chess_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  enabled   Boolean
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("chess_settings")
+}

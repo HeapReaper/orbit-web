@@ -67,6 +67,16 @@ const modules: moduleType[] = [
     category: "Events / Server Management",
   },
   {
+    name: "Chess.com",
+    url: "chess",
+    description:
+      "Integrate Chess.com with slash commands.",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement",
+  },
+  {
     name: "Donations",
     url: "donations",
     description:
