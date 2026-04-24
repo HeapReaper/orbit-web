@@ -248,7 +248,7 @@ export default function Sidebar() {
           </Link>
 
           <a
-            href="https://uptime.klikbit.nl/status/klikbit"
+            href="https://status.klikbit.nl"
             target="_blank"
             className={`flex items-center gap-2 hover:text-[var(--hover-color)] px-2 py-1 rounded-md ${isActive("/dashboard/logs") ? "font-bold text-[var(--hover-color)]" : ""}`}
           >
