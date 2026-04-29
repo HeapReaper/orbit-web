@@ -22,7 +22,7 @@ export default function Home() {
       </div>
 
       {/* Statistics */}
-      <div className="bg-[#101218]">
+      <div className="">
         <StatisticsSection />
       </div>
 
