@@ -22,7 +22,7 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/subscriptions" },
     { name: "Servers", href: "/servers" },
-    // { name: "Articles", href: "/articles" },
+    { name: "Articles", href: "/articles" },
     {
       name: "Info",
       children: [
