@@ -4,6 +4,7 @@ import StatisticsSection from "@/app/(public)/components/sections/Statistics";
 import ScreenshotsSection from "@/app/(public)/components/sections/Screenshots";
 import BotModulesSection from "@/app/(public)/components/sections/BotModules";
 import CoreFeaturesSection from "@/app/(public)/components/sections/CoreFeatures";
+import LatestArticlesSection from "@/app/(public)/components/sections/LatestArticles";
 
 export default function Home() {
   return (
@@ -11,6 +12,11 @@ export default function Home() {
       {/* Hero */}
       <div className="">
         <HeroSection />
+      </div>
+
+      {/* Latest Articles */}
+      <div className="bg-[#101218]">
+        <LatestArticlesSection />
       </div>
 
       {/* Statistics */}
