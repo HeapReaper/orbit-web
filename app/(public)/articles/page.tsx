@@ -14,10 +14,10 @@ export default function ArticlesPage() {
   const articles = getAllArticles();
 
   return (
-    <main className="min-h-screen bg-[#0d0f13] text-gray-300 px-6 md:px-20 py-16">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Articles</h1>
-        <p className="text-gray-400 mb-12 text-lg">
+    <main className="min-h-screen bg-[#0d0f13] text-gray-300">
+      <div className="px-6 md:px-20 py-12 min-h-screen">
+        <h1 className="text-4xl font-bold text-white mb-6">Articles</h1>
+        <p className="text-gray-400 mb-6">
           Tips, guides and updates about Orbit and Discord server management.
         </p>
 
