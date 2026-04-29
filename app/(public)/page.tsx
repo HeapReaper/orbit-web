@@ -6,6 +6,8 @@ import BotModulesSection from "@/app/(public)/components/sections/BotModules";
 import CoreFeaturesSection from "@/app/(public)/components/sections/CoreFeatures";
 import LatestArticlesSection from "@/app/(public)/components/sections/LatestArticles";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-[#0d0f13] text-white">
