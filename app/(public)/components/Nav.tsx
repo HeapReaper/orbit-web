@@ -27,7 +27,7 @@ export default function Navbar() {
       name: "Info",
       children: [
         { name: "Preview", href: "/preview" },
-        // { name: "Help articles", href: "/help" },
+        { name: "About Us", href: "/about" },
         // { name: "Terms of Services", href: "/terms" },
         // { name: "Privacy policy", href: "/privacy" },
         // { name: "Releases", href: "/releases" },
