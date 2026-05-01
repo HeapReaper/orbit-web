@@ -9,7 +9,7 @@ tags: discord, bot, features
 ## Number guesser
 We've added a number guessing game.
 You can create a new game with:
-- /numberguesser start <min number> <max number>.
+- /numberguesser start <min number> <max number>
 
 The bot will then pich a random number between <min number> and <max number>.
 When a user sends a message in that channel with just a number, like 5,
