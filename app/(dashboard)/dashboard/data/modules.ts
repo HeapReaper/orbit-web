@@ -128,7 +128,7 @@ const modules: moduleType[] = [
     description: "Run a guessing contest to pick the right number.",
     tier: "free",
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Fun / Engagement",
   },
   {
@@ -192,7 +192,7 @@ const modules: moduleType[] = [
     description: "Add a leveling system for members based on activity.",
     tier: "free",
     enabled: true,
-    inDevelopment: true,
+    inDevelopment: false,
     category: "Events / Server Management",
   },
   {
