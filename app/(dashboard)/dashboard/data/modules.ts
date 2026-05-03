@@ -80,7 +80,7 @@ const modules: moduleType[] = [
     name: "Lichess.org",
     url: "lichess",
     description:
-      "Integrate Lichess.org with slash commands",
+      "Integrate Lichess.org with slash commands.",
     tier: "free",
     enabled: true,
     inDevelopment: false,
