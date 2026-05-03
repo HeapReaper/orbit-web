@@ -77,6 +77,16 @@ const modules: moduleType[] = [
     category: "Fun / Engagement",
   },
   {
+    name: "Lichess.org",
+    url: "lichess",
+    description:
+      "Integrate Lichess.org with slash commands.",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement",
+  },
+  {
     name: "Donations",
     url: "donations",
     description:

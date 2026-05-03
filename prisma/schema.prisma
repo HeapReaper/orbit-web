@@ -715,3 +715,12 @@ model ChessSettings {
 
   @@map("chess_settings")
 }
+
+model LichessSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "lichess_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  enabled   Boolean
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("lichess_settings")
+}
