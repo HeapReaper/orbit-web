@@ -724,3 +724,25 @@ model LichessSettings {
 
   @@map("lichess_settings")
 }
+
+model RssSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique @map("guild_id")
+  enabled   Boolean  @default(false)
+  channelId String?  @map("channel_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  Rss       Rss[]
+
+  @@map("rss_settings")
+}
+
+model Rss {
+  id          Int         @id @default(autoincrement())
+  guildId     String      @map("guild_id")
+  url         String      @unique @map("url")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  RssSettings RssSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId])
+  @@map("rss")
+}
