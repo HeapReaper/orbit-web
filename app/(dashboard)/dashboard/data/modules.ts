@@ -206,6 +206,15 @@ const modules: moduleType[] = [
     category: "Events / Server Management",
   },
   {
+    name: "RSS",
+    url: "rss",
+    description: "Watch RSS feeds and post them in a channel",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement",
+  },
+  {
     name: "Channel of Fame",
     url: "channel-of-fame",
     description: "Show starred messages in a special channel automatically.",
