@@ -746,3 +746,13 @@ model Rss {
   @@index([guildId])
   @@map("rss")
 }
+
+model CountingGameSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "guild_id_counting_game_settings") @map("guild_id") @db.VarChar(22)
+  channel   String   @db.VarChar(22)
+  enabled   Boolean
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("counting_game_settings")
+}
