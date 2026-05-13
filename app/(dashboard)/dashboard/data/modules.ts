@@ -58,6 +58,15 @@ const modules: moduleType[] = [
     category: "Events / Server Management",
   },
   {
+    name: "Counting Game",
+    url: "counting-game",
+    description: "Classical counting game. Will reset if someone counted wrong!",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement",
+  },
+  {
     name: "Tickets",
     url: "tickets",
     description: "Manage member requests with an easy ticketing system.",
