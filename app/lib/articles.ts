@@ -51,7 +51,7 @@ export function getAllArticles(): ArticleMeta[] {
         tags: data.tags ? data.tags.split(",").map((t) => t.trim()) : [],
       };
     })
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function getArticleBySlug(slug: string): Article | null {
