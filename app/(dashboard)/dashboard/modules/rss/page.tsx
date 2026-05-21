@@ -10,12 +10,14 @@ import { useGuild } from "@/app/context/GuildContext";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
+type Feed = { url: string; channelId: string };
+
 export default function RssPage() {
   const [loading, setLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [urls, setUrls] = useState<string[]>([]);
+  const [feeds, setFeeds] = useState<Feed[]>([]);
   const [newUrl, setNewUrl] = useState("");
-  const [selectedChannel, setSelectedChannel] = useState("");
+  const [newChannelId, setNewChannelId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const { selectedGuild } = useGuild();
@@ -33,10 +35,9 @@ export default function RssPage() {
         if (res.ok) {
           const data = await res.json();
           setEnabled(data?.enabled ?? false);
-          setSelectedChannel(data?.channelId ?? "");
-          setUrls(data?.urls ?? []);
+          setFeeds(data?.feeds ?? []);
         } else {
-          setUrls([]);
+          setFeeds([]);
         }
       } catch (err) {
         console.error("Failed to fetch RSS data:", err);
@@ -58,21 +59,28 @@ export default function RssPage() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [enabled, urls, selectedChannel]);
+  }, [enabled, feeds]);
 
-  const addUrl = () => {
+  const addFeed = () => {
     const trimmed = newUrl.trim();
     if (!trimmed) return;
-    if (urls.includes(trimmed)) {
+    if (feeds.some((f) => f.url === trimmed)) {
       notify("URL already added", "", "error");
       return;
     }
-    setUrls((prev) => [...prev, trimmed]);
+    setFeeds((prev) => [...prev, { url: trimmed, channelId: newChannelId }]);
     setNewUrl("");
+    setNewChannelId("");
   };
 
-  const removeUrl = (url: string) => {
-    setUrls((prev) => prev.filter((u) => u !== url));
+  const removeFeed = (url: string) => {
+    setFeeds((prev) => prev.filter((f) => f.url !== url));
+  };
+
+  const updateFeedChannel = (url: string, channelId: string) => {
+    setFeeds((prev) =>
+      prev.map((f) => (f.url === url ? { ...f, channelId } : f))
+    );
   };
 
   const handleSave = async (auto = false) => {
@@ -82,7 +90,7 @@ export default function RssPage() {
       const res = await fetch("/api/rss", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guildId: selectedGuild, enabled, channelId: selectedChannel, urls }),
+        body: JSON.stringify({ guildId: selectedGuild, enabled, feeds }),
       });
 
       if (!res.ok) {
@@ -130,53 +138,63 @@ export default function RssPage() {
         </button>
       </div>
 
-      {/* Add URL input */}
+      {/* Add feed */}
       <div className="mb-4">
         <label className="block text-sm text-gray-400 mb-2">Add RSS Feed URL</label>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-2">
           <input
             type="url"
             value={newUrl}
             onChange={(e) => setNewUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addUrl()}
+            onKeyDown={(e) => e.key === "Enter" && addFeed()}
             placeholder="https://example.com/feed.xml"
             className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
           />
           <button
             type="button"
-            onClick={addUrl}
+            onClick={addFeed}
             className="px-4 py-2 bg-[var(--primary-color)] text-white rounded hover:opacity-90 transition-opacity"
           >
             Add
           </button>
         </div>
+        <ChannelSelect
+          label="Channel for this feed"
+          value={newChannelId}
+          onChange={setNewChannelId}
+        />
       </div>
 
-      {/* URL list */}
+      {/* Feed list */}
       <div className="mb-4">
         <label className="block text-sm text-gray-400 mb-2">RSS Feeds</label>
-        <div className="flex flex-col gap-2 max-h-64 overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
-          {urls.length === 0 && (
+        <div className="flex flex-col gap-3 max-h-96 overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
+          {feeds.length === 0 && (
             <p className="text-gray-500 text-sm text-center py-4">
               No RSS feeds added yet.
             </p>
           )}
-          {urls.map((url) => (
-            <div key={url} className="flex items-center gap-2">
-              <span className="flex-1 text-gray-300 bg-[#0f1117] border border-gray-700 px-3 py-2 rounded text-sm truncate">
-                {url}
-              </span>
-              <DeleteButton onClick={() => removeUrl(url)} />
+          {feeds.map((feed) => (
+            <div
+              key={feed.url}
+              className="flex flex-col gap-1 bg-[#0f1117] border border-gray-700 rounded p-2"
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex-1 text-gray-300 text-sm truncate">
+                  {feed.url}
+                </span>
+                <DeleteButton onClick={() => removeFeed(feed.url)} />
+              </div>
+              <ChannelSelect
+                label=""
+                value={feed.channelId}
+                onChange={(val) => updateFeedChannel(feed.url, val)}
+                className="relative"
+              />
             </div>
           ))}
         </div>
       </div>
-
-      <ChannelSelect
-        label="Select channel for RSS posts"
-        value={selectedChannel}
-        onChange={(value) => setSelectedChannel(value)}
-      />
 
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}

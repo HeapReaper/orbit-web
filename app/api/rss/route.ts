@@ -20,8 +20,11 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       enabled: settings?.enabled ?? false,
-      channelId: settings?.channelId ?? "",
-      urls: settings?.Rss.map((r) => r.url) ?? [],
+      feeds:
+        settings?.Rss.map((r) => ({
+          url: r.url,
+          channelId: r.channelId ?? "",
+        })) ?? [],
     });
   } catch (err) {
     console.error("Error fetching RSS settings:", err);
@@ -34,7 +37,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { guildId, enabled, channelId, urls } = body;
+  const { guildId, enabled, feeds } = body as {
+    guildId: string;
+    enabled: boolean;
+    feeds: { url: string; channelId: string }[];
+  };
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
@@ -45,15 +52,19 @@ export async function POST(req: NextRequest) {
   try {
     await prisma.rssSettings.upsert({
       where: { guildId },
-      update: { enabled, channelId: channelId || null },
-      create: { guildId, enabled, channelId: channelId || null },
+      update: { enabled },
+      create: { guildId, enabled },
     });
 
     await prisma.rss.deleteMany({ where: { guildId } });
 
-    if (urls && urls.length > 0) {
+    if (feeds && feeds.length > 0) {
       await prisma.rss.createMany({
-        data: urls.map((url: string) => ({ guildId, url })),
+        data: feeds.map((f) => ({
+          guildId,
+          url: f.url,
+          channelId: f.channelId || null,
+        })),
       });
     }
 

@@ -9,6 +9,7 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   tooltip?: string;
+  className?: string;
 }
 
 export default function ChannelSelect({
@@ -16,6 +17,7 @@ export default function ChannelSelect({
   value,
   onChange,
   tooltip,
+  className,
 }: Props) {
   const { channels } = useGuild();
   const [search, setSearch] = useState("");
@@ -67,7 +69,7 @@ export default function ChannelSelect({
     });
 
   return (
-    <div className="mb-4 relative" ref={wrapperRef}>
+    <div className={className ?? "mb-4 relative"} ref={wrapperRef}>
       <div className="flex items-center gap-2 mb-1">
         <label className="text-gray-400">{label}</label>
 
