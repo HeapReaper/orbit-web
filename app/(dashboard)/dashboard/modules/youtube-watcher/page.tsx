@@ -10,14 +10,20 @@ import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 
+type YoutubeChannel = { youtubeChannel: string; discordChannel: string };
+
+const emptyEntry = (): YoutubeChannel => ({
+  youtubeChannel: "",
+  discordChannel: "",
+});
+
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [selectedChannel, setSelectedChannel] = useState<string>("");
-  const [users, setUsers] = useState<string[]>([""]);
+  const [channels, setChannels] = useState<YoutubeChannel[]>([emptyEntry()]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const { selectedGuild, channels } = useGuild();
+  const { selectedGuild } = useGuild();
   const { notify } = useNotification();
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -33,8 +39,7 @@ export default function Page() {
         );
         const data = await res.json();
         setEnabled(data.enabled ?? false);
-        setSelectedChannel(data.channel ?? "");
-        setUsers(data.users?.length ? data.users : [""]);
+        setChannels(data.channels?.length ? data.channels : [emptyEntry()]);
       } catch (err) {
         console.error(err);
       } finally {
@@ -62,9 +67,8 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
-          channel: selectedChannel,
           enabled,
-          users: users.filter((u) => u.trim() !== ""),
+          channels: channels.filter((c) => c.youtubeChannel.trim() !== ""),
         }),
       });
 
@@ -86,21 +90,26 @@ export default function Page() {
     }
   };
 
-  // Auto-save on change
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [enabled, selectedChannel, users]);
+  }, [enabled, channels]);
 
-  const handleUserChange = (index: number, value: string) => {
-    const newUsers = [...users];
-    newUsers[index] = value;
-    setUsers(newUsers);
+  const handleYoutubeChannelChange = (index: number, value: string) => {
+    setChannels((prev) =>
+      prev.map((c, i) => (i === index ? { ...c, youtubeChannel: value } : c)),
+    );
   };
 
-  const addUser = () => setUsers([...users, ""]);
-  const removeUser = (index: number) =>
-    setUsers(users.filter((_, i) => i !== index));
+  const handleDiscordChannelChange = (index: number, discordChannel: string) => {
+    setChannels((prev) =>
+      prev.map((c, i) => (i === index ? { ...c, discordChannel } : c)),
+    );
+  };
+
+  const addChannel = () => setChannels((prev) => [...prev, emptyEntry()]);
+  const removeChannel = (index: number) =>
+    setChannels((prev) => prev.filter((_, i) => i !== index));
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -111,7 +120,7 @@ export default function Page() {
         <InfoTooltip text="Get notified when a Youtuber posts a new video!" />
       </h1>
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <span className="text-gray-400">Enable module</span>
         <button
           type="button"
@@ -128,36 +137,45 @@ export default function Page() {
         </button>
       </div>
 
-      <ChannelSelect
-        label="Select channel for YouTube Watcher notifications"
-        value={selectedChannel ?? ""}
-        onChange={(value) => setSelectedChannel(value)}
-      />
-
       <div className="mb-4">
         <label className="block text-sm text-gray-400 mb-2">
-          YouTube Users / Channels
+          YouTube Channels
         </label>
-        {users.map((user, index) => (
-          <div key={index} className="flex gap-2 mb-2">
-            <input
-              type="text"
-              value={user}
-              onChange={(e) => handleUserChange(index, e.target.value)}
-              placeholder="Youtube channel URL or handle like @FliteTest"
-              className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white"
-            />
-            {users.length > 1 && (
-              <DeleteButton onClick={() => removeUser(index)} />
-            )}
-          </div>
-        ))}
+        <div className="flex flex-col gap-3 max-h-[32rem] overflow-y-auto border border-gray-700 p-2 rounded bg-[#1f2330]">
+          {channels.map((entry, index) => (
+            <div
+              key={index}
+              className="flex flex-col gap-1 bg-[#0f1117] border border-gray-700 rounded p-2"
+            >
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={entry.youtubeChannel}
+                  onChange={(e) =>
+                    handleYoutubeChannelChange(index, e.target.value)
+                  }
+                  placeholder="Youtube channel URL or handle like @FliteTest"
+                  className="flex-1 bg-[#0f1117] border border-gray-700 rounded p-2 text-white text-sm"
+                />
+                {channels.length > 1 && (
+                  <DeleteButton onClick={() => removeChannel(index)} />
+                )}
+              </div>
+              <ChannelSelect
+                label=""
+                value={entry.discordChannel}
+                onChange={(val) => handleDiscordChannelChange(index, val)}
+                className="relative"
+              />
+            </div>
+          ))}
+        </div>
         <button
           type="button"
-          onClick={addUser}
-          className="bg-[var(--primary-color)] hover:brightness-90 text-white px-3 py-1 rounded"
+          onClick={addChannel}
+          className="mt-2 bg-[var(--primary-color)] hover:brightness-90 text-white px-3 py-1 rounded"
         >
-          Add User
+          Add Channel
         </button>
       </div>
 

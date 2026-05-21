@@ -381,14 +381,24 @@ model WelcomeMessagesSended {
 }
 
 model YoutubeWatcher {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "youtube_watcher_guild_id_unique") @map("guild_id") @db.VarChar(22)
-  channel   String   @db.VarChar(22)
-  users     Json
+  id        Int                     @id @default(autoincrement())
+  guildId   String                  @unique(map: "youtube_watcher_guild_id_unique") @map("guild_id") @db.VarChar(22)
   enabled   Boolean
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime                @default(now()) @map("created_at")
+  channels  YoutubeWatcherChannel[]
 
   @@map("youtube_watcher")
+}
+
+model YoutubeWatcherChannel {
+  id             Int            @id @default(autoincrement())
+  watcherId      Int            @map("watcher_id")
+  youtubeChannel String         @map("youtube_channel")
+  discordChannel String         @map("discord_channel") @db.VarChar(22)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  watcher        YoutubeWatcher @relation(fields: [watcherId], references: [id], onDelete: Cascade)
+
+  @@map("youtube_watcher_channel")
 }
 
 model LevelingData {

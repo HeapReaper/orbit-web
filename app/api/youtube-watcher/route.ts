@@ -6,7 +6,6 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guildId = searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
@@ -16,11 +15,12 @@ export async function GET(req: NextRequest) {
   try {
     const data = await prisma.youtubeWatcher.findUnique({
       where: { guildId },
+      include: { channels: true },
     });
 
     return NextResponse.json({
-      ...data,
-      users: data?.users ?? [],
+      enabled: data?.enabled ?? false,
+      channels: data?.channels ?? [],
     });
   } catch (err) {
     console.error(err);
@@ -32,30 +32,47 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  const { guildId, channel, users, enabled } = data;
+  const body = await req.json();
+  const { guildId, enabled, channels } = body as {
+    guildId: string;
+    enabled: boolean;
+    channels: { youtubeChannel: string; discordChannel: string }[];
+  };
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId)
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
+  const validChannels = (Array.isArray(channels) ? channels : []).filter(
+    (c) => c.youtubeChannel?.trim(),
+  );
+
   try {
-    const updated = await prisma.youtubeWatcher.upsert({
+    const watcher = await prisma.youtubeWatcher.upsert({
       where: { guildId },
-      update: {
-        channel,
-        enabled,
-        users: Array.isArray(users) ? users : [],
-      },
-      create: {
-        guildId,
-        channel,
-        enabled,
-        users: Array.isArray(users) ? users : [],
-      },
+      update: { enabled },
+      create: { guildId, enabled },
+    });
+
+    await prisma.youtubeWatcherChannel.deleteMany({
+      where: { watcherId: watcher.id },
+    });
+
+    if (validChannels.length > 0) {
+      await prisma.youtubeWatcherChannel.createMany({
+        data: validChannels.map((c) => ({
+          watcherId: watcher.id,
+          youtubeChannel: c.youtubeChannel.trim(),
+          discordChannel: c.discordChannel ?? "",
+        })),
+      });
+    }
+
+    const updated = await prisma.youtubeWatcher.findUnique({
+      where: { guildId },
+      include: { channels: true },
     });
 
     return NextResponse.json(updated);
