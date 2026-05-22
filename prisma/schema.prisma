@@ -749,7 +749,7 @@ model RssSettings {
 model Rss {
   id          Int         @id @default(autoincrement())
   guildId     String      @map("guild_id")
-  url         String      @unique @map("url")
+  url         String      @map("url")
   createdAt   DateTime    @default(now()) @map("created_at")
   RssSettings RssSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
   channelId String?  @map("channel_id")
