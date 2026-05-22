@@ -2,16 +2,28 @@ import { Bot } from "lucide-react";
 import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
 
 async function getBotInfo() {
-  const res = await fetch("https://bot.botinorbit.com/api/bot-info");
-  return await res.json();
+  try {
+    const res = await fetch("https://bot.botinorbit.com/api/bot-info", {
+      next: { revalidate: 30 },
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 async function getRepoInfo() {
-  const res = await fetch(
-    "https://api.github.com/repos/HeapReaper/Orbit-bot/releases/latest",
-  );
-
-  return await res.json();
+  try {
+    const res = await fetch(
+      "https://api.github.com/repos/HeapReaper/Orbit-bot/releases/latest",
+      { next: { revalidate: 300 } },
+    );
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 export default async function BotInfo() {
@@ -26,29 +38,33 @@ export default async function BotInfo() {
         <h2 className="font-semibold">Bot info</h2>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-        <p>
-          <span className="font-semibold text-white">Status: </span>{" "}
-          <InlineCode text={data.status} />
-        </p>
-        <p>
-          <span className="font-semibold text-white">Uptime: </span>{" "}
-          <InlineCode text={data.uptime} />
-        </p>
-        <p>
-          <span className="font-semibold text-white">Ping: </span>{" "}
-          <InlineCode text={data.ping} />
-          ms
-        </p>
-        <p>
-          <span className="font-semibold text-white">Servers: </span>{" "}
-          <InlineCode text={data.guilds} />
-        </p>
-        <p>
-          <span className="font-semibold text-white">Users: </span>{" "}
-          <InlineCode text={data.users} />
-        </p>
-      </div>
+      {data ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+          <p>
+            <span className="font-semibold text-white">Status: </span>{" "}
+            <InlineCode text={data.status} />
+          </p>
+          <p>
+            <span className="font-semibold text-white">Uptime: </span>{" "}
+            <InlineCode text={data.uptime} />
+          </p>
+          <p>
+            <span className="font-semibold text-white">Ping: </span>{" "}
+            <InlineCode text={data.ping} />
+            ms
+          </p>
+          <p>
+            <span className="font-semibold text-white">Servers: </span>{" "}
+            <InlineCode text={data.guilds} />
+          </p>
+          <p>
+            <span className="font-semibold text-white">Users: </span>{" "}
+            <InlineCode text={data.users} />
+          </p>
+        </div>
+      ) : (
+        <p className="text-sm text-gray-500">Bot status unavailable.</p>
+      )}
     </section>
   );
 }
