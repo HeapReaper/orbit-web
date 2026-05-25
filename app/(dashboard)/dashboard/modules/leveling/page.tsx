@@ -31,6 +31,7 @@ export default function Page() {
     useState<string>("oneTimeAMinute");
   const [xpVoiceGainSpeed, setXpVoiceGainSpeed] = useState("everyMinute");
   const [curveExponent, setCurveExponent] = useState<number>(2.65);
+  const [deleteXpOnLeave, setDeleteXpOnLeave] = useState<boolean>(true);
 
   const { selectedGuild, roles: guildRoles } = useGuild();
   const [roles, setRoles] = useState(guildRoles || []);
@@ -48,6 +49,7 @@ export default function Page() {
     xpVoiceGainSpeed: "everyMinute",
     enabled: false,
     selectedChannel: "",
+    deleteXpOnLeave: true,
   };
 
   useEffect(() => {
@@ -77,6 +79,7 @@ export default function Page() {
     setXpVoiceGainSpeed(DEFAULTS.xpVoiceGainSpeed);
     setEnabled(DEFAULTS.enabled);
     setSelectedChannel(DEFAULTS.selectedChannel);
+    setDeleteXpOnLeave(DEFAULTS.deleteXpOnLeave);
 
     notify("Settings reset to default", "", "info");
   };
@@ -146,6 +149,7 @@ export default function Page() {
         setCurveExponent(data.curveExponent ?? 2.65);
         setXpMessageGainSpeed(data.xpMessageGainSpeed ?? "oneTimeAMinute");
         setXpVoiceGainSpeed(data.xpVoiceGainSpeed ?? "everyMinute");
+        setDeleteXpOnLeave(data.deleteXpOnLeave ?? true);
       } catch (err) {
         console.error(err);
       } finally {
@@ -183,6 +187,7 @@ export default function Page() {
           curveExponent,
           xpMessageGainSpeed,
           xpVoiceGainSpeed,
+          deleteXpOnLeave,
         }),
       });
 
@@ -215,6 +220,7 @@ export default function Page() {
     curveExponent,
     xpMessageGainSpeed,
     xpVoiceGainSpeed,
+    deleteXpOnLeave,
   ]);
 
   const toggleRole = (roleId: string) => {
@@ -252,6 +258,23 @@ export default function Page() {
           <span
             className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
               enabled ? "translate-x-6" : "translate-x-1"
+            }`}
+          />
+        </button>
+      </div>
+
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-gray-400">Delete leveling data on member leave</span>
+        <button
+          type="button"
+          onClick={() => setDeleteXpOnLeave(!deleteXpOnLeave)}
+          className={`relative inline-flex items-center h-6 w-12 rounded-full transition-colors duration-200 focus:outline-none ${
+            deleteXpOnLeave ? "bg-[var(--primary-color)]" : "bg-gray-700"
+          }`}
+        >
+          <span
+            className={`bg-white w-4 h-4 rounded-full shadow transform transition-transform duration-200 ${
+              deleteXpOnLeave ? "translate-x-6" : "translate-x-1"
             }`}
           />
         </button>

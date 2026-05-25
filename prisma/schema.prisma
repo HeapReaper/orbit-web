@@ -262,7 +262,7 @@ model LevelingSettings {
   xpPerMessage       Int      @default(10) @map("xp_per_message")
   xpPerVoice         Int      @default(5) @map("xp_per_voice")
   xpVoiceGainSpeed   String   @default("everyMinute") @map("xp_voice_gain_speed")
-
+  deleteXpOnLeave    Boolean  @default(true) @map("delete_xp_on_leave")
   @@map("leveling_settings")
 }
 

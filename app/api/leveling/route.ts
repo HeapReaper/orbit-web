@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
         curveExponent: 2.65,
         xpMessageGainSpeed: "oneTimeAMinute",
         xpVoiceGainSpeed: "everyMinute",
+        deleteXpOnLeave: true,
       },
     );
   } catch (err) {
@@ -83,6 +84,7 @@ export async function POST(req: NextRequest) {
     curveExponent,
     xpMessageGainSpeed,
     xpVoiceGainSpeed,
+    deleteXpOnLeave,
   } = data;
 
   try {
@@ -99,6 +101,7 @@ export async function POST(req: NextRequest) {
         curveExponent,
         xpMessageGainSpeed,
         xpVoiceGainSpeed,
+        deleteXpOnLeave,
       },
       create: {
         guildId,
@@ -112,6 +115,7 @@ export async function POST(req: NextRequest) {
         curveExponent,
         xpMessageGainSpeed,
         xpVoiceGainSpeed,
+        deleteXpOnLeave,
       },
     });
 
