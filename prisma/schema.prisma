@@ -23,17 +23,17 @@ model AntiBotSettings {
   blockInvites        Boolean  @default(false) @map("block_invites")
   blockNSFWInvites    Boolean  @default(false) @map("block_nsfw_invites")
   excludeAdmins       Boolean  @default(false) @map("exclude_admins")
-  messageLimit      Int     @default(8)
-  mentionLimit      Int     @default(5)
-  minAccountAgeDays Int     @default(7)
-  raidThreshold     Int     @default(5)
-  newAccountAction  String  @default("none") // none | jail | kick
-  blockZalgo        Boolean @default(true)
-  blockDuplicates   Boolean @default(true)
-  deleteMessagesOnKick Boolean @default(false)
-  deleteMessagesOnBan  Boolean @default(false)
-  deleteMessagesDays   Int     @default(1) // 0-7, alleen relevant bij ban
-  forbiddenPatterns String[]  @default([])
+  messageLimit         Int     @default(8)  @map("message_limit")
+  mentionLimit         Int     @default(5)  @map("mention_limit")
+  minAccountAgeDays    Int     @default(7)  @map("min_account_age_days")
+  raidThreshold        Int     @default(5)  @map("raid_threshold")
+  newAccountAction     String  @default("none") @map("new_account_action")
+  blockZalgo           Boolean @default(true)  @map("block_zalgo")
+  blockDuplicates      Boolean @default(true)  @map("block_duplicates")
+  deleteMessagesOnKick Boolean @default(false) @map("delete_messages_on_kick")
+  deleteMessagesOnBan  Boolean @default(false) @map("delete_messages_on_ban")
+  deleteMessagesDays   Int     @default(1)  @map("delete_messages_days")
+  forbiddenPatterns    String[] @default([]) @map("forbidden_patterns")
   @@map("anti_bot_settings")
 }
 
