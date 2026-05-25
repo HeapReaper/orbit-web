@@ -6,7 +6,6 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const guildId = searchParams.get("guildId");
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
@@ -30,6 +29,16 @@ export async function GET(req: NextRequest) {
         excludeAdmins: false,
         blockInvites: false,
         blockNSFWInvites: false,
+        messageLimit: 8,
+        mentionLimit: 5,
+        minAccountAgeDays: 7,
+        raidThreshold: 5,
+        newAccountAction: "none",
+        blockZalgo: true,
+        blockDuplicates: true,
+        deleteMessagesOnKick: false,
+        deleteMessagesOnBan: false,
+        deleteMessagesDays: 1,
       },
     );
   } catch (err) {
@@ -56,45 +65,53 @@ export async function POST(req: NextRequest) {
     excludeAdmins = false,
     blockInvites = false,
     blockNSFWInvites = false,
+    messageLimit = 8,
+    mentionLimit = 5,
+    minAccountAgeDays = 7,
+    raidThreshold = 5,
+    newAccountAction = "none",
+    blockZalgo = true,
+    blockDuplicates = true,
+    deleteMessagesOnKick = false,
+    deleteMessagesOnBan = false,
+    deleteMessagesDays = 1,
   } = data;
 
-  // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
   if (typeof session === "string")
     return NextResponse.json({ error: session }, { status: 403 });
   if (!guildId)
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
+  const payload = {
+    enabled,
+    timeWindow,
+    channelLimit,
+    punishment,
+    forbiddenWords,
+    forbiddenUsernames,
+    notificationChannel,
+    jailRole,
+    excludeAdmins,
+    blockInvites,
+    blockNSFWInvites,
+    messageLimit,
+    mentionLimit,
+    minAccountAgeDays,
+    raidThreshold,
+    newAccountAction,
+    blockZalgo,
+    blockDuplicates,
+    deleteMessagesOnKick,
+    deleteMessagesOnBan,
+    deleteMessagesDays,
+  };
+
   try {
     const updated = await prisma.antiBotSettings.upsert({
       where: { guildId },
-      update: {
-        enabled,
-        timeWindow,
-        channelLimit,
-        punishment,
-        forbiddenWords,
-        forbiddenUsernames,
-        notificationChannel,
-        jailRole,
-        excludeAdmins,
-        blockInvites,
-        blockNSFWInvites,
-      },
-      create: {
-        guildId,
-        enabled,
-        timeWindow,
-        channelLimit,
-        punishment,
-        forbiddenWords,
-        forbiddenUsernames,
-        notificationChannel,
-        jailRole,
-        excludeAdmins,
-        blockInvites,
-        blockNSFWInvites,
-      },
+      update: payload,
+      create: { guildId, ...payload },
     });
 
     return NextResponse.json(updated);
