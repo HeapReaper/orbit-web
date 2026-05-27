@@ -312,7 +312,7 @@ const modules: moduleType[] = [
     description:
       "Send daily or weekly a question in a channel to simulate interaction",
     tier: "free",
-    enabled: false,
+    enabled: true,
     inDevelopment: true,
     category: "Fun / Engagement",
   },
