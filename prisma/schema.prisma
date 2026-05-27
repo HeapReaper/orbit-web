@@ -778,3 +778,19 @@ model CountingGameSettings {
 
   @@map("counting_game_settings")
 }
+
+model QotdSettings {
+  id           Int      @id @default(autoincrement())
+  guildId      String   @unique @map("guild_id") @db.VarChar(22)
+  channel      String?  @db.VarChar(22)
+  time         String   @default("12:00") @db.VarChar(5)
+  scheduleType String   @default("daily") @map("schedule_type") @db.VarChar(10)
+  days         Json     @default("[]")
+  monthlyDate  Int?     @map("monthly_date")
+  enabled      Boolean  @default(true)
+  aiPrompt     String   @default("") @map("ai_prompt") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("qotd_settings")
+}
