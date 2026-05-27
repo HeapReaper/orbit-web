@@ -6,7 +6,7 @@ import {
   BarChart3,
   Users,
   Settings,
-  CodeXml,
+  Sparkles,
   File,
 } from "lucide-react";
 import modules from "@/app/(dashboard)/dashboard/data/modules";
@@ -30,11 +30,11 @@ export default async function CoreFeaturesSection() {
     },
     {
       icon: (
-        <CodeXml className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
+        <Sparkles className="text-[var(--primary-color)] w-10 h-10 mb-4 mx-auto" />
       ),
-      title: "Active Development",
+      title: "AI",
       description:
-        "Our team is always working to improve the functionality of Orbit",
+        "We've integrated AI in smart ways, from generating Question of the Day questions to funny bot mentions.",
     },
     {
       icon: (
