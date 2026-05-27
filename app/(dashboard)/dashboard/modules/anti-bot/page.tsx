@@ -41,6 +41,7 @@ export default function AntiBotPage() {
   const [deleteMessagesOnKick, setDeleteMessagesOnKick] = useState(false);
   const [deleteMessagesOnBan, setDeleteMessagesOnBan] = useState(false);
   const [deleteMessagesDays, setDeleteMessagesDays] = useState(1);
+  const [csamProtection, setCsamProtection] = useState(true);
 
   const { selectedGuild, roles, channels } = useGuild();
   const { notify } = useNotification();
@@ -87,6 +88,7 @@ export default function AntiBotPage() {
         setDeleteMessagesOnKick(data?.deleteMessagesOnKick ?? false);
         setDeleteMessagesOnBan(data?.deleteMessagesOnBan ?? false);
         setDeleteMessagesDays(data?.deleteMessagesDays ?? 1);
+        setCsamProtection(data?.csamProtection ?? true);
       } catch (err) {
         console.error("Failed to fetch anti-bot data:", err);
       } finally {
@@ -138,6 +140,7 @@ export default function AntiBotPage() {
           deleteMessagesOnKick,
           deleteMessagesOnBan,
           deleteMessagesDays,
+          csamProtection,
         }),
       });
 
@@ -487,6 +490,15 @@ export default function AntiBotPage() {
             onChange={() => setBlockZalgo(!blockZalgo)}
             label="Block Zalgo / unicode abuse"
             tooltip="Blocks messages filled with combining unicode characters that distort text rendering"
+          />
+        </div>
+
+        <div className="mb-2">
+          <ToggleSwitch
+            enabled={csamProtection}
+            onChange={() => setEnabled(!csamProtection)}
+            label="Detect csam"
+            tooltip="Detects messages filled with underage sexual spam messages"
           />
         </div>
       </div>

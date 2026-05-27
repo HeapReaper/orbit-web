@@ -33,6 +33,7 @@ model AntiBotSettings {
   deleteMessagesOnKick Boolean @default(false) @map("delete_messages_on_kick")
   deleteMessagesOnBan  Boolean @default(false) @map("delete_messages_on_ban")
   deleteMessagesDays   Int     @default(1)  @map("delete_messages_days")
+  csamProtection       Boolean @default(true) @map("csam_protection")
   forbiddenPatterns    String[] @default([]) @map("forbidden_patterns")
   @@map("anti_bot_settings")
 }

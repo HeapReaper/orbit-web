@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
         deleteMessagesOnKick: false,
         deleteMessagesOnBan: false,
         deleteMessagesDays: 1,
+        csamProtection: true,
       },
     );
   } catch (err) {
@@ -75,6 +76,7 @@ export async function POST(req: NextRequest) {
     deleteMessagesOnKick = false,
     deleteMessagesOnBan = false,
     deleteMessagesDays = 1,
+    csamProtection = true,
   } = data;
 
   const session = await validateApiSessionAndGuildAdmin(guildId);
@@ -105,6 +107,7 @@ export async function POST(req: NextRequest) {
     deleteMessagesOnKick,
     deleteMessagesOnBan,
     deleteMessagesDays,
+    csamProtection,
   };
 
   try {
