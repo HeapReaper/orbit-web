@@ -92,7 +92,7 @@ export default function Page() {
       });
 
       void addDashboardLog(selectedGuild, "INFO", "Updated the QOTD module");
-      if (!auto) notify("Saved!", "", "success");
+      notify("Saved!", "", "success");
     } catch (err) {
       if (!auto) notify("Error", `${err}`, "error");
     } finally {
