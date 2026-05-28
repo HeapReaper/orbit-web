@@ -7,13 +7,13 @@ const SYSTEM_PROMPT =
 
 export async function previewQotd(aiPrompt: string): Promise<{ question?: string; error?: string }> {
   if (!aiPrompt.trim()) {
-    return { error: "Voer eerst een AI-prompt in." };
+    return { error: "Fill in a prompt first" };
   }
 
   const result = await runAI(aiPrompt, SYSTEM_PROMPT);
 
   if (result.status === "error" || !result.data) {
-    return { error: "AI kon geen vraag genereren. Controleer of de AI-service beschikbaar is." };
+    return { error: "AI couldn't generate a question. Try again later" };
   }
 
   const question: string = result.data.response ?? "";
