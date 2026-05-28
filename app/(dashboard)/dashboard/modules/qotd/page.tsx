@@ -10,6 +10,8 @@ import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 
+import { previewQotd } from "./actions";
+
 interface QotdSettings {
   channel: string;
   time: string;
@@ -40,6 +42,8 @@ export default function Page() {
   const [settings, setSettings] = useState<QotdSettings>(defaultSettings);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const [previewResult, setPreviewResult] = useState<{ question?: string; error?: string } | null>(null);
 
   useEffect(() => {
     document.title = "QOTD settings";
@@ -79,6 +83,14 @@ export default function Page() {
   const triggerAutoSave = () => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     saveTimeout.current = setTimeout(() => void handleSave(true), 1500);
+  };
+
+  const handlePreview = async () => {
+    setIsPreviewing(true);
+    setPreviewResult(null);
+    const result = await previewQotd(settings.aiPrompt);
+    setPreviewResult(result);
+    setIsPreviewing(false);
   };
 
   const handleSave = async (auto = false) => {
@@ -239,9 +251,39 @@ export default function Page() {
           className="w-full bg-[#0f1117] border border-gray-700 rounded p-3 text-white placeholder-gray-600 resize-none focus:outline-none focus:border-gray-500 text-sm leading-relaxed"
         />
 
-        <p className="text-gray-600 text-xs mt-2">
-          The bot calls the AI with this prompt at the scheduled time and sends the generated question to the selected channel.
-        </p>
+        <div className="flex items-center justify-between mt-3">
+          <p className="text-gray-600 text-xs">
+            The bot calls the AI with this prompt at the scheduled time and sends the generated question to the selected channel.
+          </p>
+          <button
+            type="button"
+            onClick={handlePreview}
+            disabled={isPreviewing || !settings.aiPrompt.trim()}
+            className="flex items-center gap-2 px-3 py-1.5 rounded bg-purple-700 hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm transition-colors"
+          >
+            <span>✨</span>
+            {isPreviewing ? "Genereren..." : "Preview"}
+          </button>
+        </div>
+
+        {previewResult && (
+          <div
+            className={`mt-3 rounded p-3 text-sm ${
+              previewResult.error
+                ? "bg-red-900/30 border border-red-700 text-red-300"
+                : "bg-purple-900/20 border border-purple-700 text-white"
+            }`}
+          >
+            {previewResult.error ? (
+              <span>{previewResult.error}</span>
+            ) : (
+              <>
+                <span className="text-purple-400 text-xs font-medium block mb-1">Preview vraag:</span>
+                <span>{previewResult.question}</span>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="text-right text-gray-400 text-sm mt-3">
