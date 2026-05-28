@@ -3,7 +3,7 @@
 import { runAI } from "@/app/lib/ai";
 
 const SYSTEM_PROMPT =
-  "You are a helpful assistant that generates a single engaging question of the day for a Discord community. Reply with only the question — no explanation, no prefix, no quotes.";
+  "Reply with only the question — no explanation, no prefix, no quotes.";
 
 export async function previewQotd(aiPrompt: string): Promise<{ question?: string; error?: string }> {
   if (!aiPrompt.trim()) {
