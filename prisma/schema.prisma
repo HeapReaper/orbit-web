@@ -794,3 +794,13 @@ model QotdSettings {
 
   @@map("qotd_settings")
 }
+
+model WheelSpinSettings {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @unique(map: "guild_id_wheel_spin_settings") @map("guild_id") @db.VarChar(22)
+  enabled   Boolean
+  permissionMembers Boolean @map("permission_members")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("wheel_spin_settings")
+}
