@@ -90,7 +90,7 @@ export default function Page() {
       {loading && <PageLoader />}
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
-        Giveaway
+        Wheel Spin
         <InfoTooltip text="Configure the Wheel Spin module. By enabling it, you enable the /wheelspin command." />
       </h1>
 

@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://botinorbit.com/preview</loc><lastmod>2026-03-05T09:17:40.448Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/privacy</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/releases</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/servers</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/subscriptions</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/terms</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/login</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/manifest.webmanifest</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/sentry-example-page</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://botinorbit.com/sitemap.xml</loc><lastmod>2026-03-05T09:17:40.449Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/about</loc><lastmod>2026-06-30T09:53:59.286Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/added-number-guesser-and-purge</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/april-2026-updates</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/getting-started-with-orbit</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/may-2026-updates</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/more-chess-and-numberguesser-updates</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/new-module-and-bugfix</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/still-improving</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/war-against-bots</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles/we-are-verified</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/articles</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/preview</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/privacy</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/releases</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/servers</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/subscriptions</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/terms</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/login</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/manifest.webmanifest</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/sentry-example-page</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://botinorbit.com/sitemap.xml</loc><lastmod>2026-06-30T09:53:59.287Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>
