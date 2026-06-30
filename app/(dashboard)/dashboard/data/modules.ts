@@ -343,6 +343,15 @@ const modules: moduleType[] = [
     inDevelopment: false,
     category: "Moderation",
   },
+  {
+    name: "Wheel Spin",
+    url: "wheel-spin",
+    description: "Spin the wheel to choose an answer!",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Fun / Engagement",
+  },
 ];
 
 export default modules;
