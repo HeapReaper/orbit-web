@@ -1,6 +1,5 @@
-translations-and-count-game
 ---
-title: May 2026 updates
+title: Translation and counting game updates!
 description: Translation and counting game updates!
 date: 2026-08-13
 author: HeapReaper
