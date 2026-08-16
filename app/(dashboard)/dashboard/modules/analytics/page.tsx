@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import CommandUsageChart from "@/app/(dashboard)/dashboard/components/charts/CommandUsageChart";
+import JoinsOverTimeChart from "@/app/(dashboard)/dashboard/components/charts/JoinsOverTime";
 import MessageFlowChart from "@/app/(dashboard)/dashboard/components/charts/MessageFlowOverTime";
 import TopChannelsChart from "@/app/(dashboard)/dashboard/components/charts/MostActiveChannels";
 import MostActiveUsersChart from "@/app/(dashboard)/dashboard/components/charts/MostActiveUsers";
-import JoinsOverTimeChart from "@/app/(dashboard)/dashboard/components/charts/JoinsOverTime";
-import ActiveVsInactiveChart from "@/app/(dashboard)/dashboard/components/charts/ActiveVsInactiveMembers";
-import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
-import { useGuild } from "@/app/context/GuildContext";
+import TopVoiceUsersChart from "@/app/(dashboard)/dashboard/components/charts/TopVoiceUsers";
 import TotalMessagesChart from "@/app/(dashboard)/dashboard/components/charts/TotalMessagesOverTime";
+import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
+import { useGuild } from "@/app/context/GuildContext";
 
 const TIME_RANGES = [
   "last_week",
@@ -18,76 +19,125 @@ const TIME_RANGES = [
   "last_5_years",
 ] as const;
 
+type TimeRange = (typeof TIME_RANGES)[number];
+
+// Matches the aggregateWindow granularity picked server-side per range
+function formatPeriodLabel(range: TimeRange, iso: string): string {
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return iso;
+
+  switch (range) {
+    case "last_week":
+      return date.toLocaleString(undefined, {
+        weekday: "short",
+        hour: "2-digit",
+      });
+    case "last_month":
+    case "last_year":
+      return date.toLocaleDateString(undefined, {
+        day: "2-digit",
+        month: "short",
+      });
+    case "last_5_years":
+      return date.toLocaleDateString(undefined, {
+        month: "short",
+        year: "numeric",
+      });
+  }
+}
+
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
   const [isPremium, setIsPremium] = useState<boolean>(false);
-  const [timeRange, setTimeRange] =
-    useState<(typeof TIME_RANGES)[number]>("last_week");
-  const [messageFlow, setMessageFlow] = useState<any[]>([]);
-  const [totalMessages, setTotalMessages] = useState<any[]>([]);
-  const [mostPopulairChannels, setMostPopulairChannels] = useState<any[]>([]);
-  const [topUsers, setTopUsers] = useState<any[]>([]);
+  const [timeRange, setTimeRange] = useState<TimeRange>("last_week");
   const { selectedGuild, currentGuild } = useGuild();
 
-  const [memberCount, setMemberCount] = useState<any[]>([]);
-  const [memberChartData, setMemberChartData] = useState<any[]>([]);
-  const [activeInactiveMembers, setActiveInactiveMembers] = useState<{
-    active: number;
-    inactive: number;
-  }>({ active: 0, inactive: 0 });
+  const [totals, setTotals] = useState({
+    messages: 0,
+    commands: 0,
+    joins: 0,
+    leaves: 0,
+    voiceMinutes: 0,
+  });
+  const [messagesByHour, setMessagesByHour] = useState<any[]>([]);
+  const [messagesOverTime, setMessagesOverTime] = useState<any[]>([]);
+  const [commandsOverTime, setCommandsOverTime] = useState<any[]>([]);
+  const [topChannels, setTopChannels] = useState<any[]>([]);
+  const [topUsers, setTopUsers] = useState<any[]>([]);
+  const [topVoiceUsers, setTopVoiceUsers] = useState<any[]>([]);
+  const [memberGrowth, setMemberGrowth] = useState<any[]>([]);
 
-  const allowedTimeRanges: (
-    | "last_week"
-    | "last_month"
-    | "last_year"
-    | "last_5_years"
-  )[] = isPremium ? [...TIME_RANGES] : ["last_week"];
+  const allowedTimeRanges: TimeRange[] = isPremium
+    ? [...TIME_RANGES]
+    : ["last_week"];
 
   useEffect(() => {
     document.title = "Analytics";
-    setLoading(true);
 
     if (!selectedGuild) return;
 
+    setLoading(true);
+
     const fetchData = async () => {
-      if (!selectedGuild) return;
+      const premiumRes = await fetch(`/api/premium?guildId=${selectedGuild}`);
+      const premiumData = await premiumRes.json();
+      setIsPremium(premiumData?.premium ?? false);
 
-      const res = await fetch(`/api/premium?guildId=${selectedGuild}`);
-      const dataPremium = await res.json();
-      setIsPremium(dataPremium?.premium ?? false);
-
-      const resp = await fetch(
-        `/api/fetch-analytics?guildId=${selectedGuild}&range=${timeRange}`,
+      const res = await fetch(
+        `/api/analytics?guildId=${selectedGuild}&range=${timeRange}`,
       );
-      const data = await resp.json();
+      const data = await res.json();
 
-      const chartData = (data.messageFlowHourly ?? []).map((item: any) => ({
-        hour: item.hour_of_day.toString(),
-        messages: item.avg_messages,
-      }));
+      setTotals(
+        data.totals ?? {
+          messages: 0,
+          commands: 0,
+          joins: 0,
+          leaves: 0,
+          voiceMinutes: 0,
+        },
+      );
 
-      const memberChartData = (data.memberCounts ?? []).map((row: any) => ({
-        date: row.period_start,
-        count: row.member_count,
-        change: row.member_change ?? 0,
-      }));
+      setMessagesByHour(data.messagesByHour ?? []);
 
-      setMessageFlow(chartData);
-      setTotalMessages(data.totalMessages ?? []);
-      setMostPopulairChannels(data.topChannels ?? []);
-      setMemberCount(data.memberCounts ?? []);
-      setMemberChartData(memberChartData);
+      setMessagesOverTime(
+        (data.messagesOverTime ?? []).map((row: any) => ({
+          period_start: formatPeriodLabel(timeRange, row.period_start),
+          message_count: row.message_count,
+        })),
+      );
+
+      setCommandsOverTime(
+        (data.commandsOverTime ?? []).map((row: any) => ({
+          date: formatPeriodLabel(timeRange, row.date),
+          commands: row.commands,
+        })),
+      );
+
+      setTopChannels(
+        (data.topChannels ?? []).map((row: any) => ({
+          name:
+            currentGuild?.channels.find((c) => c.id === row.name)?.name ??
+            row.name,
+          message_count: row.message_count,
+        })),
+      );
+
       setTopUsers(data.topUsers ?? []);
-      setActiveInactiveMembers({
-        active: data.activeVsInactive?.active || 0,
-        inactive: data.activeVsInactive?.inactive || 0,
-      });
+      setTopVoiceUsers(data.topVoiceUsers ?? []);
+
+      setMemberGrowth(
+        (data.memberGrowth ?? []).map((row: any) => ({
+          date: formatPeriodLabel(timeRange, row.date),
+          count: row.count,
+        })),
+      );
 
       setLoading(false);
     };
 
     void fetchData();
-  }, [selectedGuild, timeRange]);
+  }, [selectedGuild, timeRange, currentGuild]);
 
   return (
     <section className="relative bg-[#181b25] p-6 rounded-lg max-w-3xl mx-auto mt-6">
@@ -95,13 +145,14 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Analytics
-        <InfoTooltip text="Display your analytivs like Message flow and most active channels. Premium servers also can select LAST MONTH, LAST YEAR, LAST 5 YEARS" />
+        <InfoTooltip text="Display your analytics like message flow and most active channels. Premium servers can also select LAST MONTH, LAST YEAR and LAST 5 YEARS" />
       </h1>
 
       <div className="flex gap-2 mb-6">
         {allowedTimeRanges.map((range) => (
           <button
             key={range}
+            type="button"
             onClick={() => setTimeRange(range)}
             className="px-3 py-1 rounded text-white transition-colors"
             style={{
@@ -122,63 +173,82 @@ export default function Page() {
         ))}
       </div>
 
-      {/* Charts */}
-      {/*<div className="mb-8">*/}
-      {/*  <h3 className="text-xl font-semibold mb-2">Commands Usage</h3>*/}
-      {/*  <CommandUsageChart data={commandData} />*/}
-      {/*</div>*/}
+      {/* Stat tiles */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-8">
+        {[
+          { label: "Messages", value: totals.messages },
+          { label: "Commands", value: totals.commands },
+          { label: "Joins", value: totals.joins },
+          { label: "Leaves", value: totals.leaves },
+          { label: "Voice minutes", value: totals.voiceMinutes },
+        ].map((tile) => (
+          <div
+            key={tile.label}
+            className="bg-[#1f2333] border border-[#2a2f45] rounded-lg p-3 text-center"
+          >
+            <p className="text-xl font-semibold text-white">
+              {tile.value.toLocaleString()}
+            </p>
+            <p className="text-xs text-gray-400">{tile.label}</p>
+          </div>
+        ))}
+      </div>
 
+      {/* Charts */}
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-1">Message flow hourly</h3>
+        <h3 className="text-xl font-semibold mb-1">Messages per hour</h3>
         <p className="text-gray-400 mb-3">
-          Shows the average messages send for each our of the day
+          Shows the total messages sent for each hour of the day (UTC)
         </p>
-        <MessageFlowChart data={messageFlow} />
+        <MessageFlowChart data={messagesByHour} />
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-1">Message flow total</h3>
+        <h3 className="text-xl font-semibold mb-1">Messages over time</h3>
         <p className="text-gray-400 mb-3">
-          Shows the total messages send for each period over time
+          Shows the total messages sent for each period over time
         </p>
-        <TotalMessagesChart data={totalMessages} />
+        <TotalMessagesChart data={messagesOverTime} />
+      </div>
+
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-1">Commands used</h3>
+        <p className="text-gray-400 mb-3">
+          Shows how many commands were used for each period over time
+        </p>
+        <CommandUsageChart data={commandsOverTime} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Top channels</h3>
         <p className="text-gray-400 mb-3">
-          Shows the top 5 channels where the most messages where send
+          Shows the top 5 channels where the most messages were sent
         </p>
-        <TopChannelsChart data={mostPopulairChannels} />
+        <TopChannelsChart data={topChannels} />
       </div>
 
       <div className="mb-8">
         <h3 className="text-xl font-semibold mb-1">Most active users</h3>
         <p className="text-gray-400 mb-2">
-          Shows the top 5 users who have send the most messages
+          Shows the top 5 users who have sent the most messages
         </p>
         <MostActiveUsersChart data={topUsers} />
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-1">Member count over time</h3>
+        <h3 className="text-xl font-semibold mb-1">Most active in voice</h3>
         <p className="text-gray-400 mb-2">
-          Shows how many total members in the server are at a given time
+          Shows the top 5 users who spent the most time in voice channels
         </p>
-        <JoinsOverTimeChart data={memberChartData} />
+        <TopVoiceUsersChart data={topVoiceUsers} />
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-1">
-          Active vs inactive members
-        </h3>
-        <p className="text-gray-400 mb-1">
-          Count people inactive if they didnt send a message in the last X time
+        <h3 className="text-xl font-semibold mb-1">Member growth</h3>
+        <p className="text-gray-400 mb-2">
+          Shows the net member change (joins minus leaves) over time
         </p>
-        <ActiveVsInactiveChart
-          active={activeInactiveMembers.active}
-          inactive={activeInactiveMembers.inactive}
-        />
+        <JoinsOverTimeChart data={memberGrowth} />
       </div>
     </section>
   );
