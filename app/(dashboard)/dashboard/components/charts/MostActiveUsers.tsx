@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
 
 interface UserData {
@@ -22,7 +22,11 @@ interface Props {
 export default function MostActiveUsersChart({ data }: Props) {
   return (
     <div className="w-full h-72 mx-auto">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+        initialDimension={{ width: 500, height: 288 }}
+      >
         <BarChart
           data={data}
           layout="vertical"

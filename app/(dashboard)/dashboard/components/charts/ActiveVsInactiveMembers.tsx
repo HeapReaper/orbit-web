@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  PieChart,
-  Pie,
   Cell,
-  Tooltip,
   Legend,
+  Pie,
+  PieChart,
   ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 
 interface Props {
@@ -24,7 +24,11 @@ export default function ActiveVsInactiveChart({ active, inactive }: Props) {
 
   return (
     <div className="w-full h-72">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+        initialDimension={{ width: 500, height: 288 }}
+      >
         <PieChart>
           <Pie
             data={data}

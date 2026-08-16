@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
 
 interface ChartData {
@@ -23,7 +23,11 @@ interface Props {
 export default function CommandUsageChart({ data }: Props) {
   return (
     <div className="w-full h-72">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+        initialDimension={{ width: 500, height: 288 }}
+      >
         <LineChart
           data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}

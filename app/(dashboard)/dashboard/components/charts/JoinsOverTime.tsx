@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  LineChart,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
 
 interface JoinData {
@@ -22,7 +22,11 @@ interface Props {
 export default function JoinsOverTimeChart({ data }: Props) {
   return (
     <div className="w-full h-72">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        width="100%"
+        height="100%"
+        initialDimension={{ width: 500, height: 288 }}
+      >
         <LineChart
           data={data}
           margin={{ top: 20, right: 30, left: 10, bottom: 0 }}

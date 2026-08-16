@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  LineChart,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from "recharts";
 
 interface Props {
@@ -19,7 +19,7 @@ export default function XpRateChart({ xpRate, curveExponent }: Props) {
   const data = Array.from({ length: 10 }, (_, i) => {
     const level = i + 1;
 
-    const xp = xpRate * (8.196 * Math.pow(level + 1, curveExponent) + 200);
+    const xp = xpRate * (8.196 * (level + 1) ** curveExponent + 200);
 
     return {
       name: `Lv ${level}`,
@@ -30,7 +30,7 @@ export default function XpRateChart({ xpRate, curveExponent }: Props) {
   return (
     <div className="w-full flex justify-center">
       <div className="w-full max-w-xl h-[300px] mr-4">
-        <ResponsiveContainer>
+        <ResponsiveContainer initialDimension={{ width: 500, height: 300 }}>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
