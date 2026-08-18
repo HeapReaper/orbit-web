@@ -8,33 +8,34 @@ datasource db {
 }
 
 model AntiBotSettings {
-  id                  Int      @id @default(autoincrement())
-  guildId             String   @unique @map("guild_id") @db.VarChar(22)
-  enabled             Boolean  @default(false)
-  timeWindow          Int      @default(10) @map("time_window")
-  channelLimit        Int      @default(3) @map("channel_limit")
-  punishment          String   @default("none") @db.VarChar(20)
-  forbiddenWords      Json?    @map("forbidden_words")
-  forbiddenUsernames  Json?    @map("forbidden_usernames")
-  notificationChannel String?  @map("notification_channel") @db.VarChar(22)
-  jailRole            String?  @map("jail_role") @db.VarChar(22)
-  createdAt           DateTime @default(now()) @map("created_at")
-  updatedAt           DateTime @updatedAt @map("updated_at")
-  blockInvites        Boolean  @default(false) @map("block_invites")
-  blockNSFWInvites    Boolean  @default(false) @map("block_nsfw_invites")
-  excludeAdmins       Boolean  @default(false) @map("exclude_admins")
-  messageLimit         Int     @default(8)  @map("message_limit")
-  mentionLimit         Int     @default(5)  @map("mention_limit")
-  minAccountAgeDays    Int     @default(7)  @map("min_account_age_days")
-  raidThreshold        Int     @default(5)  @map("raid_threshold")
-  newAccountAction     String  @default("none") @map("new_account_action")
-  blockZalgo           Boolean @default(true)  @map("block_zalgo")
-  blockDuplicates      Boolean @default(true)  @map("block_duplicates")
-  deleteMessagesOnKick Boolean @default(false) @map("delete_messages_on_kick")
-  deleteMessagesOnBan  Boolean @default(false) @map("delete_messages_on_ban")
-  deleteMessagesDays   Int     @default(1)  @map("delete_messages_days")
-  csamProtection       Boolean @default(true) @map("csam_protection")
+  id                   Int      @id @default(autoincrement())
+  guildId              String   @unique @map("guild_id") @db.VarChar(22)
+  enabled              Boolean  @default(false)
+  timeWindow           Int      @default(10) @map("time_window")
+  channelLimit         Int      @default(3) @map("channel_limit")
+  punishment           String   @default("none") @db.VarChar(20)
+  forbiddenWords       Json?    @map("forbidden_words")
+  forbiddenUsernames   Json?    @map("forbidden_usernames")
+  notificationChannel  String?  @map("notification_channel") @db.VarChar(22)
+  jailRole             String?  @map("jail_role") @db.VarChar(22)
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+  blockInvites         Boolean  @default(false) @map("block_invites")
+  blockNSFWInvites     Boolean  @default(false) @map("block_nsfw_invites")
+  excludeAdmins        Boolean  @default(false) @map("exclude_admins")
+  messageLimit         Int      @default(8) @map("message_limit")
+  mentionLimit         Int      @default(5) @map("mention_limit")
+  minAccountAgeDays    Int      @default(7) @map("min_account_age_days")
+  raidThreshold        Int      @default(5) @map("raid_threshold")
+  newAccountAction     String   @default("none") @map("new_account_action")
+  blockZalgo           Boolean  @default(true) @map("block_zalgo")
+  blockDuplicates      Boolean  @default(true) @map("block_duplicates")
+  deleteMessagesOnKick Boolean  @default(false) @map("delete_messages_on_kick")
+  deleteMessagesOnBan  Boolean  @default(false) @map("delete_messages_on_ban")
+  deleteMessagesDays   Int      @default(1) @map("delete_messages_days")
+  csamProtection       Boolean  @default(true) @map("csam_protection")
   forbiddenPatterns    String[] @default([]) @map("forbidden_patterns")
+
   @@map("anti_bot_settings")
 }
 
@@ -264,6 +265,7 @@ model LevelingSettings {
   xpPerVoice         Int      @default(5) @map("xp_per_voice")
   xpVoiceGainSpeed   String   @default("everyMinute") @map("xp_voice_gain_speed")
   deleteXpOnLeave    Boolean  @default(true) @map("delete_xp_on_leave")
+
   @@map("leveling_settings")
 }
 
@@ -763,7 +765,7 @@ model Rss {
   url         String      @map("url")
   createdAt   DateTime    @default(now()) @map("created_at")
   RssSettings RssSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
-  channelId String?  @map("channel_id")
+  channelId   String?     @map("channel_id")
 
   @@index([guildId])
   @@map("rss")
@@ -796,11 +798,40 @@ model QotdSettings {
 }
 
 model WheelSpinSettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "guild_id_wheel_spin_settings") @map("guild_id") @db.VarChar(22)
-  enabled   Boolean
-  permissionMembers Boolean @map("permission_members")
-  createdAt DateTime @default(now()) @map("created_at")
+  id                Int      @id @default(autoincrement())
+  guildId           String   @unique(map: "guild_id_wheel_spin_settings") @map("guild_id") @db.VarChar(22)
+  enabled           Boolean
+  permissionMembers Boolean  @map("permission_members")
+  createdAt         DateTime @default(now()) @map("created_at")
 
   @@map("wheel_spin_settings")
+}
+
+model DhBumpReminderSettings {
+  id                      Int      @id @default(autoincrement())
+  guildId                 String   @unique @map("guild_id") @db.VarChar(22)
+  channel                 String   @db.VarChar(22)
+  messageType             String   @default("") @map("message_type") @db.VarChar(7)
+  message                 String   @default("") @db.Text
+  embed                   Json?    @default("{}") @db.Json
+  interval                Int
+  enabled                 Int      @default(1)
+  createdAt               DateTime @default(now()) @map("created_at")
+  xpBoost                 Int      @default(0) @map("xp_boost")
+  rewardRole              String?  @map("reward_role") @db.VarChar(22)
+  boostLeaderboard        Boolean  @default(false) @map("boost_leaderboard")
+  leaderboardAutoUpdates  Boolean  @default(false) @map("leaderboard_auto_updates")
+  leaderboardChannel      String?  @map("leaderboard_channel") @db.VarChar(22)
+  autoLeaderboardInterval String?  @map("auto_leaderboard_interval") @db.VarChar(32)
+
+  @@map("dh_bump_reminder_settings")
+}
+
+model DhBumps {
+  id       Int      @id @default(autoincrement())
+  guildId  String   @map("guild_id") @db.VarChar(22)
+  userId   String   @map("user_id") @db.VarChar(22)
+  bumpedAt DateTime @default(now()) @map("bumped_at")
+
+  @@map("dh_bumps")
 }
