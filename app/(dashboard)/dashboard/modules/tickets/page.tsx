@@ -7,7 +7,7 @@ import { useGuild } from "@/app/context/GuildContext";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
-import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import CategorySelect from "@/app/(dashboard)/dashboard/components/inputs/CategorySelect";
 
 export default function TicketsSettingsPage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -112,14 +112,14 @@ export default function TicketsSettingsPage() {
         </button>
       </div>
 
-      <ChannelSelect
-        label="Select channel where Ticket threads will be created"
+      <CategorySelect
+        label="Select category where Ticket threads will be created"
         value={channel ?? ""}
         onChange={(value) => setChannel(value)}
       />
 
-      <ChannelSelect
-        label="Select channel where Ticket confidential threads will be created"
+      <CategorySelect
+        label="Select category where Ticket confidential threads will be created"
         value={channelConfidential ?? ""}
         onChange={(value) => setChannelConfidential(value)}
       />
