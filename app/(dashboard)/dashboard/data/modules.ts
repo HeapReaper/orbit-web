@@ -5,7 +5,17 @@ const modules: moduleType[] = [
     name: "Bumper",
     url: "bumper",
     description:
-      "Receive reminders when it’s time to bump your server and reward members who bump!",
+      "Receive reminders when it’s time to bump for Disboard.org!",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Automation",
+  },
+  {
+    name: "DH Bumper",
+    url: "dh-bumper",
+    description:
+      "Receive reminders when it’s time to bump your server for DiscordHome",
     tier: "free",
     enabled: true,
     inDevelopment: false,
@@ -163,7 +173,7 @@ const modules: moduleType[] = [
     name: "Twitch Watcher",
     url: "twitch-watcher",
     description: "Receive alerts when selected Twitch streamers go live.",
-    tier: "premium",
+    tier: "free",
     enabled: true,
     inDevelopment: false,
     category: "Streaming / Media",
@@ -173,7 +183,7 @@ const modules: moduleType[] = [
     url: "kick-watcher",
     description:
       "Get notifications when favorite Kick streamers start streaming.",
-    tier: "premium",
+    tier: "free",
     enabled: true,
     inDevelopment: false,
     category: "Streaming / Media",
@@ -265,7 +275,7 @@ const modules: moduleType[] = [
     url: "mod-link",
     description:
       "Synchronize moderation actions across multiple servers automatically.",
-    tier: "premium",
+    tier: "free",
     enabled: true,
     inDevelopment: false,
     category: "Moderation",
