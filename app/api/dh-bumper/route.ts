@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
   try {
-    const reminders = await prisma.DhBumpReminderSettings.findFirst({
+    const reminders = await prisma.dhBumpReminderSettings.findFirst({
       where: { guildId },
     });
     return NextResponse.json(reminders);
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   if (!guildId)
     return NextResponse.json({ error: "Guild ID is missing" }, { status: 403 });
 
-  const updated = await prisma.DhBumpReminderSettings.upsert({
+  const updated = await prisma.dhBumpReminderSettings.upsert({
     where: { guildId },
     update: {
       channel,
