@@ -58,14 +58,6 @@ export async function GET(req: NextRequest) {
           console.warn(`Failed to fetch guild details for ${guildId}`, err);
         }
 
-        // Check premium status in Redis (optional)
-        const cacheKey = `premium_guild:${guildId}`;
-        let premiumData = await redis.get(cacheKey);
-        let premium = false;
-        if (premiumData) {
-          premium = JSON.parse(premiumData)?.premium || false;
-        }
-
         // Build invite link
         let inviteLink = `https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_BOT_ID}&scope=bot&permissions=8&guild_id=${guildId}`;
         try {
@@ -119,7 +111,6 @@ export async function GET(req: NextRequest) {
             0,
             300,
           ),
-          premium,
           inviteLink,
         };
       }),

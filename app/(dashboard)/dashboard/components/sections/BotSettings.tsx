@@ -132,10 +132,9 @@ export default function BotSettings() {
       <form className="space-y-6">
         <div className="grid md:grid-cols-2 gap-4">
           <TextInput
-            label="Nickname (premium)"
+            label="Nickname"
             value={nickname ?? ""}
             onChange={setNickname}
-            disabled={!currentGuild?.isPremium}
           />
 
           <SelectInput

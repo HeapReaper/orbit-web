@@ -175,8 +175,7 @@ export default function ServerBackupPage() {
       </h1>
 
       <p className="text-sm text-gray-500 mb-4 mt-1">
-        Free members can store up to 3 weeks of backups, while Premium members
-        enjoy 1.5 months of backup history.
+        All servers can store up to 1.5 months of backup history.
       </p>
 
       <div className="flex items-center justify-between mb-4">

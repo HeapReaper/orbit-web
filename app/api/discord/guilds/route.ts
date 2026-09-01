@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { prisma } from "@/app/lib/prisma";
 import { getRedisClient } from "@/app/lib/redis";
 import pLimit from "p-limit";
 
@@ -79,17 +78,6 @@ export async function GET() {
       return hasAdmin && botGuildIds.has(g.id);
     });
 
-    // Premium lookup
-    const premiumGuilds = await prisma.premiumGuild.findMany({
-      where: {
-        guildId: { in: manageableGuilds.map((g) => g.id) },
-      },
-    });
-
-    const premiumMap = new Map(
-      premiumGuilds.map((p) => [p.guildId, p.premium]),
-    );
-
     // Fetch guild details (rate-limited)
     const detailedGuilds = await Promise.all(
       manageableGuilds.map((g: any) =>
@@ -128,7 +116,6 @@ export async function GET() {
               isAdmin: true,
               channels,
               roles,
-              isPremium: premiumMap.get(g.id) ?? false,
             };
 
             await redis.set(

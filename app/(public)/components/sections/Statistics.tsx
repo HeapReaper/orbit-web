@@ -19,7 +19,7 @@ export default async function StatisticsSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         {[
           { value: data.totalGuilds, label: "Total Servers" },
-          { value: data.premiumGuilds, label: "Premium Guilds" },
+          { value: data.totalGuilds, label: "Free Servers" },
           { value: data.totalUsers, label: "Users" },
           { value: data.enabledModules, label: "Active Modules" },
         ].map((stat, idx) => (

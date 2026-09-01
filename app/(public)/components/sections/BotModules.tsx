@@ -1,8 +1,6 @@
 import modules from "@/app/(dashboard)/dashboard/data/modules";
 import { moduleType } from "@/app/types/modules";
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
-import FreemiumLabel from "@/app/(dashboard)/dashboard/components/labels/Freemium";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import React from "react";
 
 const groupedModules = modules.reduce(
@@ -16,18 +14,7 @@ const groupedModules = modules.reduce(
 );
 
 export default function BotModulesSection() {
-  const renderLabel = (tier: moduleType["tier"]) => {
-    switch (tier) {
-      case "free":
-        return <FreeLabel />;
-      case "freemium":
-        return <FreemiumLabel />;
-      case "premium":
-        return <PremiumLabel />;
-      default:
-        return null;
-    }
-  };
+  const renderLabel = () => <FreeLabel />;
 
   return (
     <section className="px-6 md:px-20 py-16">
@@ -46,7 +33,7 @@ export default function BotModulesSection() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="text-xl font-semibold">{module.name}</h4>
-                  {renderLabel(module.tier)}
+                  {renderLabel()}
                 </div>
                 <p className="text-gray-400 mb-4">{module.description}</p>
                 <span

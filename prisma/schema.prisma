@@ -328,16 +328,6 @@ model PictureContestSettings {
   @@map("picture_contest_settings")
 }
 
-model PremiumGuild {
-  id          Int       @id @default(autoincrement())
-  guildId     String    @unique @map("guild_id") @db.VarChar(22)
-  premium     Boolean   @default(false)
-  trialEndsAt DateTime? @map("trial_ends_at")
-  createdAt   DateTime  @default(now()) @map("created_at")
-
-  @@map("premium_guild")
-}
-
 model TicketSettings {
   id          Int      @id @default(autoincrement())
   guildId     String   @unique(map: "ticket_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)

@@ -1,6 +1,4 @@
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
-import FreemiumLabel from "@/app/(dashboard)/dashboard/components/labels/Freemium";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import { moduleType } from "@/app/types/modules";
 import Link from "next/link";
 import { Settings } from "lucide-react";
@@ -9,21 +7,9 @@ export default function ModuleCard({
   name,
   description,
   url,
-  tier,
   inDevelopment,
 }: moduleType) {
-  const renderLabel = () => {
-    switch (tier) {
-      case "free":
-        return <FreeLabel />;
-      case "freemium":
-        return <FreemiumLabel />;
-      case "premium":
-        return <PremiumLabel />;
-      default:
-        return null;
-    }
-  };
+  const renderLabel = () => <FreeLabel />;
 
   return (
     <Link

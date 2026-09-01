@@ -10,8 +10,6 @@ import GenericTable from "@/app/(dashboard)/dashboard/components/tables/Table";
 type GuildRow = {
   id: string;
   name: string;
-  isPremium: boolean;
-  trialEndsAt?: string | null;
   createdAt?: string | null;
 };
 
@@ -37,8 +35,6 @@ export default function Page() {
             data.guilds.map((g: any) => ({
               id: g.id,
               name: g.name,
-              isPremium: g.isPremium,
-              trialEndsAt: g.trialEndsAt ?? null,
               createdAt: g.createdAt ?? null,
             })),
           );
@@ -88,11 +84,9 @@ export default function Page() {
     }
   };
 
-  const headers = ["Name", "Premium", "Trial Ends", "Created At"];
+  const headers = ["Name", "Created At"];
   const rows = guilds.map((g) => [
     g.name,
-    g.isPremium ? "Yes" : "No",
-    g.trialEndsAt ? new Date(g.trialEndsAt).toLocaleDateString() : "–",
     g.createdAt ? new Date(g.createdAt).toLocaleDateString() : "–",
   ]);
 

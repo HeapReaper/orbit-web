@@ -26,7 +26,6 @@ export default function AntiBotPage() {
   const [notificationChannel, setNotificationChannel] = useState("");
   const [jailRole, setJailRole] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [isPremium, setIsPremium] = useState(false);
   const [excludeAdmins, setExcludeAdmins] = useState(false);
   const [blockInvites, setBlockInvites] = useState(false);
   const [blockNSFWInvites, setBlockNSFWInvites] = useState(false);
@@ -163,7 +162,7 @@ export default function AntiBotPage() {
 
   // Trigger auto save
   useEffect(() => {
-    if (!selectedGuild || !isPremium) return;
+    if (!selectedGuild) return;
     triggerAutoSave();
   }, [
     enabled,

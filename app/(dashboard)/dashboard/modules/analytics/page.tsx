@@ -48,7 +48,6 @@ function formatPeriodLabel(range: TimeRange, iso: string): string {
 
 export default function Page() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [isPremium, setIsPremium] = useState<boolean>(false);
   const [timeRange, setTimeRange] = useState<TimeRange>("last_week");
   const { selectedGuild, currentGuild } = useGuild();
 
@@ -67,9 +66,7 @@ export default function Page() {
   const [topVoiceUsers, setTopVoiceUsers] = useState<any[]>([]);
   const [memberGrowth, setMemberGrowth] = useState<any[]>([]);
 
-  const allowedTimeRanges: TimeRange[] = isPremium
-    ? [...TIME_RANGES]
-    : ["last_week"];
+  const allowedTimeRanges: TimeRange[] = [...TIME_RANGES];
 
   useEffect(() => {
     document.title = "Analytics";
@@ -79,10 +76,6 @@ export default function Page() {
     setLoading(true);
 
     const fetchData = async () => {
-      const premiumRes = await fetch(`/api/premium?guildId=${selectedGuild}`);
-      const premiumData = await premiumRes.json();
-      setIsPremium(premiumData?.premium ?? false);
-
       const res = await fetch(
         `/api/analytics?guildId=${selectedGuild}&range=${timeRange}`,
       );
@@ -145,7 +138,7 @@ export default function Page() {
 
       <h1 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
         Analytics
-        <InfoTooltip text="Display your analytics like message flow and most active channels. Premium servers can also select LAST MONTH, LAST YEAR and LAST 5 YEARS" />
+        <InfoTooltip text="Display your analytics like message flow and most active channels over multiple time ranges." />
       </h1>
 
       <div className="flex gap-2 mb-6">

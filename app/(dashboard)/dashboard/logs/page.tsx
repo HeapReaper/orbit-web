@@ -20,13 +20,9 @@ export default function BotLogs() {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const { selectedGuild, guilds } = useGuild();
-  const [isPremium, setIsPremium] = useState(false);
 
   const fetchLogs = async () => {
     if (!selectedGuild) return;
-    // @ts-ignore
-    setIsPremium(guilds.filter((g) => g.id === selectedGuild)[0].isPremium);
-
     setLoading(true);
 
     try {
@@ -88,7 +84,7 @@ export default function BotLogs() {
             onChange={(v) => setTimeRange(v as "1w" | "1m")}
             options={[
               { value: "1w", label: "1 Week" },
-              ...(isPremium ? [{ value: "1m", label: "1 Month" }] : []),
+              { value: "1m", label: "1 Month" },
             ]}
           />
 

@@ -3,6 +3,5 @@ export interface ServerType {
   name: string;
   icon: string | null;
   description: string;
-  premium: boolean;
   inviteLink: string;
 }

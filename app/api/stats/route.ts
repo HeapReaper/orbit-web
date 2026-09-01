@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import modules from "@/app/(dashboard)/dashboard/data/modules";
 import { getRedisClient } from "@/app/lib/redis";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 const redis = getRedisClient();
-const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,10 +15,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Please authenticate first" });
 
     if (cachedData) return NextResponse.json(JSON.parse(cachedData));
-
-    const data = await prisma.premiumGuild.findMany({
-      where: { premium: true },
-    });
 
     const enabledModulesCount = modules.filter((mod) => mod.enabled).length;
 
@@ -33,7 +27,7 @@ export async function GET(req: NextRequest) {
     const botData = await res.json();
 
     const response = {
-      premiumGuilds: data.length,
+      freeGuilds: botData.totalGuilds,
       enabledModules: enabledModulesCount,
       totalGuilds: botData.totalGuilds,
       totalUsers: botData.totalUsers,
@@ -48,7 +42,5 @@ export async function GET(req: NextRequest) {
       { error: "Failed to fetch stats" },
       { status: 500 },
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

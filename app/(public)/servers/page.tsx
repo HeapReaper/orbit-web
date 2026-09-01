@@ -53,11 +53,6 @@ export default async function ServersPage() {
                     </div>
                   )}
                   <h2 className="font-semibold text-lg">{server.name}</h2>
-                  {server.premium && (
-                    <span className="ml-auto px-2 py-1 bg-yellow-500 text-black rounded-full text-sm font-medium">
-                      Premium
-                    </span>
-                  )}
                 </div>
                 <p className="text-gray-400 mb-2">
                   {(server.description?.slice(0, 100) || "No description") +

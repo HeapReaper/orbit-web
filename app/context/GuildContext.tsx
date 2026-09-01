@@ -29,7 +29,6 @@ interface Guild {
   name: string;
   channels: Channel[];
   roles: Role[];
-  isPremium?: boolean;
 }
 
 interface GuildContextType {
@@ -60,21 +59,6 @@ export function GuildProvider({ children }: { children: ReactNode }) {
         const fetchedGuilds = data.guilds || [];
         setGuilds(fetchedGuilds);
 
-        // Fetch premium per guild
-        for (const g of fetchedGuilds) {
-          try {
-            const premRes = await fetch(`/api/discord/premium?guildId=${g.id}`);
-            const premData = await premRes.json();
-
-            setGuilds((prev) =>
-              prev.map((x) =>
-                x.id === g.id ? { ...x, isPremium: !!premData } : x,
-              ),
-            );
-          } catch (err) {
-            console.error("Premium check failed:", err);
-          }
-        }
       } catch (err) {
         console.error(err);
         setGuilds([]);

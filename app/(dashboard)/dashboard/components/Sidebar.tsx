@@ -21,7 +21,6 @@ import Link from "next/link";
 import { useGuild } from "@/app/context/GuildContext";
 import AddBot from "@/app/(dashboard)/dashboard/components/buttons/AddBot";
 import FreeLabel from "@/app/(dashboard)/dashboard/components/labels/Free";
-import PremiumLabel from "@/app/(dashboard)/dashboard/components/labels/Premium";
 import JoinOurDiscord from "@/app/(dashboard)/dashboard/components/buttons/JoinOurDiscord";
 import { usePathname } from "next/navigation";
 
@@ -32,7 +31,6 @@ export default function Sidebar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const { selectedGuild, setSelectedGuild, guilds, setGuilds } = useGuild();
-  const [isPremium, setIsPremium] = useState<boolean | null>(null);
 
   const sortAndFilterModules = modules
     .filter((module) => module.enabled)
@@ -83,24 +81,6 @@ export default function Sidebar() {
       localStorage.setItem("selectedGuild", selectedGuild);
     }
   }, [selectedGuild, setSelectedGuild]);
-
-  // Check if the selected guild is premium
-  useEffect(() => {
-    const checkPremium = async () => {
-      if (!selectedGuild) return;
-
-      try {
-        const res = await fetch(`/api/premium?guildId=${selectedGuild}`);
-        const data = await res.json();
-        setIsPremium(data?.premium ?? false);
-      } catch (err) {
-        console.error(err);
-        setIsPremium(false);
-      }
-    };
-
-    void checkPremium();
-  }, [selectedGuild]);
 
   return (
     <>
@@ -268,15 +248,7 @@ export default function Sidebar() {
         </nav>
 
         <div className="mt-auto flex flex-col items-center gap-2 w-full">
-          <div>
-            {isPremium === null ? (
-              <span className="text-gray-400 text-sm">Checking...</span>
-            ) : isPremium ? (
-              <PremiumLabel />
-            ) : (
-              <FreeLabel />
-            )}
-          </div>
+          <div><FreeLabel /></div>
 
           <div className="w-full">
             <AddBot />

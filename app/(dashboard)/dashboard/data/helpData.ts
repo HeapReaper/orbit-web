@@ -20,9 +20,9 @@ const helpData = [
     link: "/help/troubleshooting",
   },
   {
-    title: "Premium Features",
-    description: "Discover advanced features available for premium users.",
-    link: "/help/premium-features",
+    title: "Free Features",
+    description: "Discover all features available for every server.",
+    link: "/help/features",
   },
   {
     title: "Support",
