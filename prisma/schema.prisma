@@ -239,13 +239,15 @@ model KickWatcher {
 }
 
 model LeaveMessageSettings {
-  id        Int      @id @default(autoincrement())
-  guildId   String   @unique(map: "leave_message_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
-  messages  Json?    @map("messages")
-  channel   String?  @db.VarChar(22)
-  enabled   Int
-  randomize Boolean  @default(false)
-  createdAt DateTime @default(now()) @map("created_at")
+  id          Int      @id @default(autoincrement())
+  guildId     String   @unique(map: "leave_message_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  messageType String   @default("text") @map("message_type") @db.VarChar(7)
+  messages    Json?    @map("messages")
+  embed       Json?    @default("{}") @db.Json
+  channel     String?  @db.VarChar(22)
+  enabled     Int
+  randomize   Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
 
   @@map("leave_message_settings")
 }
@@ -363,7 +365,9 @@ model UserAction {
 model WelcomeMessageSettings {
   id            Int      @id @default(autoincrement())
   guildId       String   @unique(map: "welcome_message_settings_guild_id_unique") @map("guild_id") @db.VarChar(22)
+  messageType   String   @default("text") @map("message_type") @db.VarChar(7)
   messages      Json?
+  embed         Json?    @default("{}") @db.Json
   channel       String?  @db.VarChar(22)
   enabled       Int
   randomize     Boolean  @default(false)

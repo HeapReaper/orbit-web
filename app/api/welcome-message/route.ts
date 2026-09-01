@@ -18,7 +18,14 @@ export async function GET(req: NextRequest) {
       where: { guildId },
     });
     return NextResponse.json(
-      data || { messages: [""], channel: null, enabled: 0, randomize: false },
+      data || {
+        messageType: "text",
+        messages: [""],
+        embed: null,
+        channel: null,
+        enabled: 0,
+        randomize: false,
+      },
     );
   } catch (err) {
     console.error(err);
@@ -31,7 +38,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  const { guildId, messages, channel, enabled, randomize, deleteMessage } = data;
+  const {
+    guildId,
+    messageType,
+    messages,
+    embed,
+    channel,
+    enabled,
+    randomize,
+    deleteMessage,
+  } = data;
 
   // Validate authentication by session and if user is guild admin
   const session = await validateApiSessionAndGuildAdmin(guildId);
@@ -44,7 +60,9 @@ export async function POST(req: NextRequest) {
     const updated = await prisma.welcomeMessageSettings.upsert({
       where: { guildId },
       update: {
+        messageType,
         messages,
+        embed: messageType === "embed" ? embed : null,
         channel,
         enabled,
         randomize,
@@ -52,7 +70,9 @@ export async function POST(req: NextRequest) {
       },
       create: {
         guildId,
+        messageType,
         messages,
+        embed: messageType === "embed" ? embed : null,
         channel,
         enabled,
         randomize,

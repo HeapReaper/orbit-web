@@ -13,11 +13,27 @@ import { addDashboardLog } from "@/app/lib/addDashboardLog";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import DeleteButton from "@/app/(dashboard)/dashboard/components/buttons/Delete";
 import ChannelSelect from "@/app/(dashboard)/dashboard/components/inputs/ChannelSelect";
+import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
+import EmbedBuilder from "@/app/(dashboard)/dashboard/components/EmbedEditor";
+import EmbedPreview from "@/app/(dashboard)/dashboard/components/previews/Embed";
+import { EmbedData } from "@/app/types/embed";
+
+const emptyEmbed: EmbedData = {
+  color: "#5865F2",
+  title: "",
+  titleUrl: "",
+  description: "",
+  author: { name: "", icon: "" },
+  thumbnail: "",
+  fields: [],
+};
 
 export default function LeaveMessagePage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [enabled, setEnabled] = useState<boolean>(false);
+  const [messageType, setMessageType] = useState<string>("text");
   const [messages, setMessages] = useState<string[]>([""]);
+  const [embed, setEmbed] = useState<EmbedData>(emptyEmbed);
   const [channel, setChannel] = useState<string>("");
   const [randomize, setRandomize] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -35,7 +51,9 @@ export default function LeaveMessagePage() {
       try {
         const res = await fetch(`/api/leave-message?guildId=${selectedGuild}`);
         const data = await res.json();
+        setMessageType(data.messageType ?? "text");
         setMessages(data.messages?.length ? data.messages : [""]);
+        setEmbed(data.embed ?? emptyEmbed);
         setChannel(data.channel ?? "");
         setEnabled(data.enabled ?? false);
         setRandomize(data.randomize ?? false);
@@ -66,9 +84,11 @@ export default function LeaveMessagePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           guildId: selectedGuild,
+          messageType,
           messages: messages
             .map((m) => cleanMessage(m))
             .filter((m) => m.trim() !== ""),
+          embed,
           channel: channel || null,
           enabled: enabled ? 1 : 0,
           randomize,
@@ -95,7 +115,7 @@ export default function LeaveMessagePage() {
   useEffect(() => {
     if (!selectedGuild) return;
     triggerAutoSave();
-  }, [messages, channel, enabled, randomize]);
+  }, [messageType, messages, embed, channel, enabled, randomize]);
 
   const handleMessageChange = (index: number, value: string) => {
     const newMessages = [...messages];
@@ -139,60 +159,83 @@ export default function LeaveMessagePage() {
         onChange={(value) => setChannel(value)}
       />
 
-      <div className="mb-4">
-        <label className="flex items-center gap-2 text-gray-400 mb-2">
-          <input
-            type="checkbox"
-            checked={randomize}
-            onChange={() => setRandomize(!randomize)}
-            className="accent-[var(--primary-color)]"
-          />
-          Pick messages randomly
-        </label>
-      </div>
-
-      <div className="mb-6">
-        {messages.map((msg, index) => (
-          <div key={index} className="mb-3">
-            <div className="flex justify-between mb-2">
-              <label className="block text-gray-400 mb-1">
-                Message {index + 1}
-              </label>
-              {messages.length > 1 && (
-                <DeleteButton onClick={() => removeMessage(index)} />
-              )}
-            </div>
-
-            <div className="flex gap-2">
-              <div className="flex-1 rounded-lg border border-gray-700 bg-[#1f2330]">
-                <MarkdownEditor
-                  value={msg}
-                  onChange={(val) => handleMessageChange(index, val)}
-                  placeholder=""
-                />
-              </div>
-            </div>
-            <p className="text-sm text-gray-500 mb-4 mt-1">
-              You can use <InlineCode text="{user}" /> to mention the user.
-            </p>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={addMessage}
-          className="bg-[var(--primary-color)] hover:brightness-90 text-white px-3 py-1 rounded"
-        >
-          Add Message
-        </button>
-      </div>
-
-      <MessagePreview
-        username="Orbit"
-        message={messages[0]?.replace("{user}", "@HeapReaper") ?? ""}
-        channels={Object.fromEntries(
-          channels.map((channel) => [channel.id, channel.name]),
-        )}
+      <SelectInput
+        label="Message type"
+        value={messageType}
+        onChange={setMessageType}
+        options={[
+          { value: "text", label: "Text" },
+          { value: "embed", label: "Embed" },
+        ]}
       />
+
+      {messageType === "text" && (
+        <div className="mb-4">
+          <label className="flex items-center gap-2 text-gray-400 mb-2">
+            <input
+              type="checkbox"
+              checked={randomize}
+              onChange={() => setRandomize(!randomize)}
+              className="accent-[var(--primary-color)]"
+            />
+            Pick messages randomly
+          </label>
+        </div>
+      )}
+
+      {messageType === "text" ? (
+        <div className="mb-6">
+          {messages.map((msg, index) => (
+            <div key={index} className="mb-3">
+              <div className="flex justify-between mb-2">
+                <label className="block text-gray-400 mb-1">
+                  Message {index + 1}
+                </label>
+                {messages.length > 1 && (
+                  <DeleteButton onClick={() => removeMessage(index)} />
+                )}
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex-1 rounded-lg border border-gray-700 bg-[#1f2330]">
+                  <MarkdownEditor
+                    value={msg}
+                    onChange={(val) => handleMessageChange(index, val)}
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <p className="text-sm text-gray-500 mb-4 mt-1">
+                You can use <InlineCode text="{user}" /> to mention the user.
+              </p>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addMessage}
+            className="bg-[var(--primary-color)] hover:brightness-90 text-white px-3 py-1 rounded"
+          >
+            Add Message
+          </button>
+
+          <MessagePreview
+            username="Orbit"
+            message={messages[0]?.replace("{user}", "@HeapReaper") ?? ""}
+            channels={Object.fromEntries(
+              channels.map((channel) => [channel.id, channel.name]),
+            )}
+          />
+        </div>
+      ) : (
+        <div className="mb-6">
+          <p className="text-sm text-gray-500 mb-2">
+            You can use <InlineCode text="{user}" /> to mention the user.
+          </p>
+
+          <EmbedBuilder value={embed} onChange={setEmbed} />
+          <EmbedPreview embed={embed} replace={[["{user}", "@HeapReaper"]]} />
+        </div>
+      )}
 
       <div className="text-right text-gray-400 text-sm mt-3">
         {isSaving ? "Saving..." : "Auto saved!"}
