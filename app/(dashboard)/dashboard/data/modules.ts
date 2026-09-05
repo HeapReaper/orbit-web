@@ -362,6 +362,16 @@ const modules: moduleType[] = [
     inDevelopment: false,
     category: "Fun / Engagement",
   },
+  {
+    name: "Moderation",
+    url: "moderation",
+    description:
+      "Auto-moderation filters, punishments and a moderation log for your server.",
+    tier: "free",
+    enabled: true,
+    inDevelopment: false,
+    category: "Moderation",
+  },
 ];
 
 export default modules;

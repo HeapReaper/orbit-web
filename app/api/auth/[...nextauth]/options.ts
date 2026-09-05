@@ -3,6 +3,11 @@ import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/app/lib/prisma";
 
+// Discord access tokens live for 7 days, refresh a minute before that
+const DEFAULT_TOKEN_LIFETIME = 7 * 24 * 60 * 60 * 1000;
+const MAX_TOKEN_LIFETIME = 30 * 24 * 60 * 60 * 1000;
+const EXPIRY_SKEW = 60 * 1000;
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
 
@@ -32,13 +37,22 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token;
         token.refreshToken =
           account.refresh_token ?? token.refreshToken ?? null;
-        token.expiresAt = Date.now() + account.expires_at! * 1000;
+        // account.expires_at is an absolute unix timestamp in seconds
+        token.expiresAt = account.expires_at
+          ? account.expires_at * 1000
+          : Date.now() + DEFAULT_TOKEN_LIFETIME;
         token.providerAccountId = account.providerAccountId;
         return token;
       }
 
-      // Valid token?
-      if (typeof token.expiresAt === "number" && Date.now() < token.expiresAt) {
+      // Valid token? Refresh slightly early so it cannot expire mid-request.
+      // Anything further out than Discord can issue is a corrupted value from
+      // an older session and has to be refreshed as well.
+      if (
+        typeof token.expiresAt === "number" &&
+        Date.now() + EXPIRY_SKEW < token.expiresAt &&
+        token.expiresAt < Date.now() + MAX_TOKEN_LIFETIME
+      ) {
         return token;
       }
 

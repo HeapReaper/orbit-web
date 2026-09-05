@@ -13,8 +13,9 @@ import {
   Settings,
   Activity,
   Zap,
+  TriangleAlert,
 } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import modules from "../data/modules";
 import SelectInput from "@/app/(dashboard)/dashboard/components/inputs/Select";
 import Link from "next/link";
@@ -30,7 +31,15 @@ export default function Sidebar() {
   const [modulesOpen, setModulesOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const { selectedGuild, setSelectedGuild, guilds, setGuilds } = useGuild();
+  const {
+    selectedGuild,
+    setSelectedGuild,
+    guilds,
+    setGuilds,
+    needsReauth,
+    setNeedsReauth,
+  } = useGuild();
+  const pathname = usePathname();
 
   const sortAndFilterModules = modules
     .filter((module) => module.enabled)
@@ -38,26 +47,28 @@ export default function Sidebar() {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const isActive = (href: string) => {
-    return href === usePathname();
+    return href === pathname;
   };
 
   useEffect(() => {
     const fetchUserGuilds = async () => {
       try {
         const res = await fetch("/api/discord/guilds");
+        const data = await res.json().catch(() => null);
 
         if (!res.ok) {
           console.error("Failed to fetch guilds");
+          setNeedsReauth(data?.reauth === true);
           setGuilds([]);
           return;
         }
-
-        const data = await res.json();
 
         if (!data.guilds) {
           setGuilds([]);
           return;
         }
+
+        setNeedsReauth(false);
 
         const saved: string | null = localStorage.getItem("selectedGuild");
         // @ts-ignore
@@ -74,7 +85,7 @@ export default function Sidebar() {
     };
 
     void fetchUserGuilds();
-  }, [setGuilds, setSelectedGuild]);
+  }, [setGuilds, setSelectedGuild, setNeedsReauth]);
 
   useEffect(() => {
     if (selectedGuild) {
@@ -146,12 +157,31 @@ export default function Sidebar() {
         </div>
 
         {/* Guild select */}
-        <SelectInput
-          label="Select server"
-          value={selectedGuild}
-          onChange={setSelectedGuild}
-          options={guilds.map((g) => ({ value: g.id, label: g.name }))}
-        />
+        {needsReauth ? (
+          <div className="mb-4 p-3 rounded-lg border border-yellow-700 bg-yellow-900/20">
+            <div className="flex items-center gap-2 mb-1 text-yellow-200 font-semibold">
+              <TriangleAlert className="w-5 h-5 shrink-0" />
+              Session expired
+            </div>
+            <p className="text-sm text-gray-300 mb-3">
+              Your Discord login expired, so your servers could not be loaded.
+            </p>
+            <button
+              type="button"
+              onClick={() => signIn("discord", { callbackUrl: pathname })}
+              className="w-full py-2 rounded bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm font-medium transition cursor-pointer"
+            >
+              Log in again
+            </button>
+          </div>
+        ) : (
+          <SelectInput
+            label="Select server"
+            value={selectedGuild}
+            onChange={setSelectedGuild}
+            options={guilds.map((g) => ({ value: g.id, label: g.name }))}
+          />
+        )}
 
         <nav className="flex flex-col space-y-2 text-gray-400 mt-4">
           <Link

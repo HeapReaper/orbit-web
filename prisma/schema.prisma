@@ -829,3 +829,53 @@ model DhBumps {
 
   @@map("dh_bumps")
 }
+
+model ModerationSettings {
+  id                  Int                @id @default(autoincrement())
+  guildId             String             @unique @map("guild_id") @db.VarChar(22)
+  enabled             Boolean            @default(false)
+  logChannel          String?            @map("log_channel") @db.VarChar(22)
+  muteRole            String?            @map("mute_role") @db.VarChar(22)
+  dmOnPunishment      Boolean            @default(true) @map("dm_on_punishment")
+  dmMessage           String?            @map("dm_message") @db.Text
+  ignoreAdmins        Boolean            @default(true) @map("ignore_admins")
+  ignoreBots          Boolean            @default(true) @map("ignore_bots")
+  immuneRoles         String[]           @default([]) @map("immune_roles")
+  ignoredChannels     String[]           @default([]) @map("ignored_channels")
+  deleteMessageDays   Int                @default(1) @map("delete_message_days")
+  defaultMuteDuration Int                @default(60) @map("default_mute_duration")
+  warnExpiryDays      Int                @default(30) @map("warn_expiry_days")
+  escalations         Json?              @default("[]") @map("escalations")
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  filters             ModerationFilter[]
+
+  @@map("moderation_settings")
+}
+
+model ModerationFilter {
+  id                 Int                @id @default(autoincrement())
+  guildId            String             @map("guild_id") @db.VarChar(22)
+  type               String             @db.VarChar(30)
+  enabled            Boolean            @default(false)
+  alert              Boolean            @default(false)
+  log                Boolean            @default(true)
+  delete             Boolean            @default(true)
+  hardAction         String             @default("none") @map("hard_action") @db.VarChar(20)
+  hardActionDuration Int                @default(0) @map("hard_action_duration")
+  thresholdMaximum   Int                @default(3) @map("threshold_maximum")
+  thresholdDuration  Int                @default(60) @map("threshold_duration")
+  limit              Int                @default(5)
+  window             Int                @default(10)
+  minimumLength      Int                @default(10) @map("minimum_length")
+  entries            String[]           @default([])
+  entriesMode        String             @default("blacklist") @map("entries_mode") @db.VarChar(10)
+  ignoredChannels    String[]           @default([]) @map("ignored_channels")
+  ignoredRoles       String[]           @default([]) @map("ignored_roles")
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  settings           ModerationSettings @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, type])
+  @@map("moderation_filters")
+}

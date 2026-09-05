@@ -20,7 +20,11 @@ export async function GET() {
 
   // @ts-ignore
   if (!session || !session.accessToken) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // The Discord token could not be refreshed, only a new login helps
+    return NextResponse.json(
+      { error: "Unauthorized", reauth: true },
+      { status: 401 },
+    );
   }
 
   const userId = session.user.id;
@@ -41,7 +45,11 @@ export async function GET() {
 
     if (!userRes.ok) {
       return NextResponse.json(
-        { error: "Failed to fetch user guilds" },
+        {
+          error: "Failed to fetch user guilds",
+          // Discord rejected the token itself, so refreshing it did not help
+          reauth: userRes.status === 401,
+        },
         { status: userRes.status },
       );
     }

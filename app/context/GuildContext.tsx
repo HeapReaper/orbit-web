@@ -39,6 +39,9 @@ interface GuildContextType {
   guilds: Guild[];
   setGuilds: (guilds: Guild[]) => void;
   currentGuild: Guild | undefined;
+  /** The Discord login expired and could not be refreshed. */
+  needsReauth: boolean;
+  setNeedsReauth: (value: boolean) => void;
 }
 
 const GuildContext = createContext<GuildContextType | undefined>(undefined);
@@ -48,6 +51,7 @@ export function GuildProvider({ children }: { children: ReactNode }) {
   const [guilds, setGuilds] = useState<Guild[]>([]);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
+  const [needsReauth, setNeedsReauth] = useState<boolean>(false);
 
   // Load all guilds
   useEffect(() => {
@@ -56,9 +60,15 @@ export function GuildProvider({ children }: { children: ReactNode }) {
         const res = await fetch("/api/discord/guilds");
         const data = await res.json();
 
-        const fetchedGuilds = data.guilds || [];
-        setGuilds(fetchedGuilds);
+        if (!res.ok) {
+          setNeedsReauth(data?.reauth === true);
+          setGuilds([]);
+          return;
+        }
 
+        const fetchedGuilds = data.guilds || [];
+        setNeedsReauth(false);
+        setGuilds(fetchedGuilds);
       } catch (err) {
         console.error(err);
         setGuilds([]);
@@ -87,6 +97,8 @@ export function GuildProvider({ children }: { children: ReactNode }) {
         guilds,
         setGuilds,
         currentGuild,
+        needsReauth,
+        setNeedsReauth,
       }}
     >
       {children}
