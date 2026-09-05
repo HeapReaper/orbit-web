@@ -81,6 +81,30 @@ export interface ModerationSettings {
   filters: ModerationFilter[];
 }
 
+/**
+ * `limit` means something different per filter — a percentage for capitals, a
+ * count of messages for spam — so a single shared default does not work. A
+ * capitals limit of 5 would flag "Hoi ik ben Kelvin" at 14% uppercase.
+ */
+const filterDefaults: Partial<
+  Record<ModerationFilterType, Partial<ModerationFilter>>
+> = {
+  // Percentage of uppercase letters, only counted from minimumLength up
+  capitals: { limit: 70, minimumLength: 10 },
+  // Mentions in a single message
+  mentions: { limit: 5 },
+  // Line breaks in a single message
+  newlines: { limit: 10 },
+  // Messages per member inside the window
+  spam: { limit: 5, window: 10 },
+  // Identical messages inside the window
+  duplicates: { limit: 3, window: 30 },
+  // Attachments per member inside the window
+  attachments: { limit: 5, window: 15 },
+  // Reactions per member inside the window
+  reactions: { limit: 10, window: 10 },
+};
+
 export const defaultModerationFilter = (
   type: ModerationFilterType,
 ): ModerationFilter => ({
@@ -100,6 +124,7 @@ export const defaultModerationFilter = (
   entriesMode: "blacklist",
   ignoredChannels: [],
   ignoredRoles: [],
+  ...filterDefaults[type],
 });
 
 export const defaultModerationSettings = (): ModerationSettings => ({
