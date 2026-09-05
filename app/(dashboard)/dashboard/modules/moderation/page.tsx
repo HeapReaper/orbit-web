@@ -215,7 +215,10 @@ export default function ModerationPage() {
     list.includes(id) ? list.filter((v) => v !== id) : [...list, id];
 
   const enabledFilters = settings.filters.filter((f) => f.enabled).length;
-  const needsMuteRole =
+
+  // Without a mute role the bot falls back to a Discord timeout, which is worth
+  // pointing out because a timeout behaves differently and cannot be permanent.
+  const usesTimeoutFallback =
     !settings.muteRole &&
     (settings.filters.some((f) => f.enabled && f.hardAction === "mute") ||
       settings.escalations.some((e) => e.action === "mute"));
@@ -247,10 +250,13 @@ export default function ModerationPage() {
         </button>
       </div>
 
-      {needsMuteRole && (
-        <div className="mb-6 p-3 rounded-lg border border-yellow-700 bg-yellow-900/20 text-sm text-yellow-200">
-          You are muting members but no mute role is selected. Pick one under{" "}
-          <InlineCode text="General" /> before your settings can be saved.
+      {usesTimeoutFallback && (
+        <div className="mb-6 p-3 rounded-lg border border-sky-800 bg-sky-900/20 text-sm text-sky-200">
+          No mute role is selected, so muted members get Discord&apos;s built-in
+          timeout instead. A timeout silences them everywhere and lasts at most{" "}
+          <InlineCode text="28 days" />. Pick a mute role under{" "}
+          <InlineCode text="General" /> if you want per-channel control or
+          permanent mutes.
         </div>
       )}
 

@@ -106,18 +106,8 @@ export async function POST(req: NextRequest) {
 
   const { filters, escalations, ...settings } = parsed.data;
 
-  // A mute or timeout punishment is useless without a role to apply
-  if (!settings.muteRole) {
-    const needsMuteRole =
-      filters.some((f) => f.enabled && f.hardAction === "mute") ||
-      escalations.some((e) => e.action === "mute");
-
-    if (needsMuteRole)
-      return NextResponse.json(
-        { error: "A mute role is required when muting members" },
-        { status: 400 },
-      );
-  }
+  // Muting without a mute role is allowed: the bot falls back to Discord's own
+  // timeout, so the punishment still lands.
 
   const payload = {
     enabled: settings.enabled,
