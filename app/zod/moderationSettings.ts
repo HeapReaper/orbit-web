@@ -6,24 +6,45 @@ import {
 
 const snowflake = z.string().regex(/^\d{17,22}$/, "Invalid Discord ID");
 
-export const moderationFilterSchema = z.object({
-  type: z.enum(moderationFilterTypes),
-  enabled: z.boolean(),
-  alert: z.boolean(),
-  log: z.boolean(),
-  delete: z.boolean(),
-  hardAction: z.enum(moderationActions),
-  hardActionDuration: z.number().int().min(0).max(525600),
-  thresholdMaximum: z.number().int().min(1).max(100),
-  thresholdDuration: z.number().int().min(1).max(86400),
-  limit: z.number().int().min(1).max(1000),
-  window: z.number().int().min(1).max(3600),
-  minimumLength: z.number().int().min(0).max(4000),
-  entries: z.array(z.string().min(1).max(200)).max(500),
-  entriesMode: z.enum(["blacklist", "whitelist"]),
-  ignoredChannels: z.array(snowflake).max(100),
-  ignoredRoles: z.array(snowflake).max(100),
-});
+/** Filters whose entries are regular expressions instead of literal words. */
+const regexEntryFilters: string[] = ["patterns", "csam"];
+
+export const moderationFilterSchema = z
+  .object({
+    type: z.enum(moderationFilterTypes),
+    enabled: z.boolean(),
+    alert: z.boolean(),
+    log: z.boolean(),
+    delete: z.boolean(),
+    hardAction: z.enum(moderationActions),
+    hardActionDuration: z.number().int().min(0).max(525600),
+    thresholdMaximum: z.number().int().min(1).max(100),
+    thresholdDuration: z.number().int().min(1).max(86400),
+    limit: z.number().int().min(1).max(1000),
+    window: z.number().int().min(1).max(3600),
+    minimumLength: z.number().int().min(0).max(4000),
+    entries: z.array(z.string().min(1).max(200)).max(500),
+    entriesMode: z.enum(["blacklist", "whitelist"]),
+    ignoredChannels: z.array(snowflake).max(100),
+    ignoredRoles: z.array(snowflake).max(100),
+  })
+  .superRefine((filter, ctx) => {
+    // A pattern that does not compile is silently skipped by the bot, so reject
+    // it here instead of letting the guild believe it is protected.
+    if (!regexEntryFilters.includes(filter.type)) return;
+
+    filter.entries.forEach((entry, index) => {
+      try {
+        new RegExp(entry);
+      } catch {
+        ctx.addIssue({
+          code: "custom",
+          path: ["entries", index],
+          message: `"${entry}" is not a valid regular expression`,
+        });
+      }
+    });
+  });
 
 export const moderationEscalationSchema = z.object({
   warnings: z.number().int().min(1).max(100),

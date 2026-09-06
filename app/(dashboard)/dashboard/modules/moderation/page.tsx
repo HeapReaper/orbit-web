@@ -12,7 +12,9 @@ import ToggleSwitch from "@/app/(dashboard)/dashboard/components/inputs/Switch";
 import PageLoader from "@/app/(dashboard)/dashboard/components/PageLoader";
 import InfoTooltip from "@/app/(dashboard)/dashboard/components/ui/InfoToolTip";
 import InlineCode from "@/app/(dashboard)/dashboard/components/ui/InlineCode";
-import moderationFilters from "@/app/(dashboard)/dashboard/data/moderationFilters";
+import moderationFilters, {
+  moderationFilterGroups,
+} from "@/app/(dashboard)/dashboard/data/moderationFilters";
 import FilterCard from "@/app/(dashboard)/dashboard/modules/moderation/FilterCard";
 import { useGuild } from "@/app/context/GuildContext";
 import { useNotification } from "@/app/context/NotificationContext";
@@ -413,21 +415,31 @@ export default function ModerationPage() {
             punishment. Open a filter to configure it.
           </p>
 
-          {moderationFilters.map((definition) => {
-            const filter =
-              settings.filters.find((f) => f.type === definition.type) ??
-              defaultModerationFilter(definition.type);
+          {moderationFilterGroups.map((group) => (
+            <div key={group.id} className="mb-6">
+              <h2 className="text-xs text-gray-400 mb-3 uppercase font-semibold tracking-wide">
+                {group.label}
+              </h2>
 
-            return (
-              <FilterCard
-                key={definition.type}
-                definition={definition}
-                filter={filter}
-                onChange={(patch) => updateFilter(definition.type, patch)}
-                onReset={() => void resetFilter(definition.type)}
-              />
-            );
-          })}
+              {moderationFilters
+                .filter((definition) => definition.group === group.id)
+                .map((definition) => {
+                  const filter =
+                    settings.filters.find((f) => f.type === definition.type) ??
+                    defaultModerationFilter(definition.type);
+
+                  return (
+                    <FilterCard
+                      key={definition.type}
+                      definition={definition}
+                      filter={filter}
+                      onChange={(patch) => updateFilter(definition.type, patch)}
+                      onReset={() => void resetFilter(definition.type)}
+                    />
+                  );
+                })}
+            </div>
+          ))}
         </div>
       )}
 

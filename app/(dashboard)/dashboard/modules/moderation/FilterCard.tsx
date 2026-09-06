@@ -32,6 +32,18 @@ const actionOptions = [
 
 const temporaryActions = ["mute", "timeout"];
 
+/** An unparseable pattern is skipped by the bot, so flag it while typing. */
+const isInvalidRegex = (value: string): boolean => {
+  if (value.trim() === "") return false;
+
+  try {
+    new RegExp(value);
+    return false;
+  } catch {
+    return true;
+  }
+};
+
 export default function FilterCard({
   definition,
   filter,
@@ -183,18 +195,35 @@ export default function FilterCard({
                 />
               )}
 
-              {entries.map((entry, index) => (
-                <div key={index} className="flex items-center gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={entry}
-                    onChange={(e) => updateEntry(index, e.target.value)}
-                    placeholder={definition.entriesPlaceholder}
-                    className="w-full bg-[#0d0f13] border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-                  />
-                  <DeleteButton onClick={() => removeEntry(index)} />
-                </div>
-              ))}
+              {entries.map((entry, index) => {
+                const invalid =
+                  definition.entriesAreRegex && isInvalidRegex(entry);
+
+                return (
+                  <div key={index} className="mb-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={entry}
+                        onChange={(e) => updateEntry(index, e.target.value)}
+                        placeholder={definition.entriesPlaceholder}
+                        className={`w-full bg-[#0d0f13] border rounded px-3 py-2 text-white focus:outline-none focus:ring-2 ${
+                          invalid
+                            ? "border-red-500 focus:ring-red-500"
+                            : "border-gray-700 focus:ring-[var(--primary-color)]"
+                        }`}
+                      />
+                      <DeleteButton onClick={() => removeEntry(index)} />
+                    </div>
+                    {invalid && (
+                      <p className="text-sm text-red-400 mt-1">
+                        This is not a valid regular expression and will be
+                        ignored.
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
 
               <button
                 type="button"
@@ -204,6 +233,12 @@ export default function FilterCard({
                 <Plus size={16} />
                 Add entry
               </button>
+
+              {definition.entriesHint && (
+                <p className="text-sm text-gray-500 mt-2">
+                  {definition.entriesHint}
+                </p>
+              )}
             </div>
           )}
 
@@ -213,21 +248,26 @@ export default function FilterCard({
               When this filter triggers
             </p>
 
-            <div className="mb-2">
-              <ToggleSwitch
-                enabled={filter.delete}
-                onChange={(value) => onChange({ delete: value })}
-                label="Delete the message"
-              />
-            </div>
-            <div className="mb-2">
-              <ToggleSwitch
-                enabled={filter.alert}
-                onChange={(value) => onChange({ alert: value })}
-                label="Alert the member in the channel"
-                tooltip="Sends a short reply telling the member why their message was removed."
-              />
-            </div>
+            {/* A member filter has no message to remove or reply to */}
+            {!definition.memberScoped && (
+              <>
+                <div className="mb-2">
+                  <ToggleSwitch
+                    enabled={filter.delete}
+                    onChange={(value) => onChange({ delete: value })}
+                    label="Delete the message"
+                  />
+                </div>
+                <div className="mb-2">
+                  <ToggleSwitch
+                    enabled={filter.alert}
+                    onChange={(value) => onChange({ alert: value })}
+                    label="Alert the member in the channel"
+                    tooltip="Sends a short reply telling the member why their message was removed."
+                  />
+                </div>
+              </>
+            )}
             <div className="mb-2">
               <ToggleSwitch
                 enabled={filter.log}
@@ -244,7 +284,11 @@ export default function FilterCard({
             </p>
 
             <SelectInput
-              label="Action on repeated offences"
+              label={
+                definition.memberScoped
+                  ? "Action on the member"
+                  : "Action on repeated offences"
+              }
               value={filter.hardAction}
               onChange={(value) =>
                 onChange({
@@ -302,20 +346,28 @@ export default function FilterCard({
           <div className="mb-4">
             <p className="text-xs text-gray-400 mb-3 uppercase font-semibold tracking-wide flex items-center gap-2">
               Exceptions
-              <InfoTooltip text="Channels and roles listed here are skipped by this filter only. Server wide exceptions live on the General tab." />
+              <InfoTooltip
+                text={
+                  definition.memberScoped
+                    ? "Members with one of these roles are skipped by this filter only. Server wide exceptions live on the General tab."
+                    : "Channels and roles listed here are skipped by this filter only. Server wide exceptions live on the General tab."
+                }
+              />
             </p>
 
-            <CheckList
-              label="Ignored channels"
-              items={textChannels.map((c) => ({ id: c.id, name: c.name }))}
-              selectedIds={filter.ignoredChannels}
-              onToggle={(id) =>
-                onChange({
-                  ignoredChannels: toggleIn(filter.ignoredChannels, id),
-                })
-              }
-              placeholder="Search channels..."
-            />
+            {!definition.memberScoped && (
+              <CheckList
+                label="Ignored channels"
+                items={textChannels.map((c) => ({ id: c.id, name: c.name }))}
+                selectedIds={filter.ignoredChannels}
+                onToggle={(id) =>
+                  onChange({
+                    ignoredChannels: toggleIn(filter.ignoredChannels, id),
+                  })
+                }
+                placeholder="Search channels..."
+              />
+            )}
 
             <CheckList
               label="Ignored roles"

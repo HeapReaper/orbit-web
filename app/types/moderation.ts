@@ -1,8 +1,11 @@
 export const moderationFilterTypes = [
   "words",
+  "patterns",
   "invites",
+  "nsfwInvites",
   "links",
   "spam",
+  "channelSpam",
   "mentions",
   "capitals",
   "newlines",
@@ -10,9 +13,26 @@ export const moderationFilterTypes = [
   "duplicates",
   "reactions",
   "zalgo",
+  "csam",
+  "usernames",
+  "accountAge",
+  "raid",
 ] as const;
 
 export type ModerationFilterType = (typeof moderationFilterTypes)[number];
+
+/**
+ * Filters that judge a member instead of a message. They run on join and on a
+ * name change, so deleting or replying to a message makes no sense for them.
+ */
+export const memberScopedFilterTypes: ModerationFilterType[] = [
+  "usernames",
+  "accountAge",
+  "raid",
+];
+
+export const isMemberScopedFilter = (type: ModerationFilterType): boolean =>
+  memberScopedFilterTypes.includes(type);
 
 export const moderationActions = [
   "none",
@@ -103,6 +123,24 @@ const filterDefaults: Partial<
   attachments: { limit: 5, window: 15 },
   // Reactions per member inside the window
   reactions: { limit: 10, window: 10 },
+  // Channels a member may spread the same burst over inside the window
+  channelSpam: { limit: 3, window: 10 },
+  // A single match is already the whole signal, so punish on the first hit
+  csam: { thresholdMaximum: 1, hardAction: "ban" },
+  patterns: { thresholdMaximum: 1 },
+  nsfwInvites: { thresholdMaximum: 1 },
+  // Member scoped: no message to delete or reply to
+  usernames: { thresholdMaximum: 1, delete: false, alert: false },
+  // Minimum account age in days
+  accountAge: { limit: 7, thresholdMaximum: 1, delete: false, alert: false },
+  // Joins inside the window before the wave counts as a raid
+  raid: {
+    limit: 5,
+    window: 10,
+    thresholdMaximum: 1,
+    delete: false,
+    alert: false,
+  },
 };
 
 export const defaultModerationFilter = (
