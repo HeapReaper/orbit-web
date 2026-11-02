@@ -28,6 +28,9 @@ export default function PictureContestPage() {
   const [contests, setContests] = useState<PictureContest[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+  // Prevents auto-save from overwriting stored contests before they are loaded
+  const hasLoaded = useRef(false);
+  const skipNextSave = useRef(false);
 
   const { selectedGuild, channels } = useGuild();
   const { notify } = useNotification();
@@ -36,18 +39,34 @@ export default function PictureContestPage() {
     document.title = "Picture Contest Settings";
     if (!selectedGuild) return;
 
+    hasLoaded.current = false;
+    if (saveTimeout.current) clearTimeout(saveTimeout.current);
+
     const fetchData = async () => {
       setLoading(true);
       try {
         const res = await fetch(
           `/api/picture-contest?guildId=${selectedGuild}`,
         );
-        if (res.ok) {
-          const data = await res.json();
-          setContests(data?.contests ?? []);
-        } else {
-          setContests([]);
-        }
+        if (!res.ok) throw new Error(res.statusText);
+
+        const data = await res.json();
+        const items: any[] = data?.PictureContestItem ?? [];
+        skipNextSave.current = true;
+        setContests(
+          items.map((c) => ({
+            id: String(c.id),
+            name: c.name,
+            contestChannel: c.contestChannel ?? "",
+            announceChannel: c.announceChannel ?? "",
+            voteEmoji: c.voteEmoji,
+            voteType: c.voteType,
+            requiredVotes: c.requiredVotes ?? 5,
+            schedule: c.schedule,
+            enabled: c.enabled,
+          })),
+        );
+        hasLoaded.current = true;
       } catch (err) {
         console.error("Failed to fetch picture contest data:", err);
         setContests([]);
@@ -97,7 +116,11 @@ export default function PictureContestPage() {
   };
 
   useEffect(() => {
-    if (!selectedGuild) return;
+    if (!selectedGuild || !hasLoaded.current) return;
+    if (skipNextSave.current) {
+      skipNextSave.current = false;
+      return;
+    }
     triggerAutoSave();
   }, [contests, selectedGuild]);
 
