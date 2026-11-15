@@ -1,7 +1,7 @@
 # Orbit
 
-> [!TIP]
-> This project is for 90% written by humans.
+> [!NOTE]
+> This project has been mostly be written by humans.
 
 Take your Discord server to Orbit.
 Enable, configure, and monitor features from the dashboard.  
